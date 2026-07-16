@@ -1,0 +1,219 @@
+/* Generated from mobile-module.css by tools/split_mobile_module_css.js. */
+/* Route owner: pagination. Keep mobile-module.css in tools/css-sources as the source of truth. */
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar {
+align-items: center !important;
+    justify-content: flex-start !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    margin: 18px 0 0 !important;
+    overflow: visible !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .dataTables_paginate,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .dataTables_paginate,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .dataTables_paginate,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .dataTables_paginate {
+width: 100% !important;
+    min-width: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination {
+display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 0 4px !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination li,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination li,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination li,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination li {
+flex: 0 0 auto !important;
+    scroll-snap-align: none !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination strong {
+flex: 0 0 auto !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    padding: 0 9px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination .wf-page-item--nav,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination .wf-page-item--nav,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--nav,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--nav {
+min-width: 34px !important;
+    padding: 0 10px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--edge {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination .wf-page-item--ellipsis,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis {
+display: block !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination .wf-page-item--ellipsis > span,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis > span,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis > span,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--ellipsis > span {
+min-width: 18px !important;
+    height: 32px !important;
+    padding: 0 2px !important;
+    background: transparent !important;
+    color: #98a2b3 !important;
+    font-weight: 600 !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination li.wf-page-item--compact-hidden,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination li.wf-page-item--compact-hidden,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination li.wf-page-item--compact-hidden,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination li.wf-page-item--compact-hidden {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .wf-page-jump,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .wf-page-jump,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .wf-page-jump,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .wf-page-jump {
+display: inline-grid !important;
+    grid-template-columns: 72px 64px !important;
+    gap: 8px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    justify-content: center !important;
+    align-self: center !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .wf-page-jump input,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .wf-page-jump input,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .wf-page-jump input,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .wf-page-jump input {
+width: 72px !important;
+    min-width: 72px !important;
+    height: 34px !important;
+    padding: 0 10px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .wf-page-jump button,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .wf-page-jump button,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .wf-page-jump button,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .wf-page-jump button {
+min-width: 64px !important;
+    width: 64px !important;
+    height: 34px !important;
+    padding: 0 10px !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.archive.category .wf-nav-pagebar {
+width: 100% !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+    scrollbar-width: auto !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category .wf-nav-pagebar .pagination {
+width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+    margin: 0 auto !important;
+    padding: 0 0 4px !important;
+    scrollbar-width: auto !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category .wf-nav-pagebar .pagination li.wf-page-item--compact-hidden {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category .wf-page-jump {
+width: auto !important;
+    min-width: 0 !important;
+    margin: 6px 0 0 !important;
+    justify-content: center !important;
+    align-self: center !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category .wf-page-jump input {
+width: 72px !important;
+    min-width: 72px !important;
+}
+}
+
+@media (max-width: 360px) {
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination strong,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination a,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination span,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination strong {
+min-width: 34px !important;
+    height: 34px !important;
+    padding: 0 9px !important;
+    font-size: 11px !important;
+}
+
+html body.nav-theme.nav-theme-v2 .pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-detail__pager.pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-search-results .search-hub-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--edge,
+html body.nav-theme.nav-theme-v2.is-tag-search-results .tag-search-pagebar.pagebar.wf-pagebar .pagination .wf-page-item--edge {
+display: none !important;
+}
+}

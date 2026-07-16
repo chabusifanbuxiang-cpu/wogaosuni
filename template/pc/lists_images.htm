@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="noindex,follow" />
+<link rel="canonical" href="{eyou:global name='web_basehost' /}{$eyou.field.typeurl}" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="legacy_product_archive_head_assets.htm" /}
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+</head>
+<body class="nav-theme nav-theme-v2 archive category category-nav is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+
+<main class="site-main archive-main">
+  {eyou:php}
+  $wnCurrentTid = !empty($eyou['field']['typeid']) ? intval($eyou['field']['typeid']) : 0;
+  if (empty($eyou['field']['topid']) && $wnCurrentTid > 0) {
+      $eyou['field']['topid'] = $wnCurrentTid;
+  }
+  if (empty($eyou['field']['toptypeurl']) && !empty($eyou['field']['typeurl'])) {
+      $eyou['field']['toptypeurl'] = $eyou['field']['typeurl'];
+  }
+  $wnTopTid = !empty($eyou['field']['topid']) ? intval($eyou['field']['topid']) : $wnCurrentTid;
+  $wnArchiveAllActive = ($wnCurrentTid > 0 && $wnCurrentTid === $wnTopTid) ? 'is-active' : '';
+  $wnVisibleSubtypes = [];
+  if ($wnTopTid > 0) {
+      $wnVisibleSubtypes = \think\Db::name('arctype')
+          ->field('id AS typeid, typename')
+          ->where('parent_id', $wnTopTid)
+          ->where('is_hidden', 0)
+          ->where('status', 1)
+          ->where('is_del', 0)
+          ->order('sort_order asc,id asc')
+          ->select();
+  }
+  {/eyou:php}
+  <section class="archive-section archive-section--nav" data-subpanel-shell="archive-section-{$eyou.field.topid}">
+    <div class="archive-nav-head">
+      <div class="archive-nav-head__title">
+        <span class="archive-nav-head__eyebrow">{eyou:eq name="$eyou.field.parent_id" value="0"}网址分类{eyou:else /}{eyou:type typeid="$eyou.field.parent_id"}{$field.typename}{/eyou:type}{/eyou:eq}</span>
+        <h1>{$eyou.field.typename}</h1>
+      </div>
+    </div>
+    {eyou:notempty name="$eyou.field.seo_description"}
+    <div class="archive-nav-desc">{$eyou.field.seo_description}</div>
+    {/eyou:notempty}
+    <div class="wf-archive-filter wf-nav-filter" data-wf-nav-filter>
+      <div class="wf-archive-filter__row">
+        <span class="wf-archive-filter__label">网址分类</span>
+        <div class="wf-archive-filter__links">
+          {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=0 AND id NOT IN (263,264,265,271,370,371,372,373) AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="topcat"}
+          {eyou:php}
+          $wnArchiveTopcatActive = (!empty($topcat['typeid']) && intval($topcat['typeid']) === $wnTopTid) ? 'is-active' : '';
+          {/eyou:php}
+          <a class="{$wnArchiveTopcatActive}" href="{:wn_type_url_by_id($topcat['typeid'])}" data-typeid="{$topcat.typeid}">{$topcat.typename}</a>
+          {/eyou:sql}
+        </div>
+      </div>
+      <div class="wf-archive-filter__row">
+        <span class="wf-archive-filter__label">细分栏目</span>
+        <div class="wf-archive-filter__links">
+          <a class="{$wnArchiveAllActive}" href="{$eyou.field.toptypeurl}">全部</a>
+          {volist name="$wnVisibleSubtypes" id="subtype"}
+          {eyou:php}
+          $wnSubtypeCurrentStyle = (!empty($subtype['typeid']) && intval($subtype['typeid']) === $wnCurrentTid) ? 'is-active' : '';
+          $wnSubtypeUrl = wn_type_url_by_id($subtype['typeid']);
+          {/eyou:php}
+          <a href="{$wnSubtypeUrl}" class="{$wnSubtypeCurrentStyle}">{$subtype.typename}</a>
+          {/volist}
+        </div>
+      </div>
+    </div>
+    <div class="tool-grid tool-grid--archive">
+      {eyou:list titlelen='25' pagesize='30' infolen='60' addfields='site_region'}
+      {eyou:include file="nav_card.htm" /}
+      {/eyou:list}
+    </div>
+    <div class="pagebar wf-pagebar" data-wf-pagebar>
+      <ul class="pagination">
+        {eyou:pagelist listitem='pre,pageno,next' listsize='9' /}
+      </ul>
+      <form class="wf-page-jump" data-wf-page-jump>
+        <input type="number" min="1" inputmode="numeric" aria-label="跳转页码" />
+        <button type="submit">跳转</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

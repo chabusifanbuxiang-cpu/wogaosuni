@@ -1,0 +1,120 @@
+/* Route-scoped archive late cascade bridge split from eyou-bridge.css on 2026-06-04. */
+
+/* 2026-05-31: keep article hot-tag row label consistent with other filter labels. */
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__row--tags .wf-archive-filter__label {
+  display: flex !important;
+  align-items: center !important;
+  width: 72px !important;
+  min-width: 72px !important;
+  min-height: 28px !important;
+  color: #667085 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+/* 2026-05-31: remove archive card hover shadow bars and restore whole-card detail clicks. */
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d::after,
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d:hover::after,
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d:focus-within::after,
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d.is-tilt-active::after,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d::after,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d:hover::after,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d:focus-within::after,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d.is-tilt-active::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d {
+  cursor: pointer !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d > .wf-article-card__link,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d > .wf-download-tilt-card__link {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: inherit !important;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__title-link,
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__action,
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__detail,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__detail,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__download {
+  position: relative !important;
+  z-index: 8 !important;
+  pointer-events: auto !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__footer {
+  position: relative !important;
+  z-index: 9 !important;
+  pointer-events: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__footer-left {
+  position: relative !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__detail,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__download {
+  z-index: 11 !important;
+}
+
+/* 2026-05-31: use real content tags as image badges on article/download archive cards. */
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__media,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__media {
+  position: relative !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__badges,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__badges {
+  position: absolute !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: 10px !important;
+  z-index: 12 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  pointer-events: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-archive-news .wf-article-card.wf-article-card--tilt3d .wf-article-card__badges span,
+html body.nav-theme.nav-theme-v2.archive.category-download.is-archive-download .wf-download-tilt-card.wf-article-card--tilt3d .wf-download-tilt-card__badges span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 112px !important;
+  min-height: 22px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.90) !important;
+  color: #2563eb !important;
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.10) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  backdrop-filter: blur(12px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.35) !important;
+}

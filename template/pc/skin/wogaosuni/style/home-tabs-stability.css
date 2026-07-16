@@ -1,0 +1,83 @@
+/* 2026-05-13: homepage tab geometry and recommendation switch stability */
+@media (min-width: 961px) {
+  html body.nav-theme-v2.is-home .site-main .directory-showcase--section .directory-showcase__filterbar .section-filter--subtabs-joly > a:nth-last-of-type(2):nth-of-type(even):not(:first-of-type),
+  html body.nav-theme-v2.is-home .site-main .directory-showcase--section .directory-showcase__filterbar .section-filter--subtabs-joly > button:nth-last-of-type(2):nth-of-type(even):not(:first-of-type),
+  html body.nav-theme-v2.is-home .site-main .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab:nth-last-of-type(2):nth-of-type(even):not(:first-of-type) {
+    clip-path: polygon(0 0, calc(100% - var(--wn-slant)) 0, 100% 100%, var(--wn-slant) 100%) !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .directory-showcase--section .directory-showcase__filterbar .section-filter--subtabs-joly > a:nth-last-of-type(2):nth-of-type(even):not(:first-of-type)::after,
+  html body.nav-theme-v2.is-home .site-main .directory-showcase--section .directory-showcase__filterbar .section-filter--subtabs-joly > button:nth-last-of-type(2):nth-of-type(even):not(:first-of-type)::after,
+  html body.nav-theme-v2.is-home .site-main .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab:nth-last-of-type(2):nth-of-type(even):not(:first-of-type)::after {
+    clip-path: inherit !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc > .directory-showcase__filterbar {
+    display: flex !important;
+    align-items: flex-start !important;
+    min-height: 42px !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+    padding: 0 0 4px !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly {
+    position: relative !important;
+    z-index: 1 !important;
+    width: max-content !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    box-shadow:
+      0 0 0 1px rgba(226, 232, 240, 0.96),
+      0 8px 18px rgba(15, 23, 42, 0.045) !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    border-radius: 9px !important;
+    line-height: 32px !important;
+    transform: none !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab:first-of-type {
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab.is-active,
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab[aria-pressed="true"] {
+    background:
+      linear-gradient(180deg, rgba(239, 245, 255, 0.98) 0%, rgba(225, 239, 255, 0.98) 100%) !important;
+    color: #2563eb !important;
+    box-shadow:
+      0 10px 24px rgba(59, 130, 246, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.98) !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab:hover,
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc .home-recommend__tabs.section-filter--subtabs-joly .home-recommend__tab.is-hover-proxy {
+    background:
+      linear-gradient(180deg, rgba(244, 249, 255, 0.98) 0%, rgba(229, 239, 253, 0.98) 100%) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.98),
+      0 8px 18px rgba(59, 130, 246, 0.08) !important;
+  }
+
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc > .home-recommend__panels,
+  html body.nav-theme-v2.is-home .site-main .home-scope .home-recommend__group--aigc > .directory-showcase__panels {
+    margin-top: 14px !important;
+    padding-top: 0 !important;
+    transform: none !important;
+  }
+}

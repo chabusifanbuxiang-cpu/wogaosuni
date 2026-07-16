@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/style/iconfont.css" /}
+{eyou:static file="skin/style/wogaosuni.css" /}
+</head>
+<body class="wn-detail-page wn-detail-page--article">
+<div class="wn-shell">
+{eyou:include file="header.htm" /}
+
+<main class="wn-main">
+    <section class="wn-page wn-hero">
+        <div class="wn-section">
+            <div class="wn-article-detail-layout">
+                <article class="wn-article-detail-main">
+                    <header class="wn-article-hero">
+                        <div class="wn-article-hero__meta">
+                            <span>{$eyou.field.typename}</span>
+                            <span>{$eyou.field.update_time|MyDate='Y-m-d',###}</span>
+                            <span>{$eyou.field.total_video} 课时</span>
+                        </div>
+                        <h1>{$eyou.field.title}</h1>
+                        <p>{$eyou.field.seo_description}</p>
+                    </header>
+                    <section class="wn-detail-card">
+                        {eyou:videoplay aid='$eyou.field.aid' autoplay='off' id='video'}
+                        <video {$video.id} width="100%" controls="true" preload="none" controlslist="nodownload" poster="{$eyou.field.litpic}" src="{$video.file_url}"></video>
+                        {$video.hidden}
+                        {/eyou:videoplay}
+                    </section>
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-content">{$eyou.field.content}</div>
+                    </section>
+                </article>
+                <aside class="wn-article-detail-side">
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">视频目录</div>
+                        <div class="wn-outline-list">
+                            {eyou:videolist aid='$eyou.field.aid' id='video' autoplay='off'}
+                            <a href="#video" {$video.onclick}>{$i}. {$video.file_title}</a>
+                            {$video.hidden}
+                            {/eyou:videolist}
+                        </div>
+                    </section>
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">热门内容</div>
+                        <div class="wn-hot-list">
+                            {eyou:artlist channelid='2' loop='8' orderby='click' titlelen='28'}
+                            <a href="{$field.arcurl}" title="{$field.title}">
+                                <span>{$i}</span>
+                                <strong>{$field.title}</strong>
+                            </a>
+                            {/eyou:artlist}
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</div>
+
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

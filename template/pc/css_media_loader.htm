@@ -1,0 +1,91 @@
+<script>
+(function (window, document) {
+  if (window.wgnLoadMediaCss) {
+    return;
+  }
+
+  var loaded = {};
+
+  function escapeAttribute(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char];
+    });
+  }
+
+  function absoluteHref(href) {
+    var anchor = document.createElement("a");
+    anchor.href = href;
+    return anchor.href;
+  }
+
+  function hasLink(href) {
+    var target = absoluteHref(href);
+    var links = document.getElementsByTagName("link");
+    for (var i = 0; i < links.length; i += 1) {
+      if (links[i].rel === "stylesheet" && links[i].href === target) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function writeLink(href, media) {
+    document.write(
+      '<link rel="stylesheet" type="text/css" href="' +
+        escapeAttribute(href) +
+        '" media="' +
+        escapeAttribute(media || "all") +
+        '" data-wgn-media-css="1" />'
+    );
+  }
+
+  function addLink(href, media) {
+    if (!href || loaded[href] || hasLink(href)) {
+      return;
+    }
+    loaded[href] = true;
+    if (document.readyState === "loading") {
+      writeLink(href, media);
+      return;
+    }
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = href;
+    link.media = media || "all";
+    link.setAttribute("data-wgn-media-css", "1");
+    document.head.appendChild(link);
+  }
+
+  window.wgnLoadMediaCss = function (href, media) {
+    if (!media || !window.matchMedia) {
+      addLink(href, media);
+      return;
+    }
+
+    var query = window.matchMedia(media);
+    if (query.matches) {
+      addLink(href, media);
+      return;
+    }
+
+    var onChange = function (event) {
+      if (event.matches) {
+        addLink(href, media);
+      }
+    };
+
+    if (query.addEventListener) {
+      query.addEventListener("change", onChange);
+    } else if (query.addListener) {
+      query.addListener(onChange);
+    }
+  };
+})(window, document);
+</script>

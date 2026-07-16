@@ -1,0 +1,24 @@
+<nav class="aiph-article-neighbor eyou-detail-prenext" aria-label="上一篇和下一篇">
+  {eyou:prenext get='pre' titlelen='42'}
+  <a class="aiph-article-neighbor__item eyou-detail-prenext__item eyou-detail-prenext__item--prev" href="{$field.arcurl}">
+    <span>上一篇</span>
+    <strong>{$field.title}</strong>
+  </a>
+  {eyou:else /}
+  <span class="aiph-article-neighbor__item eyou-detail-prenext__item eyou-detail-prenext__item--prev is-disabled">
+    <span>上一篇</span>
+    <strong>没有了</strong>
+  </span>
+  {/eyou:prenext}
+  {eyou:prenext get='next' titlelen='42'}
+  <a class="aiph-article-neighbor__item eyou-detail-prenext__item eyou-detail-prenext__item--next" href="{$field.arcurl}">
+    <span>下一篇</span>
+    <strong>{$field.title}</strong>
+  </a>
+  {eyou:else /}
+  <span class="aiph-article-neighbor__item eyou-detail-prenext__item eyou-detail-prenext__item--next is-disabled">
+    <span>下一篇</span>
+    <strong>没有了</strong>
+  </span>
+  {/eyou:prenext}
+</nav>

@@ -1,0 +1,936 @@
+/* Shared mobile polish for synced download/tool detail readers. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader),
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) .site-main {
+    overflow-x: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme {
+    padding: 0 12px 28px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme > .aiph-body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main {
+    order: 1 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    display: block !important;
+    visibility: visible !important;
+    order: 2 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #e7edf5 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.045) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack {
+    display: grid !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__head,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__head {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 10px 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tabs.aiph-side-widget__tabs--slim,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tabs.aiph-side-widget__tabs--slim {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    gap: 4px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 4px !important;
+    overflow: hidden !important;
+    border: 1px solid #edf2f7 !important;
+    border-radius: 14px !important;
+    background: #f8fafc !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: 0 !important;
+    padding: 0 6px !important;
+    overflow: hidden !important;
+    border: 1px solid transparent !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    text-decoration: none !important;
+    transform: none !important;
+    transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab.is-active,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab[aria-selected="true"],
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab.is-active,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab[aria-selected="true"] {
+    border-color: rgba(37, 99, 235, 0.16) !important;
+    background: #fff !important;
+    color: #1768f5 !important;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.72) inset !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab:focus-visible,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab:focus-visible {
+    background: #fff !important;
+    color: #0f5fe0 !important;
+    outline: 0 !important;
+    border-color: rgba(37, 99, 235, 0.18) !important;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.075) !important;
+    transform: none !important;
+  }
+
+}
+
+@media (max-width: 430px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+}
+
+/* Final mobile card alignment pass for synced download/tool readers. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) main.site-main.single-wrap.single-wrap--clean {
+    box-sizing: border-box !important;
+    padding-right: 12px !important;
+    padding-left: 12px !important;
+    overflow-x: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-article-main-card.article-reader-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-article-prenext,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-article-main-card.article-reader-card {
+    border: 1px solid #e7edf5 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05) !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-entry-action-card {
+    margin-bottom: 18px !important;
+  }
+}
+
+/* Mobile inner related cards: match article detail instead of legacy list/grid styles. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__panels,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__panel {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-list,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-grid {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-list > a.aiph-side-article-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-list > a.aiph-side-article-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-list > a.aiph-side-article-card:focus-visible {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 74px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 74px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: 1px solid #eef3f8 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    text-decoration: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__thumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__media {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 74px !important;
+    min-width: 74px !important;
+    max-width: 74px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: #f8fafc !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__thumb img,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__media img {
+    display: block !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__body {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card__body strong {
+    display: -webkit-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    white-space: normal !important;
+    text-overflow: ellipsis !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-grid > a.aiph-side-tool-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-grid > a.aiph-side-tool-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-grid > a.aiph-side-tool-card:focus-visible {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    margin: 0 !important;
+    padding: 8px 10px !important;
+    border: 1px solid #edf2f7 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    text-decoration: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-card__logo {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    flex: 0 0 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: #f8fafc !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-card__logo img {
+    display: block !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    object-fit: contain !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-card__title,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-card:hover .aiph-side-tool-card__title {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+/* Mobile interaction guard: detail-reader-sync hides the desktop rail with pointer-events:none. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--article-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--tool-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__head,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__tabs,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__tab,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__panels,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget__panel,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-list,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-grid,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-article-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-tool-card {
+    pointer-events: auto !important;
+  }
+}
+
+/* 2026-06-18: shared mobile recommendation tabs touch size for synced detail readers. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-tool-reader, .is-single-download-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tabs.aiph-side-widget__tabs--slim,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-tool-reader, .is-single-download-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tabs.aiph-side-widget__tabs--slim {
+    height: auto !important;
+    min-height: 52px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-tool-reader, .is-single-download-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--article-switcher .aiph-side-widget__tab,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-tool-reader, .is-single-download-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tool-switcher .aiph-side-widget__tab {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: none !important;
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/* 2026-06-14: synced detail pages keep previous/next and fallback actions tappable. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__fallback[hidden] {
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext:has(.wf-article-prenext__row) .wf-article-prenext__fallback {
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext {
+    display: grid !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+    padding: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__row {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 4px 8px !important;
+    min-height: 44px !important;
+    min-width: 0 !important;
+    padding: 10px 12px !important;
+    border: 1px solid #e7edf5 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__label {
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    white-space: nowrap !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__link {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+    text-decoration: none !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext.is-empty {
+    display: block !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__fallback {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 12px !important;
+    border: 1px solid #e7edf5 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__fallback-label {
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-prenext__fallback-link {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    padding: 0 12px !important;
+    overflow: hidden !important;
+    border: 1px solid #dbe6f2 !important;
+    border-radius: 14px !important;
+    color: #1f2937 !important;
+    background: #f8fafc !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* 2026-06-09: detail footer nav remains a real touch target after shared footer bundle compression. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) footer.site-footer.site-footer .footer-nav a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    padding: 0 8px !important;
+    line-height: 1.35 !important;
+  }
+}
+
+/* 2026-06-14: keep tool/download feedback cards compact and tappable on mobile. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 12px !important;
+    padding: 12px !important;
+    border: 1px solid #e7edf5 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__avatar {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__body,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__actions {
+    min-width: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__title {
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__body p {
+    margin-top: 3px !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__actions {
+    grid-column: 1 / -1 !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-feedback .wf-detail-feedback__link {
+    width: 100% !important;
+    min-height: 42px !important;
+    padding: 0 12px !important;
+    border-radius: 14px !important;
+    font-size: 13px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+
+/* 2026-06-14: keep mobile detail floating back-to-top control finger-sized. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) #siteFloat.site-float {
+    width: 44px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) #siteFloat.site-float .site-float__dock,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) #siteFloat.site-float .site-float__actions {
+    grid-template-columns: 44px !important;
+    width: 44px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) #siteFloat.site-float .site-float__action {
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    border-radius: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) #siteFloat.site-float .site-float__action--top.is-hidden {
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+}
+
+/* 2026-06-18: keep mobile tool-detail titles inside the logo/action track. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-copy .aiph-article-headline h1 {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    font-size: clamp(30px, 8.6vw, 34px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    text-wrap: balance;
+  }
+}
+
+/* 2026-06-19: let the mobile tool-detail official button and intro use the full card track. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-identity {
+    display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    column-gap: 10px !important;
+    row-gap: 12px !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-logo {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-copy,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-head {
+    display: contents !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-copy .aiph-article-headline {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    align-self: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__button--tool-direct,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__button--tool-direct:visited {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__button--tool-direct .wf-entry-action-card__button-icon {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__button--tool-direct span:not(.wf-entry-action-card__button-icon) {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-copy .wf-article-lede {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 0 !important;
+    text-align: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-entry-action-card--tool .wf-entry-action-card__tool-copy .wf-article-lede p {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    text-align: center !important;
+  }
+}
+
+/* 2026-06-19: align mobile tool-detail breadcrumb separators with the link touch track. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-detail-breadcrumb__inner {
+    align-items: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify.is-single-tool-reader.is-single-tool-article article.aiph-single.aiph-single--article.article-reader-theme .wf-detail-breadcrumb__sep {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 34px !important;
+    line-height: 1 !important;
+  }
+}
+
+/* 2026-06-24: sync tool/download mobile reading body with the article reader template. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    color: #334155 !important;
+    font-size: 15.5px !important;
+    line-height: 1.86 !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext p,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li {
+    font-size: 15.5px !important;
+    line-height: 1.86 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li {
+    display: list-item !important;
+    margin: 0.42em 0 !important;
+    padding-left: 0 !important;
+    background: none !important;
+    background-image: none !important;
+    list-style-type: inherit !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li + li {
+    margin-top: 0.38em !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2.aiph-rich-heading--primary {
+    margin: 1.55em 0 0.66em !important;
+    gap: 9px !important;
+    color: #0f172a !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    line-height: 1.38 !important;
+    letter-spacing: 0 !important;
+    text-wrap: balance !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2.aiph-rich-heading--primary::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2 > strong::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h2.aiph-rich-heading--primary > strong::before {
+    width: 9px !important;
+    height: 9px !important;
+    flex-basis: 9px !important;
+    box-shadow: 0 0 0 4px rgba(216, 255, 63, 0.16), 0 0 0 1px rgba(145, 190, 19, 0.24) !important;
+    transform: translateY(1px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h3 {
+    margin: 1.35em 0 0.58em !important;
+    font-size: 18px !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext h4 {
+    margin: 1.25em 0 0.52em !important;
+    font-size: 16.5px !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ul,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ol {
+    padding-left: 1.25em !important;
+    list-style-position: outside !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ul {
+    list-style-type: disc !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ol {
+    list-style-type: decimal !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ul ul {
+    list-style-type: circle !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ul ul ul {
+    list-style-type: square !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext ol ol {
+    list-style-type: lower-alpha !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext li::marker {
+    color: #2563eb !important;
+    font-weight: 700 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext img,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext video,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext iframe,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext .wf-article-lightbox-link {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext table {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre[data-aiph-pretext="1"],
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre[data-aiph-code-block="1"],
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre[data-aiph-code-block="1"][data-aiph-code-style="docs"] {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 1.2em 0 1.35em !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre code,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre[data-aiph-code-block="1"] code,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext pre[data-aiph-code-block="1"][data-aiph-code-style="docs"] code {
+    width: max-content !important;
+    min-width: 100% !important;
+    white-space: pre !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .wf-article-main-card.article-reader-card:not(.wf-entry-action-card) .aiph-richtext code:not(pre code) {
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+
+/* 2026-06-24: keep synced detail breadcrumbs on one mobile baseline. */
+@media (max-width: 960px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__inner {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 34px !important;
+    line-height: 34px !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__inner > a,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__sep,
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__current {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 34px !important;
+    white-space: nowrap !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__sep {
+    width: auto !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-card-theme-toolify:is(.is-single-download-reader, .is-single-tool-reader) article.aiph-single.aiph-single--article.article-reader-theme .aiph-main > .wf-detail-breadcrumb .wf-detail-breadcrumb__current {
+    flex: 1 1 auto !important;
+    justify-content: flex-start !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}

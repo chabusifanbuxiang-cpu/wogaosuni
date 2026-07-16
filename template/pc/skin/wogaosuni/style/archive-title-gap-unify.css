@@ -1,0 +1,7 @@
+/* Match article/download archive title-card top gap to site archive lists. */
+@media (min-width: 961px) {
+  html body.nav-theme.nav-theme-v2.archive.is-archive-news:not(.is-archive-download) .site-main > .news-archive,
+  html body.nav-theme.nav-theme-v2.archive.category.category-download.is-archive-news.is-archive-download .site-main.archive-main > .news-archive.archive-section.archive-section--download {
+    padding-top: 4px !important;
+  }
+}

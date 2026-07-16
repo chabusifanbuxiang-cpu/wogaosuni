@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="noindex,follow" />
+<link rel="canonical" href="{eyou:global name='web_basehost' /}{$eyou.field.arcurl}" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="legacy_article_detail_head_assets.htm" /}
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+</head>
+<body class="nav-theme nav-theme-v2 single article is-single-article-news is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+
+<main class="site-main single-wrap single-wrap--clean">
+  <article class="aiph-single aiph-single--article eyou-model-detail eyou-model-detail--special">
+    <nav class="aiph-crumb" aria-label="面包屑">
+      <a href="{eyou:global name='web_basehost' /}">首页</a>
+      <span>›</span>
+      <em>{$eyou.field.title}</em>
+    </nav>
+
+    <div class="aiph-body">
+      <main class="aiph-main">
+        <header class="aiph-hero aiph-hero--article">
+          <div class="aiph-hero__main">
+            <div class="aiph-article-headline">
+              <span class="aiph-article-headline__badge">专题</span>
+              <h1>{$eyou.field.title}</h1>
+            </div>
+            <div class="aiph-meta">
+              <span class="aiph-meta__item">专题整理</span>
+              <span class="aiph-meta__item">{eyou:notempty name="$eyou.field.add_time"}{$eyou.field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$eyou.field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}</span>
+              <span class="aiph-meta__item">阅读 {eyou:arcclick /}</span>
+            </div>
+            <p class="aiph-summary">{$eyou.field.seo_description}</p>
+          </div>
+        </header>
+
+        <section class="aiph-content-card aiph-content-card--article-body">
+          <div class="single-entry__content aiph-richtext">{$eyou.field.content}</div>
+        </section>
+
+        <section class="aiph-related eyou-special-node">
+          <div class="aiph-section-head">
+            <h2>专题内容</h2>
+          </div>
+          <div class="search-results-list">
+            {eyou:specnode code='default1' id='field'}
+            <article class="search-result-item">
+              <a class="search-result-item__mainlink" href="{$field.arcurl}" aria-label="查看{$field.title}详情"></a>
+              <div class="search-result-item__logo">
+                <img src="{$field.litpic}" alt="{$field.title}" width="42" height="42" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+              </div>
+              <div class="search-result-item__body">
+                <div class="search-result-item__meta">
+                  <span>{$field.typename}</span>
+                  <span>{$field.click} 阅读</span>
+                  <span>{eyou:notempty name="$field.add_time"}{$field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}</span>
+                </div>
+                <h3>{$field.title}</h3>
+                <p>{$field.seo_description|html_msubstr=###,0,86,true}</p>
+              </div>
+              <div class="search-result-item__actions">
+                <a href="{$field.arcurl}">查看详情</a>
+              </div>
+            </article>
+            {/eyou:specnode}
+          </div>
+        </section>
+
+        {eyou:include file="detail_prenext.htm" /}
+      </main>
+    </div>
+  </article>
+</main>
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

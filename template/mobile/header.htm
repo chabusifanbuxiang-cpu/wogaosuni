@@ -1,0 +1,101 @@
+{eyou:global name='ey_common_hidden' /}
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <button class="sidebar-collapse-toggle" type="button" id="sidebarCollapseToggle" aria-label="收起或展开分类导航" aria-controls="siteSidebar" aria-pressed="false">
+      <span class="sidebar-collapse-toggle__bar"></span>
+      <span class="sidebar-collapse-toggle__bar"></span>
+      <span class="sidebar-collapse-toggle__bar"></span>
+    </button>
+    <nav class="topbar__nav" aria-label="主导航">
+      <a class="topbar-nav-link topbar-nav-link--home" href="{eyou:global name='web_basehost' /}">首页</a>
+      <div class="topbar-category-menu" data-topbar-category-menu>
+        <a class="topbar-category-menu__trigger topbar-category-menu__trigger--categories" href="#categories" data-topbar-category-trigger aria-expanded="false">
+          <span>分类</span>
+          <i aria-hidden="true"></i>
+        </a>
+        <div class="topbar-category-menu__panel" data-topbar-category-panel>
+          <div class="topbar-category-menu__head">
+            <div>
+              <strong>全部分类</strong>
+              <span>快速浏览所有 AI 工具导航栏目</span>
+            </div>
+            <a href="#categories">查看分类页</a>
+          </div>
+          <div class="topbar-category-menu__grid">
+            {eyou:models type="top" row="30" id="field"}
+            <section class="topbar-category-menu__group">
+              <a class="topbar-category-menu__parent" href="{$field.typeurl}" aria-label="{$field.typename}">
+                <span class="side-nav-list__icon nav-icon--default" aria-hidden="true"></span>
+                <strong>{$field.typename}</strong>
+              </a>
+              {eyou:notempty name="$field.children"}
+              <div class="topbar-category-menu__children">
+                {eyou:models name="$field.children" id="field2"}
+                <a href="{$field2.typeurl}" aria-label="{$field2.typename}">{$field2.typename}</a>
+                {/eyou:models}
+              </div>
+              {/eyou:notempty}
+            </section>
+            {/eyou:models}
+          </div>
+        </div>
+      </div>
+      <a class="topbar-nav-link topbar-nav-link--tutorial" href="/index.php?m=home&c=Lists&a=index&tid=271">AI百科</a>
+      <a class="topbar-nav-link topbar-nav-link--business" href="/index.php?m=home&c=Lists&a=index&tid=370">商务合作</a>
+      <a class="topbar-rank-link topbar-nav-link topbar-nav-link--ranking" href="/index.php?m=home&c=Lists&a=index&tid=372">排行</a>
+    </nav>
+    <div class="topbar__stats topbar-stats" aria-label="站点统计">
+      <span><strong>300+</strong><em>AI工具</em></span>
+      <span><strong>100+</strong><em>细分分类</em></span>
+      <span><strong>15</strong><em>核心栏目</em></span>
+    </div>
+    <div class="card-theme-toggle" role="group" aria-label="卡片主题切换">
+      <button class="card-theme-toggle__btn is-active" type="button" data-card-theme-option="toolify" aria-pressed="true">精致</button>
+      <button class="card-theme-toggle__btn" type="button" data-card-theme-option="square" aria-pressed="false">方形</button>
+    </div>
+    <button class="menu-toggle" type="button" id="menuToggle" aria-controls="siteSidebar" aria-expanded="false">分类</button>
+  </div>
+</header>
+
+<aside class="site-sidebar" id="siteSidebar">
+  <div class="site-sidebar__brand">
+    <button class="site-sidebar__close" type="button" id="sidebarClose" aria-label="关闭分类导航">
+      <span aria-hidden="true">×</span>
+      <em>关闭</em>
+    </button>
+  </div>
+  <div class="site-sidebar__nav">
+    <h3>分类导航</h3>
+    <ul class="side-nav-list">
+      {eyou:models type="top" row="30" id="field"}
+      <li class="{eyou:notempty name="$field.children"}has-children{/eyou:notempty}">
+        <div class="side-nav-list__row">
+          <a href="{$field.typeurl}" data-title="{$field.typename}" aria-label="{$field.typename}">
+            <span class="side-nav-list__icon nav-icon--default" aria-hidden="true"></span>
+            <span class="side-nav-list__label">{$field.typename}</span>
+          </a>
+          {eyou:notempty name="$field.children"}<button type="button" class="side-nav-list__toggle" aria-label="展开或收起{$field.typename}">⌄</button>{/eyou:notempty}
+        </div>
+        {eyou:notempty name="$field.children"}
+        <div class="side-nav-list__children" data-title="{$field.typename}">
+          {eyou:models name="$field.children" id="field2"}
+          <a href="{$field2.typeurl}" aria-label="{$field2.typename}">{$field2.typename}</a>
+          {/eyou:models}
+        </div>
+        {/eyou:notempty}
+      </li>
+      {/eyou:models}
+    </ul>
+  </div>
+  <div class="site-sidebar__submit-panel">
+    <a class="site-sidebar__submit-card" href="/index.php?m=home&c=Lists&a=index&tid=371">
+      <span class="site-sidebar__submit-icon" aria-hidden="true">＋</span>
+      <span class="site-sidebar__submit-copy">
+        <strong>网站提交</strong>
+        <em>推荐 AI 工具 / 申请收录</em>
+      </span>
+    </a>
+  </div>
+</aside>
+<div class="site-sidebar-overlay" id="siteSidebarOverlay"></div>

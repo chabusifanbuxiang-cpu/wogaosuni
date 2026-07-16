@@ -1,0 +1,513 @@
+/* Page-specific final ranking rules split from final-overrides.css. Loaded only on lists_rank.htm. */
+/* Ranking page portion split from "2026-05 search hero and ranking page". */
+.nav-theme-v2.is-ranking-page .site-main {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(219, 234, 254, 0.82), transparent 32%),
+    radial-gradient(circle at 86% 10%, rgba(254, 226, 226, 0.72), transparent 30%),
+    #f8fafc !important;
+}
+
+.nav-theme-v2 .ranking-page {
+  width: min(1180px, calc(100% - 28px)) !important;
+  margin: 20px auto 42px !important;
+  color: #101828 !important;
+}
+
+.nav-theme-v2 .ranking-page__hero {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  gap: 24px !important;
+  align-items: end !important;
+  min-height: 240px !important;
+  padding: 34px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.86)),
+    radial-gradient(circle at 20% 18%, rgba(59, 130, 246, 0.14), transparent 34%) !important;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.08) !important;
+  overflow: hidden !important;
+}
+
+.nav-theme-v2 .ranking-page__hero::after {
+  content: "" !important;
+  position: absolute !important;
+  right: -72px !important;
+  top: -86px !important;
+  width: 260px !important;
+  height: 260px !important;
+  border-radius: 80px !important;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(14, 165, 233, 0.06)) !important;
+  transform: rotate(18deg) !important;
+}
+
+.nav-theme-v2 .ranking-page__breadcrumb {
+  position: absolute !important;
+  left: 34px !important;
+  top: 24px !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #667085 !important;
+  font-size: 13px !important;
+  font-weight: 760 !important;
+}
+
+.nav-theme-v2 .ranking-page__breadcrumb a {
+  color: #2563eb !important;
+  text-decoration: none !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-main {
+  position: relative !important;
+  z-index: 2 !important;
+  padding-top: 44px !important;
+}
+
+.nav-theme-v2 .ranking-page__eyebrow {
+  margin: 0 0 12px !important;
+  color: #2563eb !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+}
+
+.nav-theme-v2 .ranking-page h1 {
+  margin: 0 !important;
+  color: #101828 !important;
+  font-size: clamp(36px, 4vw, 58px) !important;
+  font-weight: 920 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.065em !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-main p:last-child {
+  max-width: 640px !important;
+  margin: 16px 0 0 !important;
+  color: #667085 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1.8 !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-stats {
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(92px, 1fr)) !important;
+  gap: 10px !important;
+  min-width: 340px !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-stats span {
+  display: grid !important;
+  gap: 4px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.055) !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-stats strong {
+  color: #101828 !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.nav-theme-v2 .ranking-page__hero-stats em {
+  color: #667085 !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 760 !important;
+}
+
+.nav-theme-v2 .ranking-page__shell {
+  margin-top: 18px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 30px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.06) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+.nav-theme-v2 .ranking-page__tabs {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  padding: 4px !important;
+  border: 1px solid #edf2f7 !important;
+  border-radius: 24px !important;
+  background: #f8fafc !important;
+}
+
+.nav-theme-v2 .ranking-page__tab {
+  height: 44px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  color: #667085 !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  font-weight: 820 !important;
+}
+
+.nav-theme-v2 .ranking-page__tab:hover,
+.nav-theme-v2 .ranking-page__tab.is-active {
+  background: #101828 !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 30px rgba(16, 24, 40, 0.13) !important;
+}
+
+.nav-theme-v2 .ranking-page__panel {
+  display: none !important;
+  padding: 18px 4px 2px !important;
+}
+
+.nav-theme-v2 .ranking-page__panel.is-active {
+  display: block !important;
+}
+
+.nav-theme-v2 .ranking-page__panel-head {
+  display: flex !important;
+  align-items: end !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 8px 10px 18px !important;
+}
+
+.nav-theme-v2 .ranking-page__panel-head h2 {
+  margin: 0 !important;
+  color: #101828 !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.nav-theme-v2 .ranking-page__panel-head p {
+  margin: 6px 0 0 !important;
+  color: #667085 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+.nav-theme-v2 .ranking-page__panel-head > span {
+  flex: 0 0 auto !important;
+  height: 30px !important;
+  padding: 0 12px !important;
+  border: 1px solid #dbeafe !important;
+  border-radius: 999px !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  font-size: 12px !important;
+  font-weight: 820 !important;
+  line-height: 28px !important;
+}
+
+.nav-theme-v2 .ranking-page__list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.nav-theme-v2 .ranking-page__item {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 44px 1fr auto 42px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 78px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 22px !important;
+  background: linear-gradient(180deg, #ffffff, #fbfdff) !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04) !important;
+  overflow: hidden !important;
+}
+
+.nav-theme-v2 .ranking-page__item:hover {
+  border-color: rgba(191, 219, 254, 0.98) !important;
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.075) !important;
+  transform: translateY(-1px) !important;
+}
+
+.nav-theme-v2 .ranking-page__rank {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 15px !important;
+  background: #f2f4f7 !important;
+  color: #667085 !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+}
+
+.nav-theme-v2 .ranking-page__item:nth-child(1) .ranking-page__rank {
+  background: linear-gradient(135deg, #f59e0b, #f97316) !important;
+  color: #fff !important;
+}
+
+.nav-theme-v2 .ranking-page__item:nth-child(2) .ranking-page__rank {
+  background: linear-gradient(135deg, #94a3b8, #64748b) !important;
+  color: #fff !important;
+}
+
+.nav-theme-v2 .ranking-page__item:nth-child(3) .ranking-page__rank {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  color: #fff !important;
+}
+
+.nav-theme-v2 .ranking-page__main {
+  display: grid !important;
+  grid-template-columns: 46px 1fr !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.nav-theme-v2 .ranking-page__logo {
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
+.nav-theme-v2 .ranking-page__logo img {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: contain !important;
+}
+
+.nav-theme-v2 .ranking-page__logo b {
+  color: #2563eb !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+.nav-theme-v2 .ranking-page__copy {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 5px !important;
+}
+
+.nav-theme-v2 .ranking-page__copy strong {
+  display: block !important;
+  overflow: hidden !important;
+  color: #101828 !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.nav-theme-v2 .ranking-page__copy small {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: #667085 !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.45 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+.nav-theme-v2 .ranking-page__metric {
+  display: grid !important;
+  justify-items: end !important;
+  gap: 3px !important;
+  min-width: 72px !important;
+}
+
+.nav-theme-v2 .ranking-page__metric strong {
+  color: #101828 !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.nav-theme-v2 .ranking-page__metric small {
+  color: #98a2b3 !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  white-space: nowrap !important;
+}
+
+.nav-theme-v2 .ranking-page__direct {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border: 1px solid #e4e7ec !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  color: #344054 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.045) !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+.nav-theme-v2 .ranking-page__direct:hover {
+  border-color: #bfdbfe !important;
+  color: #1d4ed8 !important;
+}
+
+/* 2026-05-11: ranking page shows all four lists in one row */
+body.nav-theme-v2.is-ranking-page .ranking-page__shell {
+  padding: 14px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__tabs {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-bottom: 16px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__tab {
+  cursor: pointer !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panels,
+body.nav-theme-v2.is-ranking-page .ranking-page__panels.ranking-page__panels--all {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panel,
+body.nav-theme-v2.is-ranking-page .ranking-page__panel.is-active {
+  display: block !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 24px !important;
+  background: linear-gradient(180deg, #ffffff, #fbfdff) !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.055) !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panel-head {
+  align-items: flex-start !important;
+  min-height: 92px !important;
+  padding: 4px 2px 12px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panel-head h2 {
+  font-size: 18px !important;
+  line-height: 1.25 !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panel-head p {
+  display: -webkit-box !important;
+  margin-top: 5px !important;
+  overflow: hidden !important;
+  color: #667085 !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__panel-head > span {
+  display: none !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__list {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__item {
+  grid-template-columns: 30px minmax(0, 1fr) 34px !important;
+  gap: 8px !important;
+  min-height: 62px !important;
+  padding: 9px !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease, transform .16s ease !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__item:hover {
+  border-color: rgba(59, 130, 246, 0.26) !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07) !important;
+  transform: translateY(-1px) !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__rank {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__main {
+  grid-template-columns: 36px minmax(0, 1fr) !important;
+  gap: 8px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__logo {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 12px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__logo img {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__copy {
+  gap: 3px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__copy strong {
+  font-size: 13px !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__copy small {
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__metric {
+  display: none !important;
+}
+
+body.nav-theme-v2.is-ranking-page .ranking-page__direct {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+}
+
+@media (max-width: 1280px) {
+  body.nav-theme-v2.is-ranking-page .ranking-page__panels,
+  body.nav-theme-v2.is-ranking-page .ranking-page__panels.ranking-page__panels--all {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.nav-theme-v2.is-ranking-page .ranking-page__tabs,
+  body.nav-theme-v2.is-ranking-page .ranking-page__panels,
+  body.nav-theme-v2.is-ranking-page .ranking-page__panels.ranking-page__panels--all {
+    grid-template-columns: 1fr !important;
+  }
+}

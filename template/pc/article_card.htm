@@ -1,0 +1,104 @@
+{eyou:php}
+if (!function_exists('wn_article_card_pick_label')) {
+    function wn_article_card_pick_label($value, $length = 12)
+    {
+        $value = trim(preg_replace('/\s+/u', ' ', strip_tags(htmlspecialchars_decode((string)$value, ENT_QUOTES))));
+        if ($value === '') {
+            return '';
+        }
+        $value = str_replace(array('，', '、', '|', '/', '+'), ',', $value);
+        $parts = explode(',', $value);
+        $value = trim((string)$parts[0]);
+        if ($value === '') {
+            return '';
+        }
+        if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($value, 'UTF-8') > $length) {
+            return mb_substr($value, 0, $length, 'UTF-8') . '...';
+        }
+        if (!function_exists('mb_strlen') && strlen($value) > $length) {
+            return substr($value, 0, $length) . '...';
+        }
+        return $value;
+    }
+}
+if (!function_exists('wn_article_card_media_tags')) {
+    function wn_article_card_media_tags($field, $limit = 3)
+    {
+        $limit = max(1, intval($limit));
+        $tags = array();
+        $seen = array();
+        $appendTag = function ($tag) use (&$tags, &$seen, $limit) {
+            $tag = wn_article_card_pick_label($tag, 12);
+            if ($tag === '') {
+                return;
+            }
+            $key = function_exists('mb_strtolower') ? mb_strtolower($tag, 'UTF-8') : strtolower($tag);
+            if (isset($seen[$key])) {
+                return;
+            }
+            $seen[$key] = true;
+            $tags[] = $tag;
+        };
+        if (!empty($field['tags'])) {
+            $rawTags = str_replace(array('，', '、', '|', '/', '+'), ',', (string)$field['tags']);
+            foreach (explode(',', $rawTags) as $rawTag) {
+                $appendTag($rawTag);
+                if (count($tags) >= $limit) {
+                    return $tags;
+                }
+            }
+        }
+        $aid = !empty($field['aid']) ? intval($field['aid']) : 0;
+        if ($aid > 0 && class_exists('\\think\\Db')) {
+            try {
+                $rows = \think\Db::name('taglist')->alias('tl')
+                    ->join('__TAGINDEX__ ti', 'ti.id = tl.tid')
+                    ->where('tl.aid', $aid)
+                    ->field('COALESCE(ti.tag, tl.tag) AS tag')
+                    ->order('ti.total desc, ti.id desc')
+                    ->limit($limit)
+                    ->select();
+                foreach ((array)$rows as $row) {
+                    $appendTag(isset($row['tag']) ? $row['tag'] : '');
+                    if (count($tags) >= $limit) {
+                        break;
+                    }
+                }
+            } catch (\Exception $e) {
+            }
+        }
+        return array_slice($tags, 0, $limit);
+    }
+}
+$wnArticleCardAid = !empty($field['aid']) ? intval($field['aid']) : 0;
+$wnArticleCardLitpic = !empty($field['litpic']) ? trim((string)$field['litpic']) : '';
+$wnArticleCardFallback = '/template/pc/skin/wogaosuni/image/thumb-fallback-' . sprintf('%02d', ($wnArticleCardAid % 8) + 1) . '.svg';
+$wnArticleCardIsLegacyFallback = ($wnArticleCardLitpic === '' || stripos($wnArticleCardLitpic, 'open-source-logo.svg') !== false || stripos($wnArticleCardLitpic, 'article-thumb-fallback.') !== false);
+$wnArticleCardImage = !$wnArticleCardIsLegacyFallback ? $wnArticleCardLitpic : $wnArticleCardFallback;
+$wnArticleCardImageClass = $wnArticleCardIsLegacyFallback ? ' wf-article-card__image--fallback' : '';
+$wnArticleCardMediaTags = wn_article_card_media_tags($field, 3);
+{/eyou:php}
+<article class="wf-article-card wf-article-card--ripro wf-article-card--tilt3d" data-content-type="article" data-wf-click="{$field.click}" data-wf-date="{eyou:notempty name='$field.add_time'}{$field.add_time}{eyou:else /}{$field.update_time}{/eyou:notempty}" data-wf-article-tilt>
+  <a class="wf-article-card__link" href="{$field.arcurl}" aria-label="阅读{$field.title}详情"></a>
+  <div class="wf-article-card__body">
+    <div class="wf-article-card__headline-row" data-wf-article-tilt-item="92">
+      <h2><a class="wf-article-card__title-link" href="{$field.arcurl}">{$field.title}</a></h2>
+      <time class="wf-article-card__publish-time" datetime="{eyou:notempty name='$field.add_time'}{$field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}">{eyou:notempty name="$field.add_time"}{$field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}</time>
+    </div>
+    <p class="wf-article-card__summary" data-wf-article-tilt-item="72">{$field.seo_description|html_msubstr=###,0,88,true}</p>
+  </div>
+  <div class="wf-article-card__media" data-wf-article-tilt-item="220">
+    <img class="wf-article-card__image{$wnArticleCardImageClass}" src="{$wnArticleCardImage}" alt="{$field.title}" width="430" height="240" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('wf-article-card__image--fallback');this.src='{$wnArticleCardFallback}';" />
+    {eyou:notempty name="$wnArticleCardMediaTags"}
+    <div class="wf-article-card__badges">
+      {eyou:volist name="$wnArticleCardMediaTags" id="tagBadge" offset="0" length="3"}
+      <span>{$tagBadge}</span>
+      {/eyou:volist}
+    </div>
+    {/eyou:notempty}
+  </div>
+  <div class="wf-article-card__footer">
+    <a class="wf-article-card__action wf-article-card__action--ghost" href="{$field.arcurl}" data-wf-article-tilt-item="88">查看文章 →</a>
+    <a class="wf-article-card__detail" href="{$field.arcurl}" data-wf-article-tilt-item="106">详情</a>
+  </div>
+</article>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/style/iconfont.css" /}
+{eyou:static file="skin/style/wogaosuni.css" /}
+</head>
+<body class="wn-detail-page wn-detail-page--article">
+<div class="wn-shell">
+{eyou:include file="header.htm" /}
+
+<main class="wn-main">
+    <section class="wn-page wn-hero">
+        <div class="wn-section">
+            <div class="wn-article-detail-layout">
+                <article class="wn-article-detail-main">
+                    <header class="wn-article-hero">
+                        <div class="wn-article-hero__meta">
+                            <span>{$eyou.field.typename}</span>
+                        </div>
+                        <h1>{eyou:global name='web_attr_business_title_prefix' /}{eyou:global name='web_attr_business_title_highlight' /}{eyou:global name='web_attr_business_title_suffix' /}</h1>
+                        <p>{eyou:global name='web_attr_business_intro' /}</p>
+                    </header>
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-content">
+                            {eyou:php}
+                            $wnBusinessSlotsMobile = preg_split('/\r\n|\r|\n/', (string)tpCache('web.web_attr_business_slots'));
+                            $wnBusinessProcessMobile = preg_split('/\r\n|\r|\n/', (string)tpCache('web.web_attr_business_process'));
+                            {/eyou:php}
+                            <h2>{eyou:global name='web_attr_business_slots_title' /}</h2>
+                            <p>{eyou:global name='web_attr_business_slots_intro' /}</p>
+                            <ul>
+                                {volist name="$wnBusinessSlotsMobile" id="wnBusinessSlotMobile"}
+                                {eyou:php}
+                                $wnBusinessSlotMobileParts = array_map('trim', explode('|', (string)$wnBusinessSlotMobile, 2));
+                                $wnBusinessSlotMobileTitle = isset($wnBusinessSlotMobileParts[0]) ? $wnBusinessSlotMobileParts[0] : '';
+                                $wnBusinessSlotMobileDesc = isset($wnBusinessSlotMobileParts[1]) ? $wnBusinessSlotMobileParts[1] : '';
+                                {/eyou:php}
+                                {notempty name="$wnBusinessSlotMobileTitle"}
+                                <li><strong>{$wnBusinessSlotMobileTitle}</strong>：{$wnBusinessSlotMobileDesc}</li>
+                                {/notempty}
+                                {/volist}
+                            </ul>
+                            <h2>{eyou:global name='web_attr_business_process_title' /}</h2>
+                            <ol>
+                                {volist name="$wnBusinessProcessMobile" id="wnBusinessStepMobile"}
+                                {eyou:php}
+                                $wnBusinessStepMobileParts = array_map('trim', explode('|', (string)$wnBusinessStepMobile, 2));
+                                $wnBusinessStepMobileTitle = isset($wnBusinessStepMobileParts[0]) ? $wnBusinessStepMobileParts[0] : '';
+                                $wnBusinessStepMobileDesc = isset($wnBusinessStepMobileParts[1]) ? $wnBusinessStepMobileParts[1] : '';
+                                {/eyou:php}
+                                {notempty name="$wnBusinessStepMobileTitle"}
+                                <li><strong>{$wnBusinessStepMobileTitle}</strong>：{$wnBusinessStepMobileDesc}</li>
+                                {/notempty}
+                                {/volist}
+                            </ol>
+                            <p>{eyou:global name='web_attr_business_cta_intro' /}</p>
+                        </div>
+                    </section>
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-card__head">
+                            <h2>在线反馈</h2>
+                        </div>
+                        <div class="wn-detail-content">
+                            {eyou:form type='default' formid='1' id='field'}
+                            <form method="POST" action="{$field.action}" {$field.formhidden} onsubmit="{$field.submit}" class="wn-guestbook-form">
+                                <input type="text" name="{$field.attr_26}" placeholder="{$field.itemname_26}">
+                                <input type="text" name="{$field.attr_27}" placeholder="{$field.itemname_27}">
+                                <textarea name="{$field.attr_29}" placeholder="{$field.itemname_29}" rows="4"></textarea>
+                                {$field.hidden}
+                                <button type="submit">提交</button>
+                            </form>
+                            {/eyou:form}
+                        </div>
+                    </section>
+                </article>
+                <aside class="wn-article-detail-side">
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">联系方式</div>
+                        <div class="wn-outline-list">
+                            <a href="tel:{eyou:global name='web_attr_1' /}">{eyou:global name='web_attr_1' /}</a>
+                            <a href="mailto:{eyou:global name='web_attr_15' /}">{eyou:global name='web_attr_15' /}</a>
+                            {notempty name="$global.web_attr_20"}
+                            <a href="https://wpa.qq.com/msgrd?v=3&uin={$global.web_attr_20}&site=qq&menu=yes" target="_blank" rel="nofollow noopener">QQ：{$global.web_attr_20}</a>
+                            {/notempty}
+                            <a href="{eyou:global name='web_attr_23' /}" target="_blank" rel="nofollow noopener">QQ群：{eyou:global name='web_attr_22' /}</a>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</div>
+
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

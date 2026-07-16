@@ -1,0 +1,28 @@
+<article class="wn-download-card" data-content-type="download">
+  <a class="wn-download-card__link" href="{$field.arcurl}" aria-label="查看{$field.title}下载详情">
+    <span class="wn-download-card__top">
+      <span class="wn-download-card__icon" aria-hidden="true">
+        <img src="{$field.litpic}" alt="{$field.title}" width="48" height="48" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+      </span>
+      <span class="wn-download-card__name">
+        <strong>{$field.title}</strong>
+        <em>{$field.typename}</em>
+      </span>
+    </span>
+    <span class="wn-download-card__body">
+      <span class="wn-download-card__desc">{$field.seo_description|html_msubstr=###,0,58,true}</span>
+      <span class="wn-download-card__stats">
+        <span class="wn-download-card__stat wn-download-card__stat--time">
+          <time datetime="{eyou:notempty name='$field.add_time'}{$field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}">{eyou:notempty name="$field.add_time"}{$field.add_time|MyDate='Y-m-d',###}{eyou:else /}{$field.update_time|MyDate='Y-m-d',###}{/eyou:notempty}</time>
+        </span>
+        <span class="wn-download-card__stat wn-download-card__stat--views">热度 {$field.click}</span>
+      </span>
+      <span class="wn-download-card__bottom">
+        <span class="wn-download-card__get">立即下载</span>
+        <span class="wn-download-card__meta">
+          <b>详情</b>
+        </span>
+      </span>
+    </span>
+  </a>
+</article>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/style/iconfont.css" /}
+{eyou:static file="skin/style/wogaosuni.css" /}
+<!--[if lt IE 9]>{eyou:static file="skin/js/respond.js" /}<![endif]-->
+</head>
+<body class="wn-detail-page wn-detail-page--article">
+<div class="wn-shell">
+{eyou:include file="header.htm" /}
+
+<main class="wn-main">
+    <section class="wn-page wn-hero">
+        <div class="wn-section">
+            <div class="wn-breadcrumb">
+                <i aria-hidden="true"></i>
+                {eyou:position /}
+            </div>
+
+            <div class="wn-article-detail-layout">
+                <article class="wn-article-detail-main">
+                    <header class="wn-article-hero">
+                        <div class="wn-article-hero__meta">
+                            <span>{$eyou.field.typename}</span>
+                            <span>{$eyou.field.update_time|MyDate='Y-m-d',###}</span>
+                            <span>{eyou:php}$wfMobileArticleAuthor = trim((string)$eyou['field']['author']); if ($wfMobileArticleAuthor === '' || strtolower($wfMobileArticleAuthor) === 'admin') { $wfMobileArticleAuthor = '互联网'; }{/eyou:php}作者：{$wfMobileArticleAuthor}</span>
+                            <span>{eyou:arcclick /} 阅读</span>
+                        </div>
+                        <h1>{$eyou.field.title}</h1>
+                        <p>{$eyou.field.seo_description}</p>
+                    </header>
+
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-content">
+                            {$eyou.field.content}
+                        </div>
+                    </section>
+
+                    {eyou:notempty name='$eyou.field.tags'}
+                    <section class="wn-detail-card wn-article-tags">
+                        <div class="wn-detail-card__head">
+                            <h2>相关标签</h2>
+                        </div>
+                        <div class="wn-tag-list">
+                            {eyou:tags getall='0'}
+                            <a href="{$field.link}" {$field.target}>{$field.tag}</a>
+                            {/eyou:tags}
+                        </div>
+                    </section>
+                    {/eyou:notempty}
+
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-card__head">
+                            <h2>猜你喜欢</h2>
+                            <div class="wn-related-controls">
+                                <button class="is-active" type="button">精选文章</button>
+                                <button type="button" data-wn-related-prev aria-label="上一页">上一页</button>
+                                <span data-wn-related-page>1/1</span>
+                                <button type="button" data-wn-related-next aria-label="下一页">下一页</button>
+                            </div>
+                        </div>
+                        <div class="wn-related-grid" data-wn-related data-wn-related-size="4">
+                            {eyou:artlist channelid='1' typeid='$eyou.field.typeid' orderby='rand' titlelen='32' loop='12'}
+                            <a href="{$field.arcurl}" title="{$field.title}" data-wn-related-item>
+                                <img src="{$field.litpic|thumb_img=###,120,90,2}" alt="{$field.title}">
+                                <strong>{$field.title}</strong>
+                                <span>{$field.update_time|MyDate='Y-m-d',###}</span>
+                            </a>
+                            {/eyou:artlist}
+                        </div>
+                    </section>
+
+                    <section class="wn-detail-card">
+                        <div class="wn-detail-card__head">
+                            <h2>上一篇 / 下一篇</h2>
+                        </div>
+                        <div class="wn-prevnext">
+                            {eyou:prenext get='pre' titlelen='36'}
+                            <a href="{$field.arcurl}"><span>上一篇</span><strong>{$field.title}</strong></a>
+                            {eyou:else /}
+                            <div><span>上一篇</span><strong>没有了</strong></div>
+                            {/eyou:prenext}
+                            {eyou:prenext get='next' titlelen='36'}
+                            <a href="{$field.arcurl}"><span>下一篇</span><strong>{$field.title}</strong></a>
+                            {eyou:else /}
+                            <div><span>下一篇</span><strong>没有了</strong></div>
+                            {/eyou:prenext}
+                        </div>
+                    </section>
+                </article>
+
+                <aside class="wn-article-detail-side">
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">文章目录</div>
+                        <div class="wn-outline-list" data-wn-article-outline>
+                            <a href="javascript:void(0);">正在生成目录</a>
+                        </div>
+                    </section>
+
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">热点排行</div>
+                        <div class="wn-hot-list">
+                            {eyou:artlist channelid='1' typeid='$eyou.field.typeid' orderby='click' titlelen='28' loop='8'}
+                            <a href="{$field.arcurl}" title="{$field.title}">
+                                <span>{$i}</span>
+                                <strong>{$field.title}</strong>
+                            </a>
+                            {/eyou:artlist}
+                        </div>
+                    </section>
+
+                    <section class="wn-side-card">
+                        <div class="wn-side-card__head">推荐工具</div>
+                        <div class="wn-mini-tools">
+                            {eyou:artlist channelid='2' orderby='rand' titlelen='24' loop='6'}
+                            <a href="{$field.arcurl}" title="{$field.title}">
+                                <img src="{$field.litpic|thumb_img=###,80,80,2}" alt="{$field.title}" onerror="this.onerror=null;this.src='{eyou:global name='web_logo' /}';">
+                                <span>{$field.title}</span>
+                            </a>
+                            {/eyou:artlist}
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</div>
+
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

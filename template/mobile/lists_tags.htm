@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/style/iconfont.css" /}
+{eyou:static file="skin/style/wogaosuni.css" /}
+</head>
+<body class="wn-list-page wn-list-page--article">
+<div class="wn-shell">
+{eyou:include file="header.htm" /}
+
+<main class="wn-main">
+    <section class="wn-page wn-hero">
+        <div class="wn-section">
+            <div class="wn-pagehead">
+                <div class="wn-pagehead__eyebrow">{eyou:eq name='$eyou.field.content_mode' value='tool'}工具标签{eyou:else /}{eyou:eq name='$eyou.field.content_mode' value='article'}文章标签{eyou:else /}标签专题{/eyou:eq}{/eyou:eq}</div>
+                <h1 class="wn-pagehead__title">{$eyou.field.tag}</h1>
+                <div class="wn-pagehead__sub">{eyou:eq name='$eyou.field.content_mode' value='tool'}围绕 {$eyou.field.tag} 汇总站内相关工具入口{eyou:else /}{eyou:eq name='$eyou.field.content_mode' value='article'}围绕 {$eyou.field.tag} 汇总站内相关文章内容{eyou:else /}围绕 {$eyou.field.tag} 汇总 {$eyou.field.total} 个相关结果{/eyou:eq}{/eyou:eq}</div>
+                <div class="wn-tag-pagehead__meta">
+                    <span>{$eyou.field.tag_tool_total} 个工具</span>
+                    <span>{$eyou.field.tag_article_total} 篇文章</span>
+                </div>
+                <div class="wn-tag-pagehead__anchors">
+                    {eyou:gt name="$eyou.field.tag_tool_total" value="0"}
+                    <a href="#wnTagTools">看工具</a>
+                    {/eyou:gt}
+                    {eyou:gt name="$eyou.field.tag_article_total" value="0"}
+                    <a href="#wnTagArticles">看文章</a>
+                    {/eyou:gt}
+                    <a href="#wnTagTopics">相关标签</a>
+                </div>
+            </div>
+
+            <div class="wn-article-layout wn-tag-layout">
+                <div class="wn-article-main wn-tag-main">
+                    <div class="wn-section-card wn-tag-section-card wn-tag-section-card--tools{eyou:eq name='$eyou.field.content_mode' value='tool'} wn-tag-section-card--primary{/eyou:eq}" id="wnTagTools">
+                        <div class="wn-section-card__head">
+                            <div class="wn-tag-section-card__title">
+                                <h2 class="wn-section__title">{$eyou.field.tool_section_title}</h2>
+                                <span>{$eyou.field.tag_tool_total} 个</span>
+                            </div>
+                        </div>
+                        <div class="wn-section">
+                            {eyou:notempty name="$eyou.field.tag_tool_results"}
+                            <div class="wn-grid wn-grid--five wn-tag-tool-grid">
+                                {eyou:volist name="$eyou.field.tag_tool_results" id="field"}
+                                <article class="wn-card wn-card--compact">
+                                    <div class="wn-card__top">
+                                        <img class="wn-card__logo" src="{$field.litpic}" alt="{$field.title}" onerror="this.onerror=null;this.src='{eyou:global name='web_logo' /}';">
+                                        <div class="wn-card__body">
+                                            <h3 class="wn-card__title"><a href="{$field.arcurl}" title="{$field.title}">{$field.title}</a></h3>
+                                            <p class="wn-card__desc">{$field.summary}</p>
+                                        </div>
+                                    </div>
+                                    <div class="wn-card__meta">
+                                        <span>{$field.typename}</span>
+                                        <a class="is-primary" href="{$field.arcurl}">详情</a>
+                                        {eyou:eq name="$field.has_direct_action" value="1"}
+                                        <a href="{$field.direct_url}" target="_blank" rel="nofollow noopener">官网</a>
+                                        {/eyou:eq}
+                                    </div>
+                                </article>
+                                {/eyou:volist}
+                            </div>
+                            {eyou:else /}
+                            <div class="wn-empty">
+                                <p>{$eyou.field.tool_empty_text}</p>
+                            </div>
+                            {/eyou:notempty}
+                            {eyou:notempty name="$eyou.field.tag_tool_pagination_html"}
+                            <div class="wn-pager text-center">
+                                {$eyou.field.tag_tool_pagination_html|htmlspecialchars_decode}
+                            </div>
+                            {/eyou:notempty}
+                        </div>
+                    </div>
+
+                    <div class="wn-section-card wn-tag-section-card wn-tag-section-card--articles{eyou:eq name='$eyou.field.content_mode' value='article'} wn-tag-section-card--primary{/eyou:eq}" id="wnTagArticles">
+                        <div class="wn-section-card__head">
+                            <div class="wn-tag-section-card__title">
+                                <h2 class="wn-section__title">{$eyou.field.article_section_title}</h2>
+                                <span>{$eyou.field.tag_article_total} 篇</span>
+                            </div>
+                        </div>
+                        <div class="wn-section">
+                            {eyou:notempty name="$eyou.field.tag_article_results"}
+                            <div class="wn-feed">
+                                {eyou:volist name="$eyou.field.tag_article_results" id="field"}
+                                <article class="wn-feed__item">
+                                    <img class="wn-feed__thumb" src="{$field.litpic}" alt="{$field.title}" onerror="this.onerror=null;this.src='{eyou:global name='web_logo' /}';">
+                                    <div>
+                                        <h3 class="wn-feed__title"><a href="{$field.arcurl}" title="{$field.title}">{$field.title}</a></h3>
+                                        <div class="wn-feed__meta">
+                                            <span>{$field.date_text}</span>
+                                            <span>{$field.typename}</span>
+                                        </div>
+                                        <p class="wn-feed__desc">{$field.summary}</p>
+                                    </div>
+                                    <a class="wn-feed__action" href="{$field.arcurl}">阅读</a>
+                                </article>
+                                {/eyou:volist}
+                            </div>
+                            {eyou:else /}
+                            <div class="wn-empty wn-empty--soft{eyou:eq name='$eyou.field.content_mode' value='tool'} wn-empty--dim{/eyou:eq}">
+                                <p>{$eyou.field.article_empty_text}</p>
+                            </div>
+                            {/eyou:notempty}
+                            {eyou:notempty name="$eyou.field.tag_article_pagination_html"}
+                            <div class="wn-pager text-center">
+                                {$eyou.field.tag_article_pagination_html|htmlspecialchars_decode}
+                            </div>
+                            {/eyou:notempty}
+                        </div>
+                    </div>
+
+                    <section class="wn-side-card wn-tag-related-card" id="wnTagTopics">
+                        <div class="wn-side-card__head">相关标签</div>
+                        <div class="wn-tag-topic-grid">
+                            {eyou:volist name="$eyou.field.related_topics" id="topic"}
+                            <a class="wn-tag-topic-card" href="{$topic.link}">
+                                <em>{$topic.eyebrow}</em>
+                                <strong>{$topic.tag}</strong>
+                                {eyou:notempty name="$topic.summary"}
+                                <span>{$topic.summary}</span>
+                                {/eyou:notempty}
+                                <small>{$topic.meta_text}</small>
+                            </a>
+                            {/eyou:volist}
+                            {eyou:empty name="$eyou.field.related_topics"}
+                            {eyou:volist name="$eyou.field.fallback_topics" id="topic"}
+                            <a class="wn-tag-topic-card" href="{$topic.link}">
+                                <em>{$topic.eyebrow}</em>
+                                <strong>{$topic.tag}</strong>
+                                {eyou:notempty name="$topic.summary"}
+                                <span>{$topic.summary}</span>
+                                {/eyou:notempty}
+                                <small>{$topic.meta_text}</small>
+                            </a>
+                            {/eyou:volist}
+                            {/eyou:empty}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</div>
+
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

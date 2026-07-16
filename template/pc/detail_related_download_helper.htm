@@ -1,0 +1,323 @@
+{eyou:php}
+if (!function_exists('wn_article_item_aids')) {
+    function wn_article_item_aids($items)
+    {
+        $aids = [];
+        foreach ((array)$items as $item) {
+            if (!empty($item['aid'])) {
+                $aids[] = intval($item['aid']);
+            }
+        }
+        return array_values(array_unique(array_filter($aids)));
+    }
+}
+
+if (!function_exists('wn_article_merge_unique_items')) {
+    function wn_article_merge_unique_items($items, $appendItems, $limit = 6, $excludeAids = [])
+    {
+        $limit = max(1, intval($limit));
+        $seen = [];
+        foreach ((array)$excludeAids as $aid) {
+            $aid = intval($aid);
+            if ($aid > 0) {
+                $seen[$aid] = true;
+            }
+        }
+
+        $result = [];
+        foreach (array_merge((array)$items, (array)$appendItems) as $item) {
+            if (empty($item['aid'])) {
+                continue;
+            }
+            $aid = intval($item['aid']);
+            if ($aid <= 0 || isset($seen[$aid])) {
+                continue;
+            }
+            $seen[$aid] = true;
+            $result[] = $item;
+            if (count($result) >= $limit) {
+                break;
+            }
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('wn_article_current_archive_channel')) {
+    function wn_article_current_archive_channel($field, $currentAid = 0)
+    {
+        $field = is_array($field) ? $field : [];
+        foreach (['channel', 'current_channel', 'channeltype', 'modelid'] as $key) {
+            if (!empty($field[$key])) {
+                return intval($field[$key]);
+            }
+        }
+        $currentAid = intval($currentAid);
+        if ($currentAid <= 0) {
+            return 0;
+        }
+        static $channelCache = [];
+        if (!array_key_exists($currentAid, $channelCache)) {
+            $channelCache[$currentAid] = intval(\think\Db::name('archives')->where('aid', $currentAid)->value('channel'));
+        }
+        return $channelCache[$currentAid];
+    }
+}
+
+if (!function_exists('wn_article_query_downloads')) {
+    function wn_article_query_downloads($limit = 6, $excludeAids = [], $sortMode = 'latest', $filters = [])
+    {
+        $limit = max(1, intval($limit));
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $filters = is_array($filters) ? $filters : [];
+        $prefix = config('database.prefix');
+        $where = 'a.channel = 4 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+        if (!empty($excludeAids)) {
+            $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+        }
+
+        if (!empty($filters['same_category'])) {
+            $typeId = !empty($filters['typeid']) ? intval($filters['typeid']) : 0;
+            $parentTypeId = !empty($filters['parent_id']) ? intval($filters['parent_id']) : 0;
+            $baseTypeId = $parentTypeId > 0 ? $parentTypeId : $typeId;
+            $typeName = !empty($filters['typename']) ? trim((string)$filters['typename']) : '';
+            $categoryParts = [];
+            if ($typeId > 0) {
+                $categoryParts[] = 'a.typeid = ' . $typeId;
+            }
+            if ($baseTypeId > 0) {
+                $categoryParts[] = 'IFNULL(t.parent_id, 0) = ' . $baseTypeId;
+            }
+            if ($typeName !== '' && !preg_match('/^(AI|AIGC|工具|教程|资讯|下载|文章|百科|资源)$/u', $typeName)) {
+                $typeName = str_replace(['%', '_'], ['\%', '\_'], $typeName);
+                $categoryParts[] = "t.typename LIKE '" . addslashes('%' . $typeName . '%') . "'";
+            }
+            if (!empty($categoryParts)) {
+                $where .= ' AND (' . implode(' OR ', array_values(array_unique($categoryParts))) . ')';
+            }
+        }
+
+        if ($sortMode === 'random') {
+            $orderSql = 'RAND()';
+        } elseif ($sortMode === 'hot') {
+            $orderSql = 'IFNULL(a.downcount,0) DESC, IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC';
+        } else {
+            $orderSql = 'a.add_time DESC, a.aid DESC';
+        }
+
+        $sql = 'SELECT a.*, t.typename AS type_name,
+                dc.content AS download_content,
+                dc.resource_format, dc.resource_size, dc.resource_version,
+                dc.resource_featured_label, dc.resource_developer, dc.resource_source_name
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'download_content dc ON dc.aid = a.aid
+            LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+            WHERE ' . $where . '
+            ORDER BY ' . $orderSql . '
+            LIMIT ' . $limit;
+        $items = (array)\think\Db::query($sql);
+        foreach ($items as $index => $item) {
+            $items[$index] = function_exists('wn_article_fill_route_fields') ? wn_article_fill_route_fields($item) : $item;
+        }
+        return $items;
+    }
+}
+
+if (!function_exists('wn_article_query_related_downloads')) {
+    function wn_article_query_related_downloads($field, $limit = 6, $excludeAids = [])
+    {
+        $limit = max(1, intval($limit));
+        $field = is_array($field) ? $field : [];
+        $terms = function_exists('wn_article_tool_related_terms') ? wn_article_tool_related_terms($field) : [];
+        if (empty($terms)) {
+            return [];
+        }
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $prefix = config('database.prefix');
+        $where = 'a.channel = 4 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+        if (!empty($excludeAids)) {
+            $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+        }
+
+        $likeParts = [];
+        $scoreParts = [];
+        foreach ($terms as $term) {
+            $term = str_replace(['%', '_'], ['\%', '\_'], (string)$term);
+            $like = addslashes('%' . $term . '%');
+            $likeParts[] = "(a.title LIKE '{$like}' OR a.seo_keywords LIKE '{$like}' OR a.seo_description LIKE '{$like}' OR a.introduction LIKE '{$like}' OR dc.content LIKE '{$like}' OR dc.resource_format LIKE '{$like}' OR dc.resource_featured_label LIKE '{$like}' OR dc.resource_developer LIKE '{$like}' OR t.typename LIKE '{$like}')";
+            $scoreParts[] = "(CASE WHEN a.title LIKE '{$like}' THEN 14 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN a.seo_keywords LIKE '{$like}' THEN 9 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN a.seo_description LIKE '{$like}' THEN 5 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN a.introduction LIKE '{$like}' THEN 4 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN dc.content LIKE '{$like}' THEN 4 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN t.typename LIKE '{$like}' THEN 3 ELSE 0 END)";
+            $scoreParts[] = "(CASE WHEN dc.resource_format LIKE '{$like}' OR dc.resource_featured_label LIKE '{$like}' OR dc.resource_developer LIKE '{$like}' THEN 2 ELSE 0 END)";
+        }
+        if (empty($likeParts)) {
+            return [];
+        }
+
+        $scoreSql = implode(' + ', $scoreParts);
+        $sql = 'SELECT a.*, t.typename AS type_name,
+                dc.content AS download_content,
+                dc.resource_format, dc.resource_size, dc.resource_version,
+                dc.resource_featured_label, dc.resource_developer, dc.resource_source_name,
+                (' . $scoreSql . ') AS related_score
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'download_content dc ON dc.aid = a.aid
+            LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+            WHERE ' . $where . ' AND (' . implode(' OR ', $likeParts) . ')
+            ORDER BY related_score DESC, IFNULL(a.downcount,0) DESC, IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC
+            LIMIT ' . $limit;
+        $items = (array)\think\Db::query($sql);
+        foreach ($items as $index => $item) {
+            $items[$index] = function_exists('wn_article_fill_route_fields') ? wn_article_fill_route_fields($item) : $item;
+        }
+        return $items;
+    }
+}
+
+if (!function_exists('wn_article_build_related_download_items')) {
+    function wn_article_build_related_download_items($field, $limit = 6, $excludeAids = [], $currentChannel = 0)
+    {
+        $limit = max(1, intval($limit));
+        $field = is_array($field) ? $field : [];
+        $excludeAids = array_values(array_unique(array_filter(array_map('intval', (array)$excludeAids))));
+        $items = wn_article_query_related_downloads($field, $limit, $excludeAids);
+
+        $currentChannel = intval($currentChannel);
+        $excludeForFill = array_values(array_unique(array_merge($excludeAids, wn_article_item_aids($items))));
+        if (count($items) < $limit && $currentChannel === 4) {
+            $sameCategoryFilters = [
+                'same_category' => true,
+                'typeid' => !empty($field['typeid']) ? intval($field['typeid']) : 0,
+                'parent_id' => !empty($field['parent_id']) ? intval($field['parent_id']) : 0,
+                'typename' => !empty($field['typename']) ? trim((string)$field['typename']) : '',
+            ];
+            $items = wn_article_merge_unique_items($items, wn_article_query_downloads($limit - count($items), $excludeForFill, 'hot', $sameCategoryFilters), $limit, $excludeAids);
+            $excludeForFill = array_values(array_unique(array_merge($excludeAids, wn_article_item_aids($items))));
+        }
+
+        if (count($items) < $limit) {
+            $items = wn_article_merge_unique_items($items, wn_article_query_downloads($limit - count($items), $excludeForFill, 'hot'), $limit, $excludeAids);
+            $excludeForFill = array_values(array_unique(array_merge($excludeAids, wn_article_item_aids($items))));
+        }
+        if (count($items) < $limit) {
+            $items = wn_article_merge_unique_items($items, wn_article_query_downloads($limit - count($items), $excludeForFill, 'latest'), $limit, $excludeAids);
+            $excludeForFill = array_values(array_unique(array_merge($excludeAids, wn_article_item_aids($items))));
+        }
+        if (count($items) < $limit) {
+            $items = wn_article_merge_unique_items($items, wn_article_query_downloads($limit - count($items), $excludeForFill, 'random'), $limit, $excludeAids);
+        }
+
+        return $items;
+    }
+}
+
+if (!function_exists('wn_article_render_sidebar_download_item')) {
+    function wn_article_render_sidebar_download_item($item)
+    {
+        $title = function_exists('wn_article_trim_text') ? wn_article_trim_text(!empty($item['title']) ? $item['title'] : 'AI下载资源', 42) : (!empty($item['title']) ? $item['title'] : 'AI下载资源');
+        $detailUrl = function_exists('wn_article_arcurl') ? wn_article_arcurl($item) : '#';
+        $thumbUrl = function_exists('wn_article_logo_url') ? wn_article_logo_url($item) : '/template/pc/skin/wogaosuni/image/open-source-logo.svg';
+        $imageAlt = function_exists('wn_article_image_alt') ? wn_article_image_alt($item, $title) : $title;
+        $metaParts = [];
+        foreach (['resource_featured_label', 'resource_format', 'resource_version', 'resource_size', 'type_name'] as $key) {
+            if (!empty($item[$key])) {
+                $value = function_exists('wn_article_trim_text') ? wn_article_trim_text($item[$key], 12) : trim((string)$item[$key]);
+                if ($value !== '' && !in_array($value, $metaParts, true)) {
+                    $metaParts[] = $value;
+                }
+            }
+            if (count($metaParts) >= 2) {
+                break;
+            }
+        }
+        $metaText = implode(' · ', $metaParts);
+        return '<a class="aiph-side-article-card aiph-side-article-card--download" href="' . wn_article_escape($detailUrl) . '" aria-label="' . wn_article_escape($title) . '" title="' . wn_article_escape($title) . '">'
+            . '<span class="aiph-side-article-card__thumb"><img src="' . wn_article_escape($thumbUrl) . '" alt="' . wn_article_escape($imageAlt) . '" width="88" height="58" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></span>'
+            . '<span class="aiph-side-article-card__body"><strong>' . wn_article_escape($title) . '</strong>' . ($metaText !== '' ? '<em>' . wn_article_escape($metaText) . '</em>' : '') . '</span>'
+            . '</a>';
+    }
+}
+
+if (!function_exists('wn_article_render_sidebar_article_hub_link')) {
+    function wn_article_render_sidebar_article_hub_link($url = '/ai-guides-news/')
+    {
+        $title = 'AI百科工具教程';
+        $desc = '继续查看AI工具选型、使用教程和行业资讯';
+        return '<a class="aiph-side-article-card aiph-side-article-card--hub-fallback" href="' . wn_article_escape($url) . '" aria-label="' . wn_article_escape($desc) . '" title="' . wn_article_escape($desc) . '">'
+            . '<span class="aiph-side-article-card__thumb"><img src="/template/pc/skin/wogaosuni/image/open-source-logo.svg" alt="' . wn_article_escape($title) . '" width="88" height="58" loading="lazy" decoding="async" /></span>'
+            . '<span class="aiph-side-article-card__body"><strong>' . wn_article_escape($title) . '</strong><em>教程 · 资讯</em></span>'
+            . '</a>';
+    }
+}
+
+if (!function_exists('wn_article_render_sidebar_download_hub_link')) {
+    function wn_article_render_sidebar_download_hub_link($url = '/ai-download/')
+    {
+        $title = 'AI资源下载';
+        $desc = '继续查看AI软件、工作流、模板和资料包下载资源';
+        return '<a class="aiph-side-article-card aiph-side-article-card--download aiph-side-article-card--hub-fallback" href="' . wn_article_escape($url) . '" aria-label="' . wn_article_escape($desc) . '" title="' . wn_article_escape($desc) . '">'
+            . '<span class="aiph-side-article-card__thumb"><img src="/template/pc/skin/wogaosuni/image/open-source-logo.svg" alt="' . wn_article_escape($title) . '" width="88" height="58" loading="lazy" decoding="async" /></span>'
+            . '<span class="aiph-side-article-card__body"><strong>' . wn_article_escape($title) . '</strong><em>资源 · 下载</em></span>'
+            . '</a>';
+    }
+}
+
+if (!function_exists('wn_article_render_related_content_switcher')) {
+    function wn_article_render_related_content_switcher($tabs, $ariaLabel = '相关推荐', $idPrefix = 'aiph-mixed-side')
+    {
+        $visibleTabs = [];
+        foreach ((array)$tabs as $tab) {
+            $tab = is_array($tab) ? $tab : [];
+            $kind = !empty($tab['kind']) ? (string)$tab['kind'] : 'article';
+            if (empty($tab['items']) && $kind !== 'article' && $kind !== 'download') {
+                continue;
+            }
+            $visibleTabs[] = $tab;
+        }
+        if (empty($visibleTabs)) {
+            return '';
+        }
+        $firstKey = !empty($visibleTabs[0]['key']) ? (string)$visibleTabs[0]['key'] : 'panel';
+        $html = '<section class="aiph-side-widget aiph-side-widget--articles aiph-side-widget--article-tools aiph-side-widget--article-switcher aiph-side-widget--mixed-related" aria-label="' . wn_article_escape($ariaLabel) . '">';
+        $html .= '<div class="aiph-side-widget__head"><div class="aiph-side-widget__tabs aiph-side-widget__tabs--slim" role="tablist" aria-label="' . wn_article_escape($ariaLabel) . '切换">';
+        foreach ($visibleTabs as $tab) {
+            $key = !empty($tab['key']) ? (string)$tab['key'] : 'panel';
+            $label = !empty($tab['label']) ? (string)$tab['label'] : '推荐内容';
+            $active = $key === $firstKey;
+            $html .= '<button class="aiph-side-widget__tab' . ($active ? ' is-active' : '') . '" type="button" role="tab" aria-selected="' . ($active ? 'true' : 'false') . '" data-aiph-mixed-tab="' . wn_article_escape($key) . '">' . wn_article_escape($label) . '</button>';
+        }
+        $html .= '</div></div><div class="aiph-side-widget__panels">';
+        foreach ($visibleTabs as $tab) {
+            $key = !empty($tab['key']) ? (string)$tab['key'] : 'panel';
+            $kind = !empty($tab['kind']) ? (string)$tab['kind'] : 'article';
+            $active = $key === $firstKey;
+            $html .= '<div class="aiph-side-widget__panel' . ($active ? ' is-active' : '') . '" role="tabpanel"' . ($active ? '' : ' hidden') . ' data-aiph-mixed-panel="' . wn_article_escape($key) . '"><div class="aiph-side-article-list">';
+            if (!empty($tab['items'])) {
+                foreach ((array)$tab['items'] as $item) {
+                    if ($kind === 'download') {
+                        $html .= wn_article_render_sidebar_download_item($item);
+                    } else {
+                        $html .= wn_article_render_sidebar_article_item($item);
+                    }
+                }
+            } elseif ($kind === 'download') {
+                $html .= wn_article_render_sidebar_download_hub_link('/ai-download/');
+            } else {
+                $html .= wn_article_render_sidebar_article_hub_link('/ai-guides-news/');
+            }
+            $html .= '</div></div>';
+        }
+        $html .= '</div></section>';
+        return $html;
+    }
+}
+
+$wnArticleCurrentFieldForDownloads = !empty($eyou['field']) && is_array($eyou['field']) ? $eyou['field'] : [];
+$wnArticleCurrentAidForDownloads = !empty($wnArticleCurrentAid) ? intval($wnArticleCurrentAid) : (!empty($wnArticleCurrentFieldForDownloads['aid']) ? intval($wnArticleCurrentFieldForDownloads['aid']) : 0);
+$wnArticleCurrentChannelForDownloads = wn_article_current_archive_channel($wnArticleCurrentFieldForDownloads, $wnArticleCurrentAidForDownloads);
+$wnArticleCurrentDownloadExcludeAids = $wnArticleCurrentChannelForDownloads === 4 && $wnArticleCurrentAidForDownloads > 0 ? [$wnArticleCurrentAidForDownloads] : [];
+$wnArticleRelatedDownloadItems = wn_article_build_related_download_items($wnArticleCurrentFieldForDownloads, 6, $wnArticleCurrentDownloadExcludeAids, $wnArticleCurrentChannelForDownloads);
+{/eyou:php}

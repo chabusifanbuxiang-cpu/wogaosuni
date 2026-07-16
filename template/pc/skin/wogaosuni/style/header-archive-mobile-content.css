@@ -1,0 +1,416 @@
+/* Generated from header-mobile-content.css by tools/split_header_mobile_content_css.js. */
+/* Route owner: archive. Keep header-mobile-content.css as the source of truth for this split. */
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter {
+box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 8px !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__row,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__row,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__row,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__row,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row {
+display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 2px 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row {
+margin-top: 3px !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__label,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__label,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__label,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__label,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__label,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__label {
+display: block !important;
+    box-sizing: border-box !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    color: #64748b !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 34px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links {
+display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 2px 0 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links a,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links a,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links a,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links a,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a {
+flex: 0 0 auto !important;
+    order: 0 !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 9px !important;
+    overflow: hidden !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    line-height: 34px !important;
+    letter-spacing: 0 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links a.is-active,
+html body.nav-theme-v2.archive .wf-archive-filter.wf-nav-filter .wf-archive-filter__links a.is-active,
+html body.nav-theme.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links a.is-active,
+html body.nav-theme-v2.is-archive-news .news-archive__panel .wf-article-filter.wf-nav-filter .wf-archive-filter__links a.is-active,
+html body.nav-theme.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a.is-active,
+html body.nav-theme-v2.is-archive-download .archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a.is-active {
+order: -1 !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter {
+box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 8px !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row {
+display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    min-height: 30px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 2px 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__row + .wf-archive-filter__row {
+margin-top: 3px !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__label {
+display: block !important;
+    box-sizing: border-box !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    color: #64748b !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 30px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links {
+display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 2px 0 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links::-webkit-scrollbar {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a {
+flex: 0 0 auto !important;
+    order: 0 !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 9px !important;
+    overflow: hidden !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    line-height: 30px !important;
+    letter-spacing: 0 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.category-download.is-archive-download .site-main.archive-main .archive-section.archive-section--download .wf-download-filter.wf-nav-filter .wf-archive-filter__links a.is-active {
+order: -1 !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) {
+box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-content: stretch !important;
+    justify-items: stretch !important;
+    align-content: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 8px !important;
+    padding: 7px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__row {
+display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 2px 0 !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__row:first-child {
+grid-template-columns: 48px minmax(0, 1fr) 34px !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override):not(.is-mobile-filter-expanded) .wf-archive-filter__row:nth-child(n+2) {
+display: none !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded .wf-archive-filter__row:nth-child(n+2) {
+display: grid !important;
+    margin-top: 4px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded {
+padding-top: 10px !important;
+    padding-bottom: 12px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded .wf-archive-filter__row {
+padding-top: 5px !important;
+    padding-bottom: 7px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded .wf-archive-filter__row:first-child {
+padding-bottom: 8px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded .wf-archive-filter__row:nth-child(n+2) {
+margin-top: 8px !important;
+    padding-top: 12px !important;
+    padding-bottom: 7px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__label {
+display: block !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    color: #64748b !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    line-height: 34px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__row:first-child > .wf-archive-filter__label {
+grid-column: 1 !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__links {
+display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 8px 6px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 34px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    white-space: normal !important;
+    scrollbar-width: none !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__row:first-child > .wf-archive-filter__links {
+grid-column: 2 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override):not(.is-mobile-filter-expanded) .wf-archive-filter__row:first-child .wf-archive-filter__links {
+max-height: 34px !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__links::-webkit-scrollbar {
+display: none !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__links a {
+flex: 0 1 auto !important;
+    order: 0 !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 118px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 10px !important;
+    overflow: hidden !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 34px !important;
+    letter-spacing: 0 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__links a.is-active {
+order: -1 !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__mobile-toggle {
+display: grid !important;
+    place-items: center !important;
+    align-self: center !important;
+    grid-column: 3 !important;
+    justify-self: end !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid rgba(148, 163, 184, 0.36) !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08) !important;
+    cursor: pointer !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__mobile-toggle:focus-visible {
+outline: 2px solid rgba(37, 99, 235, 0.32) !important;
+    outline-offset: 2px !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__mobile-toggle-icon {
+display: block !important;
+    width: 8px !important;
+    height: 8px !important;
+    border-right: 2px solid currentColor !important;
+    border-bottom: 2px solid currentColor !important;
+    transform: translateY(-2px) rotate(45deg) !important;
+    transition: transform 0.18s ease !important;
+}
+
+html body.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override).is-mobile-filter-expanded .wf-archive-filter__mobile-toggle-icon {
+transform: translateY(2px) rotate(225deg) !important;
+}
+}

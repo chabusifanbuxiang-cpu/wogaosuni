@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <defs>
+    <style>
+      .ring{fill:none;stroke:#111;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+      .line{fill:none;stroke:#111;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round}
+      .fill{fill:#111}
+    </style>
+  </defs>
+  <circle class="ring" cx="80" cy="80" r="66"/>
+  <circle class="fill" cx="82" cy="82" r="8"/>
+  <path class="line" d="M38 95c-12-20-6-42 12-52 15-8 31-6 42 2 11 8 17 20 16 33-1 15-11 28-27 35-11 4-24 4-36-2"/>
+  <path class="line" d="M58 54c6-9 16-15 28-16"/>
+  <path class="line" d="M101 46l10-8m-7 14 12-3"/>
+  <path class="line" d="M108 68c8 3 13 9 14 17"/>
+  <path class="line" d="M55 109c6-4 12-6 18-7m-3 15 12-10"/>
+  <path class="line" d="M41 81c9-1 18 1 25 5"/>
+  <path class="line" d="M90 100c8-3 14-9 18-17"/>
+  <path class="line" d="M74 47c4 5 5 12 3 18"/>
+  <path class="line" d="M60 70c2 7 1 13-3 19"/>
+</svg>

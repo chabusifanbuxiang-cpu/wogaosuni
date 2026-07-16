@@ -1,0 +1,6 @@
+<svg width="1200" height="120" viewBox="0 0 1200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="120" fill="#F8FBFF"/>
+  <rect x="1" y="1" width="1198" height="118" rx="16" stroke="#D9E7FF"/>
+  <text x="600" y="53" text-anchor="middle" fill="#2563EB" font-family="Microsoft YaHei, sans-serif" font-size="18" font-weight="700">排行页广告位</text>
+  <text x="600" y="80" text-anchor="middle" fill="#64748B" font-family="Microsoft YaHei, sans-serif" font-size="14">请在易优 CMS 后台配置广告图片与跳转链接</text>
+</svg>

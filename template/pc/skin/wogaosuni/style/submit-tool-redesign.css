@@ -1,0 +1,275 @@
+/* Submit-tool page final layout override. */
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) {
+  min-height: 100vh !important;
+  background:
+    linear-gradient(90deg, rgba(219, 234, 254, 0.42) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(219, 234, 254, 0.34) 1px, transparent 1px),
+    radial-gradient(circle at 18% 18%, rgba(59, 130, 246, 0.18), transparent 30%),
+    radial-gradient(circle at 84% 8%, rgba(20, 184, 166, 0.12), transparent 28%),
+    linear-gradient(180deg, #f3f8ff 0%, #ffffff 58%, #f7fafc 100%) !important;
+  background-size: 34px 34px, 34px 34px, auto, auto, auto !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main {
+  padding-top: 0 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page {
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 0 0 46px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 0 auto !important;
+  height: 390px !important;
+  pointer-events: none !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.16), transparent 38%),
+    linear-gradient(180deg, rgba(239, 246, 255, 0.92), rgba(239, 246, 255, 0)) !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__shell {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(1180px, calc(100vw - 96px)) !important;
+  margin: 0 auto !important;
+  padding: 0 18px 44px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  place-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 238px !important;
+  margin: 0 0 22px !important;
+  padding: 34px 24px 30px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    radial-gradient(circle at 28% 8%, rgba(96, 165, 250, 0.24), transparent 28%),
+    radial-gradient(circle at 72% 18%, rgba(45, 212, 191, 0.14), transparent 26%),
+    linear-gradient(180deg, rgba(239, 246, 255, 0.96) 0%, rgba(248, 251, 255, 0.72) 100%) !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: -18px !important;
+  width: min(860px, calc(100vw - 120px)) !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.28), transparent) !important;
+  transform: translateX(-50%) !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__breadcrumb,
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__eyebrow {
+  display: none !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero-copy--center {
+  width: min(940px, 100%) !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  justify-self: center !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub h1 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 940px !important;
+  margin: 0 auto !important;
+  color: #0f172a !important;
+  font-size: clamp(40px, 4.1vw, 64px) !important;
+  font-weight: 900 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub h1 span {
+  color: #1d4ed8 !important;
+  white-space: nowrap !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub .submit-site-page__hero-copy--center > p {
+  display: block !important;
+  width: min(760px, 100%) !important;
+  max-width: 760px !important;
+  margin: 18px auto 0 !important;
+  color: #475569 !important;
+  font-size: clamp(17px, 1.4vw, 21px) !important;
+  font-weight: 700 !important;
+  line-height: 1.78 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__aihub-body {
+  width: min(1060px, 100%) !important;
+  margin: 0 auto !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits {
+  gap: 12px !important;
+  margin: 0 0 18px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits article {
+  height: auto !important;
+  min-height: 116px !important;
+  padding: 18px 18px 17px !important;
+  border: 1px solid rgba(226, 232, 240, 0.88) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+  backdrop-filter: blur(14px) saturate(145%) !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits i {
+  margin-bottom: 5px !important;
+  color: #2563eb !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits strong {
+  font-size: 15px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits p {
+  margin-top: 7px !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__two-col {
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr) !important;
+  gap: 18px !important;
+  margin: 0 !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__pricing,
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__process-card {
+  min-height: 0 !important;
+  padding: 24px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.055) !important;
+  backdrop-filter: blur(16px) saturate(150%) !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__pricing {
+  border-color: rgba(147, 197, 253, 0.86) !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__section-head h2,
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__section-title {
+  font-size: 21px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-form__grid {
+  gap: 12px !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-form input {
+  height: 50px !important;
+  border-radius: 6px !important;
+  background: #f8fafc !important;
+}
+
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-form__submit,
+body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-form button[type="submit"] {
+  min-height: 50px !important;
+  border-radius: 6px !important;
+}
+
+@media (max-width: 1100px) {
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__shell {
+    width: min(100%, calc(100vw - 32px)) !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__two-col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page {
+    padding-bottom: 34px !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub {
+    min-height: 218px !important;
+    margin-bottom: 16px !important;
+    padding-right: 18px !important;
+    padding-left: 18px !important;
+    padding-top: 30px !important;
+    padding-bottom: 28px !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub h1 {
+    font-size: clamp(34px, 10vw, 44px) !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__hero--aihub .submit-site-page__hero-copy--center > p {
+    max-width: 330px !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__benefits {
+    display: none !important;
+  }
+
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__pricing,
+  body.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .submit-site-page__process-card {
+    padding: 20px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  html body.nav-theme.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main .submit-site-page .submit-site-page__hero.submit-site-page__hero--aihub {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 218px !important;
+    padding: 30px 18px 28px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main .submit-site-page .submit-site-page__hero-copy.submit-site-page__hero-copy--center {
+    width: min(100%, 354px) !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main .submit-site-page .submit-site-page__hero-copy.submit-site-page__hero-copy--center h1 {
+    width: 100% !important;
+    max-width: 354px !important;
+    font-size: clamp(29px, 8.2vw, 34px) !important;
+    line-height: 1.14 !important;
+    font-weight: 900 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main .submit-site-page .submit-site-page__hero-copy.submit-site-page__hero-copy--center > p {
+    width: min(100%, 330px) !important;
+    max-width: 330px !important;
+    margin-top: 14px !important;
+    font-size: 16px !important;
+    line-height: 1.68 !important;
+    font-weight: 700 !important;
+  }
+}
+
+@media (min-width: 761px) {
+  html body.nav-theme.nav-theme-v2.is-submit-site-page:not(.is-contact-page) .site-main {
+    padding-top: 72px !important;
+  }
+}

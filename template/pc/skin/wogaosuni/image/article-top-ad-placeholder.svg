@@ -1,0 +1,21 @@
+<svg width="1200" height="120" viewBox="0 0 1200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="120" fill="#F8FBFF"/>
+  <rect y="1" width="1200" height="118" fill="url(#bg)"/>
+  <path d="M0 96H1200" stroke="#D9E7FF" stroke-width="1"/>
+  <path d="M0 24H1200" stroke="#EEF4FF" stroke-width="1"/>
+  <path d="M64 0V120" stroke="#EEF4FF" stroke-width="1"/>
+  <path d="M1136 0V120" stroke="#EEF4FF" stroke-width="1"/>
+  <rect x="68" y="31" width="132" height="58" fill="#0F172A" fill-opacity="0.04"/>
+  <rect x="80" y="43" width="108" height="34" fill="#2563EB" fill-opacity="0.12"/>
+  <text x="236" y="51" fill="#2563EB" font-family="'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif" font-size="18" font-weight="700">文章顶部广告位</text>
+  <text x="236" y="81" fill="#475569" font-family="'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif" font-size="14" font-weight="500">1200 × 120 占位图 · 后台可直接替换图片、标题和跳转链接</text>
+  <rect x="973" y="38" width="164" height="44" fill="#FFFFFF" stroke="#D9E7FF"/>
+  <text x="1055" y="65" text-anchor="middle" fill="#1D4ED8" font-family="'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif" font-size="16" font-weight="700">后台广告位</text>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FBFF"/>
+      <stop offset="0.52" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F5F9FF"/>
+    </linearGradient>
+  </defs>
+</svg>

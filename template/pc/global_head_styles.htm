@@ -1,0 +1,211 @@
+{eyou:static file="skin/wogaosuni/style/site-background-system.min.css" /}
+<link href="/template/pc/skin/wogaosuni/style/picture-ads.css?v=20260630ads6" rel="stylesheet" media="screen" type="text/css" />
+<link href="/template/pc/skin/wogaosuni/style/picture-ad-layout-final.css?v=20260701adpolish1" rel="stylesheet" media="screen" type="text/css" />
+<link href="/template/pc/skin/wogaosuni/style/topbar-header-redesign.min.css?v=20260630livefix1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" data-runtime-style="/template/pc/skin/wogaosuni/style/topbar-header-redesign.min.css?v=20260630livefix1" />
+<script>
+  (function (documentElement, win) {
+    try {
+      var stored = win.localStorage && win.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      documentElement.classList.add("is-sidebar-booting-html");
+      documentElement.classList.toggle("is-sidebar-collapsed-html", collapsed && win.innerWidth > 960);
+    } catch (error) {
+      documentElement.classList.add("is-sidebar-booting-html", "is-sidebar-collapsed-html");
+    }
+  })(document.documentElement, window);
+</script>
+<style id="wn-sidebar-boot-layout">
+@media (min-width: 961px) {
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed {
+    --sidebar-shell-width: 70px !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2 #siteSidebar,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed #siteSidebar {
+    left: 0 !important;
+    right: auto !important;
+    top: var(--wn-nav-height, 72px) !important;
+    height: calc(100vh - var(--wn-nav-height, 72px)) !important;
+    transform: none !important;
+    transition: none !important;
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    inline-size: 70px !important;
+    min-inline-size: 70px !important;
+    max-inline-size: 70px !important;
+    flex: 0 0 70px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2 #siteTopbar,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed #siteTopbar {
+    left: 0 !important;
+    width: 100vw !important;
+    transition: none !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2 .site-main,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed .site-main {
+    transition: none !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2:not(.is-single-article-news) .site-main,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed:not(.is-single-article-news) .site-main {
+    margin-left: 94px !important;
+    margin-inline-start: 94px !important;
+    width: calc(100vw - 118px) !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2.is-home .site-main,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed.is-home .site-main {
+    margin-left: 70px !important;
+    margin-inline-start: 70px !important;
+    margin-right: 24px !important;
+    margin-inline-end: 24px !important;
+    width: calc(100vw - 94px) !important;
+  }
+
+  html.is-sidebar-collapsed-html body.nav-theme.nav-theme-v2.is-single-article-news .site-main,
+  html body.nav-theme.nav-theme-v2.is-sidebar-collapsed.is-single-article-news .site-main {
+    margin-left: 92px !important;
+    margin-inline-start: 92px !important;
+    width: calc(100vw - 114px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting {
+    --sidebar-shell-width: 222px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting .site-main {
+    transition: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting #siteSidebar {
+    left: 0 !important;
+    right: auto !important;
+    top: var(--wn-nav-height, 72px) !important;
+    height: calc(100vh - var(--wn-nav-height, 72px)) !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting:not(.is-sidebar-collapsed) {
+    --sidebar-shell-width: 222px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting:not(.is-sidebar-collapsed) #siteSidebar {
+    width: 222px !important;
+    min-width: 222px !important;
+    max-width: 222px !important;
+    inline-size: 222px !important;
+    min-inline-size: 222px !important;
+    max-inline-size: 222px !important;
+    flex: 0 0 222px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting:not(.is-sidebar-collapsed) #siteTopbar {
+    left: 0 !important;
+    width: 100vw !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting:not(.is-sidebar-collapsed):not(.is-single-article-news) .site-main {
+    margin-left: 222px !important;
+    margin-inline-start: 222px !important;
+    width: calc(100vw - 246px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting:not(.is-sidebar-collapsed).is-single-article-news .site-main {
+    margin-left: 240px !important;
+    margin-inline-start: 240px !important;
+    width: calc(100vw - 264px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed {
+    --sidebar-shell-width: 70px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed #siteSidebar {
+    width: 70px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    inline-size: 70px !important;
+    min-inline-size: 70px !important;
+    max-inline-size: 70px !important;
+    flex: 0 0 70px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed #siteTopbar {
+    left: 0 !important;
+    width: 100vw !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed:not(.is-single-article-news) .site-main {
+    margin-left: 94px !important;
+    margin-inline-start: 94px !important;
+    width: calc(100vw - 118px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed.is-home .site-main {
+    margin-left: 70px !important;
+    margin-inline-start: 70px !important;
+    margin-right: 24px !important;
+    margin-inline-end: 24px !important;
+    width: calc(100vw - 94px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-sidebar-booting.is-sidebar-collapsed.is-single-article-news .site-main {
+    margin-left: 92px !important;
+    margin-inline-start: 92px !important;
+    width: calc(100vw - 114px) !important;
+  }
+}
+</style>
+<style id="wn-mobile-filter-toggle-lock">
+@media (max-width: 760px) {
+  html body.nav-theme.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) {
+    position: relative !important;
+    padding-right: 48px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__row:first-child {
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    padding-right: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2 .wf-archive-filter.wf-nav-filter.is-mobile-filter-collapsible:not(#wgn-mobile-filter-override) .wf-archive-filter__mobile-toggle {
+    position: absolute !important;
+    top: 9px !important;
+    right: 7px !important;
+    z-index: 6 !important;
+    align-self: auto !important;
+    grid-column: auto !important;
+    justify-self: auto !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home.is-card-theme-toolify .site-main #categories.directory-browser.directory-browser--home .directory-showcase.directory-showcase--section.directory-showcase--section .directory-showcase__filterbar {
+    position: relative !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    padding: 0 40px 0 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home.is-card-theme-toolify .site-main #categories.directory-browser.directory-browser--home .directory-showcase.directory-showcase--section.directory-showcase--section .directory-showcase__filterbar > .directory-showcase__actions.has-mobile-filter-toggle {
+    min-width: 48px !important;
+    position: static !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home.is-card-theme-toolify .site-main #categories.directory-browser.directory-browser--home .directory-showcase.directory-showcase--section.directory-showcase--section .directory-showcase__mobile-toggle {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    z-index: 6 !important;
+    align-self: auto !important;
+  }
+}
+</style>

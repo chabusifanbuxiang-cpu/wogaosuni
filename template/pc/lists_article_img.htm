@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="noindex,follow" />
+<link rel="canonical" href="{eyou:global name='web_basehost' /}{$eyou.field.typeurl}" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="legacy_article_archive_head_assets.htm" /}
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+</head>
+<body class="nav-theme nav-theme-v2 archive is-archive-news is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+
+<main class="site-main">
+  <section class="news-archive" data-news-archive="1">
+    <section class="news-archive__stream">
+      <div class="news-archive__stream-main">
+        <div class="news-archive__panel">
+          <div class="news-archive__panel-head">
+            <div class="news-archive__breadcrumb">
+              <a href="{eyou:global name='web_basehost' /}">首页</a>
+              <span>/</span>
+              <span>{$eyou.field.typename}</span>
+            </div>
+            <h1>{$eyou.field.typename}</h1>
+            {eyou:notempty name="$eyou.field.seo_description"}
+            <p>{$eyou.field.seo_description}</p>
+            {/eyou:notempty}
+          </div>
+
+          {eyou:php}
+          $wfArticleCurrentTid = !empty($eyou['field']['typeid']) ? intval($eyou['field']['typeid']) : 0;
+          $wfArticleTopTid = !empty($eyou['field']['topid']) ? intval($eyou['field']['topid']) : $wfArticleCurrentTid;
+          $wfArticleAllInTopActive = ($wfArticleCurrentTid > 0 && $wfArticleCurrentTid === $wfArticleTopTid) ? 'is-active' : '';
+          $wfArticleHotTagTypeIds = [];
+          if ($wfArticleCurrentTid > 0) {
+              $wfArticleHotTagTypeIds = [$wfArticleCurrentTid];
+              $wfArticleHotTagQueue = [$wfArticleCurrentTid];
+              while (!empty($wfArticleHotTagQueue)) {
+                  $wfArticleHotTagChildIds = \think\Db::name('arctype')
+                      ->where('parent_id', 'in', $wfArticleHotTagQueue)
+                      ->where('status', 1)
+                      ->where('is_hidden', 0)
+                      ->where('is_del', 0)
+                      ->column('id');
+                  $wfArticleHotTagChildIds = array_values(array_diff(array_map('intval', (array)$wfArticleHotTagChildIds), $wfArticleHotTagTypeIds));
+                  if (empty($wfArticleHotTagChildIds)) {
+                      break;
+                  }
+                  $wfArticleHotTagTypeIds = array_values(array_unique(array_merge($wfArticleHotTagTypeIds, $wfArticleHotTagChildIds)));
+                  $wfArticleHotTagQueue = $wfArticleHotTagChildIds;
+              }
+          }
+          $wfArticleHotTagRows = [];
+          $wfArticleHotTagTypeSql = !empty($wfArticleHotTagTypeIds) ? ' AND a.typeid IN (' . implode(',', array_map('intval', $wfArticleHotTagTypeIds)) . ')' : '';
+          $wfArticleHotTagCandidates = \think\Db::query("
+              SELECT ti.id, ti.tag, ti.total, COUNT(tl.aid) AS arc_total
+              FROM " . config('database.prefix') . "tagindex ti
+              INNER JOIN " . config('database.prefix') . "taglist tl ON tl.tid = ti.id
+              INNER JOIN " . config('database.prefix') . "archives a ON a.aid = tl.aid
+              WHERE a.channel = 1
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                " . $wfArticleHotTagTypeSql . "
+              GROUP BY ti.id, ti.tag, ti.total
+              ORDER BY arc_total DESC, ti.total DESC, ti.id DESC
+              LIMIT 50
+          ");
+          $wfArticleSkipTagNeedles = array('Toolify', 'Top1000', '正规站点', '收录', '可访问', '审核', '低风险');
+          foreach ((array)$wfArticleHotTagCandidates as $wfArticleHotTagItem) {
+              $wfArticleHotTagName = trim((string)($wfArticleHotTagItem['tag'] ?? ''));
+              if ($wfArticleHotTagName === '') {
+                  continue;
+              }
+              $wfArticleSkipTag = false;
+              foreach ($wfArticleSkipTagNeedles as $wfArticleSkipTagNeedle) {
+                  if (stripos($wfArticleHotTagName, $wfArticleSkipTagNeedle) !== false) {
+                      $wfArticleSkipTag = true;
+                      break;
+                  }
+              }
+              if ($wfArticleSkipTag) {
+                  continue;
+              }
+              $wfArticleHotTagItem['url'] = function_exists('get_tagurl') ? get_tagurl($wfArticleHotTagItem['id']) : ('/search.html?keywords=' . urlencode($wfArticleHotTagName));
+              $wfArticleHotTagItem['rel'] = wn_query_nofollow_attr($wfArticleHotTagItem['url']);
+              $wfArticleHotTagRows[] = $wfArticleHotTagItem;
+              if (count($wfArticleHotTagRows) >= 12) {
+                  break;
+              }
+          }
+          {/eyou:php}
+          <div class="wf-archive-filter wf-nav-filter wf-article-filter" data-wf-article-filter>
+            <div class="wf-archive-filter__row wf-archive-filter__row--topcats">
+              <span class="wf-archive-filter__label">文章分类</span>
+              <div class="wf-archive-filter__links">
+                {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=0 AND templist='lists_article.htm' AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="topcat"}
+                {eyou:php}
+                $wfArticleTopcatActive = (!empty($topcat['typeid']) && intval($topcat['typeid']) === $wfArticleTopTid) ? 'is-active' : '';
+                {/eyou:php}
+                <a class="wf-filter-chip wf-filter-chip--topcat {$wfArticleTopcatActive}" href="{:wn_type_url_by_id($topcat['typeid'])}" data-typeid="{$topcat.typeid}">{$topcat.typename}</a>
+                {/eyou:sql}
+              </div>
+            </div>
+            <div class="wf-archive-filter__row wf-archive-filter__row--subtypes">
+              <span class="wf-archive-filter__label">细分栏目</span>
+              <div class="wf-archive-filter__links">
+                <a class="wf-filter-chip wf-filter-chip--subtype {$wfArticleAllInTopActive}" href="{$eyou.field.toptypeurl}">全部</a>
+                {eyou:channel type="sonself" typeid="$eyou.field.typeid" currentstyle="is-active" id="subcat"}
+                <a href="{$subcat.typeurl}" class="wf-filter-chip wf-filter-chip--subtype {$subcat.currentstyle}">{$subcat.typename}</a>
+                {/eyou:channel}
+              </div>
+            </div>
+            {eyou:notempty name="$wfArticleHotTagRows"}
+            <div class="wf-archive-filter__row wf-archive-filter__row--tags">
+              <span class="wf-archive-filter__label">热门标签</span>
+              <div class="wf-archive-filter__links">
+                {eyou:volist name="$wfArticleHotTagRows" id="hotTag"}
+                <a class="wf-filter-chip wf-filter-chip--tag" href="{$hotTag.url}"{$hotTag.rel}>{$hotTag.tag}</a>
+                {/eyou:volist}
+              </div>
+            </div>
+            {/eyou:notempty}
+            <div class="wf-archive-filter__row wf-archive-filter__row--sort">
+              <span class="wf-archive-filter__label">排序方式</span>
+              <div class="wf-archive-filter__links">
+                <a class="wf-filter-chip wf-filter-chip--sort-latest {empty name='$Request.param.sort'}is-active {/empty}{eq name='$Request.param.sort' value='new'}is-active{/eq}" href="{:wn_type_sort_url($eyou['field']['typeurl'], 'new')}" data-wf-sort="new">最新</a>
+                <a class="wf-filter-chip wf-filter-chip--sort-recommend {eq name='$Request.param.sort' value='elite'}is-active{/eq}" href="{:wn_type_sort_url($eyou['field']['typeurl'], 'elite')}" rel="nofollow" data-wf-sort="elite">精华</a>
+                <a class="wf-filter-chip wf-filter-chip--sort-hot {eq name='$Request.param.sort' value='hot'}is-active{/eq}" href="{:wn_type_sort_url($eyou['field']['typeurl'], 'hot')}" rel="nofollow" data-wf-sort="hot">阅读量</a>
+                <a class="wf-filter-chip wf-filter-chip--sort-random {eq name='$Request.param.sort' value='random'}is-active{/eq}" href="{:wn_type_sort_url($eyou['field']['typeurl'], 'random')}" rel="nofollow" data-wf-sort="random">随机</a>
+              </div>
+            </div>
+            {eyou:searchform type='default'}
+            <form class="news-archive__toolbar news-archive__toolbar--combo" method="get" action="{$field.action}">
+              <div class="news-archive__search-combo">
+                <input type="text" name="keywords" placeholder="" autocomplete="off" />
+                <span aria-hidden="true">⌕</span>
+                {$field.hidden}
+                <button class="news-archive__toolbar-btn" type="submit">站内搜索</button>
+              </div>
+            </form>
+            {/eyou:searchform}
+          </div>
+
+          <div class="wf-article-grid">
+            {eq name='$Request.param.sort' value='elite'}
+            {eyou:list titlelen='60' pagesize='18' infolen='110' flag='c' orderby='add_time'}
+            {eyou:include file="article_card.htm" /}
+            {/eyou:list}
+            {else /}
+            {eq name='$Request.param.sort' value='hot'}
+            {eyou:list titlelen='60' pagesize='18' infolen='110' orderby='click'}
+            {eyou:include file="article_card.htm" /}
+            {/eyou:list}
+            {else /}
+            {eq name='$Request.param.sort' value='random'}
+            {eyou:list titlelen='60' pagesize='18' infolen='110' orderby='rand'}
+            {eyou:include file="article_card.htm" /}
+            {/eyou:list}
+            {else /}
+            {eyou:list titlelen='60' pagesize='18' infolen='110' orderby='add_time'}
+            {eyou:include file="article_card.htm" /}
+            {/eyou:list}
+            {/eq}
+            {/eq}
+            {/eq}
+          </div>
+        </div>
+        <div class="pagebar wf-pagebar" data-wf-pagebar>
+          <ul class="pagination">
+            {eyou:pagelist listitem='pre,pageno,next' listsize='9' /}
+          </ul>
+          <form class="wf-page-jump" data-wf-page-jump>
+            <input type="number" min="1" inputmode="numeric" aria-label="跳转页码" />
+            <button type="submit">跳转</button>
+          </form>
+        </div>
+      </div>
+
+      <aside class="news-archive__aside wn-news-aside">
+        <section class="wn-news-sidecard wn-news-sidecard--boards">
+          <div class="wn-news-sidecard__head">
+            <h3>相关板块</h3>
+          </div>
+          <div class="wn-news-boardgrid">
+            <a class="wn-news-boardgrid__item" href="{$eyou.field.toptypeurl}">全部资讯</a>
+            {eyou:models type="first" currentstyle="is-active"}
+            <a class="wn-news-boardgrid__item {$field.currentstyle}" href="{$field.typeurl}">{$field.typename}</a>
+            {/eyou:models}
+          </div>
+        </section>
+
+        <section class="wn-news-sidecard wn-news-sidecard--hot">
+          <div class="wn-news-sidecard__head">
+            <h3>热点排行</h3>
+          </div>
+          <div class="wn-news-hotlist">
+            {eyou:artlist channelid='1' typeid='$eyou.field.typeid' orderby='click' titlelen='32' loop='8'}
+            <a class="wn-news-hotlist__item" href="{$field.arcurl}" title="{$field.title}">
+              <em class="wn-news-hotlist__rank {eyou:lt name='$i' value='4'}is-top{/eyou:lt}">{$i}</em>
+              <span class="wn-news-hotlist__title">{$field.title}</span>
+            </a>
+            {/eyou:artlist}
+          </div>
+        </section>
+
+        <section class="wn-news-sidecard wn-news-sidecard--sites">
+          <div class="wn-news-sidecard__head">
+            <h3>随机推荐</h3>
+          </div>
+          <div class="wn-news-sitegrid">
+            {eyou:artlist channelid='2' orderby='rand' titlelen='24' infolen='42' loop='6'}
+            <a class="wn-news-sitecard" href="{$field.arcurl}" title="{$field.title}">
+              <span class="wn-news-sitecard__logo">
+                <img src="{$field.litpic}" alt="{$field.title}" width="42" height="42" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+              </span>
+              <span class="wn-news-sitecard__main">
+                <strong>{$field.title}</strong>
+                <em>{$field.seo_description|html_msubstr=###,0,36,true}</em>
+              </span>
+            </a>
+            {/eyou:artlist}
+          </div>
+        </section>
+      </aside>
+    </section>
+  </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

@@ -1,0 +1,212 @@
+<div class="search-board__shared">
+  <div class="search-switcher" id="searchSwitcher">
+    <div class="search-board__headline" aria-label="AI导航站">
+      <span class="search-board__headline-main">AI 网址搜索</span>
+      <span class="search-board__headline-ai">站内优先</span>
+    </div>
+    <div class="search-switcher__tabs" aria-label="搜索分类">
+      <span class="search-switcher__tab-anchor" aria-hidden="true"></span>
+      <button class="search-switcher__tab is-active" type="button" data-search-category="site">站内</button>
+      <button class="search-switcher__tab" type="button" data-search-category="ai">AI搜索</button>
+      <button class="search-switcher__tab" type="button" data-search-category="search">搜索</button>
+      <button class="search-switcher__tab" type="button" data-search-category="tools">工具</button>
+      <button class="search-switcher__tab" type="button" data-search-category="community">社区</button>
+      <button class="search-switcher__tab" type="button" data-search-category="life">生活</button>
+      <button class="search-switcher__tab" type="button" data-search-category="jobs">求职</button>
+    </div>
+    {eyou:searchform type='default'}
+    <form class="search-board__form" method="get" action="{$field.action}" id="siteSearchForm">
+      <div class="search-board__inputwrap">
+        <input type="text" name="keywords" id="edtSearch" placeholder="搜索 AI 工具、教程或网址" autocomplete="off" />
+        <input type="hidden" id="searchSourceType" value="internal">
+        <input type="hidden" id="searchSourceUrl" value="/index.php?m=home&c=Search&a=lists">
+        {$field.hidden}
+        <div class="search-suggest" id="searchSuggest">
+          <div class="search-suggest__group">
+            <span class="search-suggest__label">热门搜索</span>
+            <div class="search-suggest__tags">
+              <button type="button" class="search-suggest__tag" data-search-term="AI智能助手">AI智能助手</button>
+              <button type="button" class="search-suggest__tag" data-search-term="AI写作工具">AI写作工具</button>
+              <button type="button" class="search-suggest__tag" data-search-term="AI绘画工具">AI绘画工具</button>
+              <button type="button" class="search-suggest__tag" data-search-term="AI视频生成">AI视频生成</button>
+              <button type="button" class="search-suggest__tag" data-search-term="AI生成PPT">AI生成PPT</button>
+              <button type="button" class="search-suggest__tag" data-search-term="AI编程工具">AI编程工具</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" aria-label="搜索">
+        <svg class="search-board__submit-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+          <path d="M10.8 5.1a5.7 5.7 0 1 0 0 11.4 5.7 5.7 0 0 0 0-11.4m4.4 10.1 4.1 4.1"></path>
+        </svg>
+      </button>
+    </form>
+    {/eyou:searchform}
+    <div class="search-switcher__bar" aria-label="搜索引擎">
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-baidu" data-search-category-item="search" data-search-name="百度" data-search-type="external" data-search-url="https://www.baidu.com/s?wd={q}" data-search-placeholder="在百度搜索关键词或 AI 工具">
+        <span class="search-switcher__chip-text">百度</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-bing" data-search-category-item="search" data-search-name="必应" data-search-type="external" data-search-url="https://www.bing.com/search?q={q}" data-search-placeholder="在必应搜索关键词或 AI 工具">
+        <span class="search-switcher__chip-text">必应</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-google" data-search-category-item="search" data-search-name="Google" data-search-type="external" data-search-url="https://www.google.com/search?q={q}" data-search-placeholder="在 Google 搜索关键词或 AI 工具">
+        <span class="search-switcher__chip-text">Google</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-sogou" data-search-category-item="search" data-search-name="搜狗" data-search-type="external" data-search-url="https://www.sogou.com/web?query={q}" data-search-placeholder="在搜狗搜索关键词或 AI 工具">
+        <span class="search-switcher__chip-text">搜狗</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-360" data-search-category-item="search" data-search-name="360搜索" data-search-type="external" data-search-url="https://www.so.com/s?q={q}" data-search-placeholder="在 360 搜索关键词或 AI 工具">
+        <span class="search-switcher__chip-text">360搜索</span>
+      </button>
+      <button class="search-switcher__chip is-active" type="button" data-search-source="search-source-site" data-search-category-item="site" data-search-name="站内搜索" data-search-type="internal" data-search-url="/index.php?m=home&c=Search&a=lists" data-search-placeholder="搜索本站：站内搜索 / 工具名 / 用途">
+        <span class="search-switcher__chip-text">站内搜索</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-doubao-ai" data-search-category-item="ai" data-search-name="豆包AI搜索" data-search-type="external" data-search-url="https://www.doubao.com/chat/search/?={q}" data-search-placeholder="切换到豆包AI搜索继续搜索热门内容">
+        <span class="search-switcher__chip-text">豆包AI搜索</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-lingguang" data-search-category-item="ai" data-search-name="灵光" data-search-type="external" data-search-url="https://www.lingguang.com/?={q}" data-search-placeholder="切换到灵光继续搜索热门内容">
+        <span class="search-switcher__chip-text">灵光</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-kimi" data-search-category-item="ai" data-search-name="Kimi" data-search-type="external" data-search-url="https://kimi.moonshot.cn/?={q}" data-search-placeholder="切换到Kimi继续搜索热门内容">
+        <span class="search-switcher__chip-text">Kimi</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-yuanbao" data-search-category-item="ai" data-search-name="元宝" data-search-type="external" data-search-url="https://yuanbao.tencent.com/chat/naQivTmsDa/3633723d-2f52-40f8-aa57-95d782965ff2/?={q}" data-search-placeholder="切换到元宝继续搜索热门内容">
+        <span class="search-switcher__chip-text">元宝</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-deepseek" data-search-category-item="ai" data-search-name="Deepseek" data-search-type="external" data-search-url="https://chat.deepseek.com/?={q}" data-search-placeholder="切换到Deepseek继续搜索热门内容">
+        <span class="search-switcher__chip-text">Deepseek</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-qianwen" data-search-category-item="ai" data-search-name="千问" data-search-type="external" data-search-url="https://www.qianwen.com/chat/?={q}" data-search-placeholder="切换到千问继续搜索热门内容">
+        <span class="search-switcher__chip-text">千问</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-github" data-search-category-item="tools" data-search-name="GitHub" data-search-type="external" data-search-url="https://github.com/search?q={q}" data-search-placeholder="切换到GitHub继续搜索热门内容">
+        <span class="search-switcher__chip-text">GitHub</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-huggingface" data-search-category-item="tools" data-search-name="Hugging Face" data-search-type="external" data-search-url="https://huggingface.co/search/full-text?q={q}" data-search-placeholder="切换到Hugging Face继续搜索热门内容">
+        <span class="search-switcher__chip-text">Hugging Face</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-gitee" data-search-category-item="tools" data-search-name="Gitee" data-search-type="external" data-search-url="https://search.gitee.com/?q={q}" data-search-placeholder="切换到Gitee继续搜索热门内容">
+        <span class="search-switcher__chip-text">Gitee</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-gitlab" data-search-category-item="tools" data-search-name="GitLab" data-search-type="external" data-search-url="https://gitlab.com/search?search={q}" data-search-placeholder="切换到GitLab继续搜索热门内容">
+        <span class="search-switcher__chip-text">GitLab</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-modelscope" data-search-category-item="tools" data-search-name="ModelScope" data-search-type="external" data-search-url="https://modelscope.cn/models?name={q}" data-search-placeholder="切换到ModelScope继续搜索热门内容">
+        <span class="search-switcher__chip-text">ModelScope</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-zhihu" data-search-category-item="community" data-search-name="知乎" data-search-type="external" data-search-url="https://www.zhihu.com/search?type=content&q={q}" data-search-placeholder="切换到知乎继续搜索热门内容">
+        <span class="search-switcher__chip-text">知乎</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-bilibili" data-search-category-item="community" data-search-name="B站" data-search-type="external" data-search-url="https://search.bilibili.com/all?keyword={q}" data-search-placeholder="切换到B站继续搜索热门内容">
+        <span class="search-switcher__chip-text">B站</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-weixin" data-search-category-item="community" data-search-name="微信公众号" data-search-type="external" data-search-url="https://weixin.sogou.com/weixin?type=2&query={q}" data-search-placeholder="切换到微信公众号继续搜索热门内容">
+        <span class="search-switcher__chip-text">微信公众号</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-douban" data-search-category-item="community" data-search-name="豆瓣搜索" data-search-type="external" data-search-url="https://www.douban.com/search?q={q}" data-search-placeholder="切换到豆瓣搜索继续搜索热门内容">
+        <span class="search-switcher__chip-text">豆瓣搜索</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-xiaohongshu" data-search-category-item="community" data-search-name="小红书" data-search-type="external" data-search-url="https://www.xiaohongshu.com/search_result?keyword={q}" data-search-placeholder="切换到小红书继续搜索热门内容">
+        <span class="search-switcher__chip-text">小红书</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-douyin" data-search-category-item="community" data-search-name="抖音" data-search-type="external" data-search-url="https://www.douyin.com/search/{q}" data-search-placeholder="切换到抖音继续搜索热门内容">
+        <span class="search-switcher__chip-text">抖音</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-tieba" data-search-category-item="community" data-search-name="贴吧" data-search-type="external" data-search-url="https://tieba.baidu.com/f/search/res?ie=utf-8&qw={q}" data-search-placeholder="切换到贴吧继续搜索热门内容">
+        <span class="search-switcher__chip-text">贴吧</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-tiktok" data-search-category-item="community" data-search-name="TikTok" data-search-type="external" data-search-url="https://www.tiktok.com/search?q={q}" data-search-placeholder="切换到TikTok继续搜索热门内容">
+        <span class="search-switcher__chip-text">TikTok</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-taobao" data-search-category-item="life" data-search-name="淘宝" data-search-type="external" data-search-url="https://s.taobao.com/search?q={q}" data-search-placeholder="切换到淘宝继续搜索热门内容">
+        <span class="search-switcher__chip-text">淘宝</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-jd" data-search-category-item="life" data-search-name="京东" data-search-type="external" data-search-url="https://search.jd.com/Search?keyword={q}&enc=utf-8" data-search-placeholder="切换到京东继续搜索热门内容">
+        <span class="search-switcher__chip-text">京东</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-amap" data-search-category-item="life" data-search-name="高德地图" data-search-type="external" data-search-url="https://www.amap.com/search?query={q}" data-search-placeholder="切换到高德地图继续搜索热门内容">
+        <span class="search-switcher__chip-text">高德地图</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-baidumap" data-search-category-item="life" data-search-name="百度地图" data-search-type="external" data-search-url="https://map.baidu.com/search/{q}" data-search-placeholder="切换到百度地图继续搜索热门内容">
+        <span class="search-switcher__chip-text">百度地图</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-ctrip" data-search-category-item="life" data-search-name="携程" data-search-type="external" data-search-url="https://you.ctrip.com/searchsite/?query={q}" data-search-placeholder="切换到携程继续搜索热门内容">
+        <span class="search-switcher__chip-text">携程</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-qunar" data-search-category-item="life" data-search-name="去哪儿" data-search-type="external" data-search-url="https://travel.qunar.com/search/all/{q}" data-search-placeholder="切换到去哪儿继续搜索热门内容">
+        <span class="search-switcher__chip-text">去哪儿</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-12306" data-search-category-item="life" data-search-name="12306" data-search-type="external" data-search-url="https://www.12306.cn/index/" data-search-placeholder="切换到12306继续搜索热门内容">
+        <span class="search-switcher__chip-text">12306</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-kuaidi100" data-search-category-item="life" data-search-name="快递100" data-search-type="external" data-search-url="https://www.kuaidi100.com/?from=openv" data-search-placeholder="切换到快递100继续搜索热门内容">
+        <span class="search-switcher__chip-text">快递100</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-boss" data-search-category-item="jobs" data-search-name="Boss直聘" data-search-type="external" data-search-url="https://www.zhipin.com/web/geek/job?query={q}" data-search-placeholder="切换到Boss直聘继续搜索热门内容">
+        <span class="search-switcher__chip-text">Boss直聘</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-lagou" data-search-category-item="jobs" data-search-name="拉勾" data-search-type="external" data-search-url="https://www.lagou.com/wn/jobs?kd={q}" data-search-placeholder="切换到拉勾继续搜索热门内容">
+        <span class="search-switcher__chip-text">拉勾</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-liepin" data-search-category-item="jobs" data-search-name="猎聘" data-search-type="external" data-search-url="https://www.liepin.com/zhaopin/?key={q}" data-search-placeholder="切换到猎聘继续搜索热门内容">
+        <span class="search-switcher__chip-text">猎聘</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-51job" data-search-category-item="jobs" data-search-name="前程无忧" data-search-type="external" data-search-url="https://search.51job.com/list/000000,000000,0000,00,9,99,{q},2,1.html" data-search-placeholder="切换到前程无忧继续搜索热门内容">
+        <span class="search-switcher__chip-text">前程无忧</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-zhilian" data-search-category-item="jobs" data-search-name="智联招聘" data-search-type="external" data-search-url="https://sou.zhaopin.com/?kw={q}" data-search-placeholder="切换到智联招聘继续搜索热门内容">
+        <span class="search-switcher__chip-text">智联招聘</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-maimai" data-search-category-item="jobs" data-search-name="脉脉" data-search-type="external" data-search-url="https://maimai.cn/search/contacts?query={q}" data-search-placeholder="切换到脉脉继续搜索热门内容">
+        <span class="search-switcher__chip-text">脉脉</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-nowcoder" data-search-category-item="jobs" data-search-name="牛客" data-search-type="external" data-search-url="https://www.nowcoder.com/search?query={q}" data-search-placeholder="切换到牛客继续搜索热门内容">
+        <span class="search-switcher__chip-text">牛客</span>
+      </button>
+      <button class="search-switcher__chip" type="button" data-search-source="search-source-shixiseng" data-search-category-item="jobs" data-search-name="实习僧" data-search-type="external" data-search-url="https://www.shixiseng.com/interns?keyword={q}" data-search-placeholder="切换到实习僧继续搜索热门内容">
+        <span class="search-switcher__chip-text">实习僧</span>
+      </button>
+    </div>
+    <div class="search-sponsor" id="homeSearchSponsor">
+      <h1 class="search-sponsor__site-title">{eyou:global name='web_name' /}</h1>
+      <div class="search-sponsor__head">
+        <div>
+          <span class="search-sponsor__dot" aria-hidden="true">Ad</span>
+          <strong>赞助展示</strong>
+        </div>
+      <a class="search-sponsor__join" href="{:wn_type_url_by_id(370)}" rel="nofollow">
+          <span aria-hidden="true">↗</span>立即入驻
+        </a>
+      </div>
+      <div class="search-sponsor__grid" aria-label="赞助展示位">
+        {eyou:adv pid='1' row='4'}
+        {eyou:php}
+        $wnSponsorHref = isset($field['links']) ? trim((string)$field['links']) : '';
+        $wnSponsorIsPlaceholder = ($wnSponsorHref === '' || $wnSponsorHref === '#');
+        $wnSponsorHref = $wnSponsorIsPlaceholder ? '/business/' : $wnSponsorHref;
+        $wnSponsorTarget = $wnSponsorIsPlaceholder ? '' : (isset($field['target']) ? (string)$field['target'] : '');
+        $wnSponsorHref = htmlspecialchars($wnSponsorHref, ENT_QUOTES, 'UTF-8');
+        {/eyou:php}
+        <a class="search-sponsor__item" href="{$wnSponsorHref}" {$wnSponsorTarget} rel="nofollow sponsored noopener noreferrer">
+          <span aria-hidden="true">AD</span>
+          <strong>{$field.title}</strong>
+          <small>{$field.intro}</small>
+        </a>
+        {/eyou:adv}
+      </div>
+    </div>
+    <div class="search-sponsor__ticker" aria-label="站点公告">
+      <span class="search-sponsor__ticker-label" aria-hidden="true">📢</span>
+      <div class="search-sponsor__ticker-viewport">
+        <div class="search-sponsor__ticker-track">
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+          <span>收藏本站，下次更快找到常用 AI 工具</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

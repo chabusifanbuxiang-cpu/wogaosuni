@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <rect width="1600" height="900" rx="36" fill="#F4F8FE"/>
+  <rect x="40" y="40" width="1520" height="820" rx="32" fill="url(#bg)"/>
+  <g opacity="0.48">
+    <path d="M130 164H584" stroke="#D6E4FB" stroke-width="18" stroke-linecap="round"/>
+    <path d="M130 222H464" stroke="#DCE8FB" stroke-width="18" stroke-linecap="round"/>
+    <path d="M130 280H522" stroke="#E4EDFC" stroke-width="18" stroke-linecap="round"/>
+  </g>
+  <rect x="120" y="364" width="560" height="320" rx="30" fill="#FFFFFF" fill-opacity="0.92"/>
+  <rect x="742" y="166" width="728" height="168" rx="30" fill="#FFFFFF" fill-opacity="0.7"/>
+  <rect x="742" y="368" width="728" height="110" rx="28" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="742" y="504" width="728" height="110" rx="28" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="742" y="640" width="728" height="110" rx="28" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="176" y="416" width="448" height="216" rx="26" fill="url(#panel)"/>
+  <path d="M376 474C376 445.281 399.281 422 428 422H452C480.719 422 504 445.281 504 474V494H376V474Z" fill="#DCEBFF"/>
+  <path d="M429 457C429 451.477 433.477 447 439 447H441C446.523 447 451 451.477 451 457V519.586L474.293 496.293C478.198 492.388 484.531 492.388 488.435 496.293C492.34 500.198 492.34 506.531 488.435 510.435L448.071 550.799C444.166 554.704 437.834 554.704 433.929 550.799L393.565 510.435C389.66 506.531 389.66 500.198 393.565 496.293C397.469 492.388 403.802 492.388 407.707 496.293L429 517.586V457Z" fill="#2D7FF9"/>
+  <rect x="196" y="574" width="408" height="18" rx="9" fill="#CFE0FA"/>
+  <rect x="196" y="608" width="296" height="16" rx="8" fill="#DDE8FB"/>
+  <rect x="788" y="208" width="170" height="84" rx="22" fill="#2D7FF9"/>
+  <rect x="984" y="208" width="196" height="84" rx="22" fill="#FFAA0C"/>
+  <rect x="1206" y="208" width="206" height="84" rx="22" fill="#22C55E"/>
+  <path d="M848 234V262.5M848 262.5L831 245.5M848 262.5L865 245.5" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1047 234V262.5M1047 262.5L1030 245.5M1047 262.5L1064 245.5" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1266 234V262.5M1266 262.5L1249 245.5M1266 262.5L1283 245.5" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="788" y="397" width="206" height="52" rx="16" fill="#DDEBFF"/>
+  <rect x="1020" y="397" width="170" height="52" rx="16" fill="#E8F8EE"/>
+  <rect x="1214" y="397" width="180" height="52" rx="16" fill="#FFF2D9"/>
+  <rect x="788" y="533" width="272" height="18" rx="9" fill="#C9DBFA"/>
+  <rect x="788" y="566" width="356" height="18" rx="9" fill="#D9E6FC"/>
+  <rect x="788" y="669" width="314" height="18" rx="9" fill="#C9DBFA"/>
+  <rect x="788" y="702" width="236" height="18" rx="9" fill="#D9E6FC"/>
+  <text x="790" y="110" fill="#2459C8" font-family="'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif" font-size="54" font-weight="800">资源下载详情封面</text>
+  <text x="790" y="770" fill="#6B7A93" font-family="'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif" font-size="34" font-weight="600">适用于下载样本、网盘入口、提取码与使用说明展示</text>
+  <defs>
+    <linearGradient id="bg" x1="120" y1="110" x2="1488" y2="788" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FBFF"/>
+      <stop offset="0.56" stop-color="#EEF5FF"/>
+      <stop offset="1" stop-color="#E9F8F4"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="176" y1="416" x2="624" y2="632" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FBFF"/>
+      <stop offset="1" stop-color="#E6F0FF"/>
+    </linearGradient>
+  </defs>
+</svg>

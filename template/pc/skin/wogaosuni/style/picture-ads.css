@@ -1,0 +1,136 @@
+.wn-picture-ad {
+  --wn-picture-ad-ratio: 1920 / 246;
+  --wn-picture-ad-max: none;
+  width: 100%;
+  max-width: var(--wn-picture-ad-max);
+  margin: 12px auto;
+  line-height: 0;
+}
+
+.wn-picture-ad:empty {
+  display: none;
+}
+
+.wn-picture-ad__link {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0;
+  text-decoration: none;
+  background: transparent;
+}
+
+.wn-picture-ad__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--wn-picture-ad-ratio);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+.wn-picture-ad--home {
+  --wn-picture-ad-ratio: 920 / 568;
+  --wn-picture-ad-max: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: 12px;
+  margin-bottom: 14px;
+}
+
+.wn-picture-ad--home .wn-picture-ad__link {
+  min-width: 0;
+  height: 100%;
+  border-radius: 0;
+}
+
+.wn-picture-ad--home .wn-picture-ad__img {
+  height: 100%;
+  border-radius: 0;
+}
+
+.wn-picture-ad--list {
+  --wn-picture-ad-ratio: 1920 / 246;
+  --wn-picture-ad-max: none;
+}
+
+.wn-picture-ad--detail {
+  --wn-picture-ad-ratio: 1200 / 180;
+  --wn-picture-ad-max: none;
+  width: 100%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.wn-picture-ad--footer {
+  --wn-picture-ad-ratio: 1920 / 206;
+  --wn-picture-ad-max: none;
+  width: 100%;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.wn-picture-ad--sidebar {
+  --wn-picture-ad-ratio: 520 / 320;
+  --wn-picture-ad-max: 260px;
+  width: 100%;
+  margin: 10px 0 0;
+}
+
+.search-hub-results > .wn-picture-ad {
+  margin-top: 0;
+}
+
+@media (max-width: 960px) {
+  .wn-picture-ad {
+    width: 100%;
+    margin: 12px auto;
+  }
+
+  .wn-picture-ad__link {
+    border-radius: 0;
+  }
+
+  .wn-picture-ad__img {
+    aspect-ratio: 760 / 190;
+    object-position: left center;
+  }
+
+  .wn-picture-ad--home {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px auto 14px;
+  }
+
+  .wn-picture-ad--home .wn-picture-ad__img {
+    aspect-ratio: 920 / 568;
+    object-position: center;
+  }
+
+  .wn-picture-ad--footer .wn-picture-ad__img {
+    aspect-ratio: 760 / 190;
+  }
+
+  .wn-picture-ad--sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .wn-picture-ad__img {
+    aspect-ratio: 390 / 100;
+    object-position: 6% center;
+  }
+
+  .wn-picture-ad--home {
+    gap: 8px;
+  }
+
+  .wn-picture-ad--home .wn-picture-ad__img {
+    aspect-ratio: 920 / 568;
+    object-position: center;
+  }
+}

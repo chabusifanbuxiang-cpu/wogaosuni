@@ -1,0 +1,355 @@
+{eyou:php}
+if (!function_exists('wn_schema_plain_text')) {
+    function wn_schema_plain_text($value, $length = 0)
+    {
+        $text = html_entity_decode(strip_tags((string)$value), ENT_QUOTES, 'UTF-8');
+        $text = trim(preg_replace('/\s+/u', ' ', $text));
+        $length = intval($length);
+        if ($length > 0 && function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($text, 'UTF-8') > $length) {
+            return mb_substr($text, 0, max(1, $length - 1), 'UTF-8') . '...';
+        }
+        if ($length > 0 && !function_exists('mb_strlen') && strlen($text) > $length) {
+            return substr($text, 0, max(1, $length - 1)) . '...';
+        }
+        return $text;
+    }
+}
+
+if (!function_exists('wn_trusted_web_base_host')) {
+    function wn_trusted_web_base_host()
+    {
+        if (!function_exists('tpCache')) {
+            return '';
+        }
+
+        $configured = trim((string)tpCache('web.web_basehost'));
+        if ($configured === '' || preg_match('/[\x00-\x20\x7f]/', $configured)) {
+            return '';
+        }
+
+        $parts = @parse_url($configured);
+        if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+            return '';
+        }
+        $scheme = strtolower((string)$parts['scheme']);
+        if (!in_array($scheme, ['http', 'https'], true)
+            || isset($parts['user']) || isset($parts['pass'])
+            || isset($parts['query']) || isset($parts['fragment'])
+            || (isset($parts['path']) && $parts['path'] !== '' && $parts['path'] !== '/')) {
+            return '';
+        }
+
+        $host = trim((string)$parts['host'], '[]');
+        $isIp = filter_var($host, FILTER_VALIDATE_IP) !== false;
+        $isHostname = strlen($host) <= 253
+            && preg_match('/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i', $host);
+        if (!$isIp && !$isHostname) {
+            return '';
+        }
+
+        $port = isset($parts['port']) ? intval($parts['port']) : 0;
+        if (isset($parts['port']) && ($port < 1 || $port > 65535)) {
+            return '';
+        }
+        $authorityHost = strpos($host, ':') !== false ? '[' . strtolower($host) . ']' : strtolower($host);
+        return $scheme . '://' . $authorityHost . ($port > 0 ? ':' . $port : '');
+    }
+}
+
+if (!function_exists('wn_schema_base_host')) {
+    function wn_schema_base_host()
+    {
+        return wn_trusted_web_base_host();
+    }
+}
+
+if (!function_exists('wn_schema_internal_url')) {
+    function wn_schema_internal_url($url, $baseHost = '')
+    {
+        $baseHost = $baseHost !== '' ? rtrim((string)$baseHost, '/') : wn_schema_base_host();
+        $url = trim((string)$url);
+        if ($baseHost === '') {
+            return '';
+        }
+        if ($url === '' || $url === '#') {
+            return $baseHost;
+        }
+        if (preg_match('/[\x00-\x20\x7f]/', $url) || preg_match('/^(?:javascript|data|vbscript):/i', $url)) {
+            return $baseHost;
+        }
+
+        $parseTarget = strpos($url, '//') === 0 ? ('https:' . $url) : $url;
+        $parts = @parse_url($parseTarget);
+        if (!is_array($parts)) {
+            return $baseHost;
+        }
+        $path = isset($parts['path']) ? (string)$parts['path'] : '/';
+        if ($path === '') {
+            $path = '/';
+        } elseif ($path[0] !== '/') {
+            $path = '/' . ltrim($path, '/');
+        }
+        $query = isset($parts['query']) && $parts['query'] !== '' ? ('?' . $parts['query']) : '';
+        return $baseHost . $path . $query;
+    }
+}
+
+if (!function_exists('wn_schema_abs_url')) {
+    function wn_schema_abs_url($url, $baseHost = '')
+    {
+        $url = trim((string)$url);
+        $baseHost = $baseHost !== '' ? rtrim((string)$baseHost, '/') : wn_schema_base_host();
+        if ($url === '' || $url === '#') {
+            return $baseHost;
+        }
+        if (preg_match('#^https?://#i', $url)) {
+            return $url;
+        }
+        if (strpos($url, '//') === 0) {
+            $scheme = parse_url($baseHost, PHP_URL_SCHEME);
+            return ($scheme ? $scheme : 'https') . ':' . $url;
+        }
+        if ($baseHost === '') {
+            return $url;
+        }
+        return $baseHost . '/' . ltrim($url, '/');
+    }
+}
+
+if (!function_exists('wn_schema_home_url')) {
+    function wn_schema_home_url($baseHost = '')
+    {
+        $baseHost = $baseHost !== '' ? rtrim((string)$baseHost, '/') : wn_schema_base_host();
+        return $baseHost !== '' ? $baseHost . '/' : '';
+    }
+}
+
+if (!function_exists('wn_schema_site_name')) {
+    function wn_schema_site_name()
+    {
+        $siteName = '';
+        if (function_exists('tpCache')) {
+            $siteName = trim((string)tpCache('web.web_name'));
+            if ($siteName === '') {
+                $siteName = trim((string)tpCache('web.web_title'));
+            }
+        }
+        return $siteName !== '' ? $siteName : 'AI导航站';
+    }
+}
+
+if (!function_exists('wn_schema_type_row')) {
+    function wn_schema_type_row($type)
+    {
+        if (is_array($type)) {
+            $typeId = !empty($type['id']) ? intval($type['id']) : (!empty($type['typeid']) ? intval($type['typeid']) : 0);
+            if ($typeId > 0 && empty($type['id'])) {
+                $type['id'] = $typeId;
+            }
+            return $type;
+        }
+        $typeId = intval($type);
+        if ($typeId <= 0) {
+            return [];
+        }
+        static $typeCache = [];
+        if (!array_key_exists($typeId, $typeCache)) {
+            $typeCache[$typeId] = (array)\think\Db::name('arctype')
+                ->field('id, parent_id, typename, current_channel, dirname, dirpath, diy_dirpath, rulelist, ruleview, typearcrank, is_part, typelink')
+                ->where('id', $typeId)
+                ->find();
+        }
+        return $typeCache[$typeId];
+    }
+}
+
+if (!function_exists('wn_schema_type_url')) {
+    function wn_schema_type_url($type, $fallback = '#')
+    {
+        $typeRow = wn_schema_type_row($type);
+        if (empty($typeRow)) {
+            return (string)$fallback;
+        }
+        if (!empty($typeRow['is_part']) && !empty($typeRow['typelink'])) {
+            return (string)$typeRow['typelink'];
+        }
+        if (function_exists('get_typeurl')) {
+            $url = get_typeurl($typeRow, false);
+            if (!empty($url)) {
+                return $url;
+            }
+        }
+        $typeId = !empty($typeRow['id']) ? intval($typeRow['id']) : 0;
+        return $typeId > 0 ? '/index.php?m=home&c=Lists&a=index&tid=' . $typeId : (string)$fallback;
+    }
+}
+
+if (!function_exists('wn_schema_fill_arc_route_fields')) {
+    function wn_schema_fill_arc_route_fields($item)
+    {
+        if (!is_array($item)) {
+            return [];
+        }
+        $typeId = !empty($item['typeid']) ? intval($item['typeid']) : 0;
+        if ($typeId <= 0) {
+            return $item;
+        }
+        $typeRow = wn_schema_type_row($typeId);
+        if (!empty($typeRow)) {
+            foreach (['dirname', 'dirpath', 'diy_dirpath', 'ruleview', 'typearcrank'] as $key) {
+                if (!isset($item[$key]) || $item[$key] === '') {
+                    $item[$key] = isset($typeRow[$key]) ? $typeRow[$key] : '';
+                }
+            }
+        }
+        return $item;
+    }
+}
+
+if (!function_exists('wn_schema_arc_url')) {
+    function wn_schema_arc_url($item, $baseHost = '')
+    {
+        if (!is_array($item)) {
+            return '';
+        }
+        if (!empty($item['arcurl'])) {
+            return wn_schema_internal_url($item['arcurl'], $baseHost);
+        }
+        $item = wn_schema_fill_arc_route_fields($item);
+        $url = '';
+        if (function_exists('get_arcurl')) {
+            $url = get_arcurl($item, false);
+        }
+        if ($url === '' && !empty($item['aid'])) {
+            $url = '/index.php?m=home&c=View&a=index&aid=' . intval($item['aid']);
+        }
+        return $url !== '' ? wn_schema_internal_url($url, $baseHost) : '';
+    }
+}
+
+if (!function_exists('wn_schema_unique_aids')) {
+    function wn_schema_unique_aids($aidLists)
+    {
+        $result = [];
+        $seen = [];
+        foreach ((array)$aidLists as $aidList) {
+            $parts = is_array($aidList) ? $aidList : explode(',', (string)$aidList);
+            foreach ($parts as $aid) {
+                $aid = intval($aid);
+                if ($aid <= 0 || isset($seen[$aid])) {
+                    continue;
+                }
+                $seen[$aid] = true;
+                $result[] = $aid;
+            }
+        }
+        return $result;
+    }
+}
+
+if (!function_exists('wn_schema_item_list_from_aids')) {
+    function wn_schema_item_list_from_aids($aids, $itemType = 'Thing', $baseHost = '', $startPosition = 1, $limit = 0)
+    {
+        $ids = wn_schema_unique_aids((array)$aids);
+        $limit = intval($limit);
+        if ($limit > 0) {
+            $ids = array_slice($ids, 0, $limit);
+        }
+        if (empty($ids)) {
+            return [];
+        }
+        $aidSql = implode(',', array_map('intval', $ids));
+        $prefix = config('database.prefix');
+        $rows = (array)\think\Db::query('SELECT a.aid, a.title, a.seo_description, a.introduction, a.litpic, a.channel, a.typeid
+            FROM ' . $prefix . 'archives a
+            WHERE a.aid IN (' . $aidSql . ')
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+            ORDER BY FIELD(a.aid,' . $aidSql . ')');
+
+        $items = [];
+        $position = max(1, intval($startPosition));
+        $itemType = trim((string)$itemType);
+        if ($itemType === '') {
+            $itemType = 'Thing';
+        }
+        foreach ($rows as $row) {
+            $name = wn_schema_plain_text(!empty($row['title']) ? $row['title'] : '');
+            $url = wn_schema_arc_url($row, $baseHost);
+            if ($name === '' || $url === '') {
+                continue;
+            }
+            $item = [
+                '@type' => $itemType,
+                'name' => $name,
+                'url' => $url,
+            ];
+            $description = wn_schema_plain_text(!empty($row['seo_description']) ? $row['seo_description'] : (!empty($row['introduction']) ? $row['introduction'] : ''), 140);
+            if ($description !== '') {
+                $item['description'] = $description;
+            }
+            if (!empty($row['litpic'])) {
+                $imageUrl = function_exists('handle_subdir_pic') ? handle_subdir_pic($row['litpic']) : $row['litpic'];
+                $item['image'] = wn_schema_abs_url($imageUrl, $baseHost);
+            }
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => $position,
+                'item' => $item,
+            ];
+            $position++;
+        }
+        return !empty($items) ? [
+            '@type' => 'ItemList',
+            'numberOfItems' => count($items),
+            'itemListElement' => $items,
+        ] : [];
+    }
+}
+
+if (!function_exists('wn_schema_breadcrumb_list')) {
+    function wn_schema_breadcrumb_list($crumbs, $baseHost = '')
+    {
+        $items = [];
+        $position = 1;
+        foreach ((array)$crumbs as $crumb) {
+            $name = wn_schema_plain_text(isset($crumb['name']) ? $crumb['name'] : '');
+            $url = isset($crumb['url']) ? wn_schema_internal_url($crumb['url'], $baseHost) : '';
+            if ($name === '' || $url === '') {
+                continue;
+            }
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => $position,
+                'name' => $name,
+                'item' => $url,
+            ];
+            $position++;
+        }
+        return count($items) >= 2 ? [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $items,
+        ] : [];
+    }
+}
+
+if (!function_exists('wn_schema_output')) {
+    function wn_schema_output($nodes)
+    {
+        $graph = [];
+        foreach ((array)$nodes as $node) {
+            if (!empty($node) && is_array($node)) {
+                $graph[] = $node;
+            }
+        }
+        if (empty($graph)) {
+            return;
+        }
+        echo '<script type="application/ld+json">' . json_encode([
+            '@context' => 'https://schema.org',
+            '@graph' => $graph,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+    }
+}
+{/eyou:php}

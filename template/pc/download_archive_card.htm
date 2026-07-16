@@ -1,0 +1,375 @@
+{eyou:php}
+if (!function_exists('wn_download_archive_escape')) {
+    function wn_download_archive_escape($value)
+    {
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    }
+}
+if (!function_exists('wn_download_archive_trim')) {
+    function wn_download_archive_trim($value, $length = 72)
+    {
+        $value = trim(preg_replace('/\s+/u', ' ', strip_tags(htmlspecialchars_decode((string)$value, ENT_QUOTES))));
+        if ($value === '') {
+            return '';
+        }
+        if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($value, 'UTF-8') > $length) {
+            return mb_substr($value, 0, $length, 'UTF-8') . '...';
+        }
+        if (!function_exists('mb_strlen') && strlen($value) > $length) {
+            return substr($value, 0, $length) . '...';
+        }
+        return $value;
+    }
+}
+if (!function_exists('wn_download_archive_pick_label')) {
+    function wn_download_archive_pick_label($value, $length = 14)
+    {
+        $value = trim(preg_replace('/\s+/u', ' ', strip_tags(htmlspecialchars_decode((string)$value, ENT_QUOTES))));
+        if ($value === '') {
+            return '';
+        }
+        $value = str_replace(array('，', '、', '|', '/', '+'), ',', $value);
+        $parts = explode(',', $value);
+        $value = trim((string)$parts[0]);
+        if ($value === '') {
+            return '';
+        }
+        if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($value, 'UTF-8') > $length) {
+            return mb_substr($value, 0, $length, 'UTF-8') . '...';
+        }
+        if (!function_exists('mb_strlen') && strlen($value) > $length) {
+            return substr($value, 0, $length) . '...';
+        }
+        return $value;
+    }
+}
+if (!function_exists('wn_download_archive_support_badges')) {
+    function wn_download_archive_support_badges($value)
+    {
+        $value = str_replace(array('，', '、', '|', '/', '+'), ',', (string)$value);
+        $parts = explode(',', $value);
+        $badges = array();
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                continue;
+            }
+            $upper = strtoupper($part);
+            if (preg_match('/^V\d+$/', $upper)) {
+                $part = $upper;
+            }
+            if (!in_array($part, $badges)) {
+                $badges[] = $part;
+            }
+        }
+        return $badges;
+    }
+}
+if (!function_exists('wn_download_archive_media_tags')) {
+    function wn_download_archive_media_tags($field, $limit = 3)
+    {
+        $limit = max(1, intval($limit));
+        $tags = array();
+        $seen = array();
+        $appendTag = function ($tag) use (&$tags, &$seen, $limit) {
+            $tag = wn_download_archive_pick_label($tag, 12);
+            if ($tag === '') {
+                return;
+            }
+            $key = function_exists('mb_strtolower') ? mb_strtolower($tag, 'UTF-8') : strtolower($tag);
+            if (isset($seen[$key])) {
+                return;
+            }
+            $seen[$key] = true;
+            $tags[] = $tag;
+        };
+        if (!empty($field['tags'])) {
+            $rawTags = str_replace(array('，', '、', '|', '/', '+'), ',', (string)$field['tags']);
+            foreach (explode(',', $rawTags) as $rawTag) {
+                $appendTag($rawTag);
+                if (count($tags) >= $limit) {
+                    return $tags;
+                }
+            }
+        }
+        $aid = !empty($field['aid']) ? intval($field['aid']) : 0;
+        if ($aid > 0 && class_exists('\\think\\Db')) {
+            try {
+                $rows = \think\Db::name('taglist')->alias('tl')
+                    ->join('__TAGINDEX__ ti', 'ti.id = tl.tid')
+                    ->where('tl.aid', $aid)
+                    ->field('COALESCE(ti.tag, tl.tag) AS tag')
+                    ->order('ti.total desc, ti.id desc')
+                    ->limit($limit)
+                    ->select();
+                foreach ((array)$rows as $row) {
+                    $appendTag(isset($row['tag']) ? $row['tag'] : '');
+                    if (count($tags) >= $limit) {
+                        break;
+                    }
+                }
+            } catch (\Exception $e) {
+            }
+        }
+        return array_slice($tags, 0, $limit);
+    }
+}
+if (!function_exists('wn_download_archive_format_count')) {
+    function wn_download_archive_format_count($value)
+    {
+        $value = max(0, floatval($value));
+        if ($value >= 1000000) {
+            return round($value / 1000000, 1) . 'M';
+        }
+        if ($value >= 1000) {
+            return round($value / 1000, 1) . 'K';
+        }
+        return (string)intval($value);
+    }
+}
+if (!function_exists('wn_download_archive_human_size')) {
+    function wn_download_archive_human_size($value)
+    {
+        $size = floatval($value);
+        if ($size <= 0) {
+            return '';
+        }
+        if ($size >= 1073741824) {
+            return round($size / 1073741824, 1) . ' GB';
+        }
+        if ($size >= 1048576) {
+            return round($size / 1048576, 1) . ' MB';
+        }
+        if ($size >= 1024) {
+            return round($size / 1024, 1) . ' KB';
+        }
+        return intval($size) . ' B';
+    }
+}
+if (!function_exists('wn_download_archive_history_badge')) {
+    function wn_download_archive_history_badge($label, $support = '')
+    {
+        $support = trim((string)$support);
+        if (preg_match('/\bV\s*([23])\b/i', $support, $matches)) {
+            return 'V' . intval($matches[1]);
+        }
+        if (preg_match('/\bV\s*(\d+)\b/i', (string)$label, $matches)) {
+            return 'V' . intval($matches[1]);
+        }
+        return 'V';
+    }
+}
+$wnDownloadCardFiles = !empty($field['file_list']) && is_array($field['file_list']) ? $field['file_list'] : array();
+$wnDownloadCardCurrentFiles = array();
+$wnDownloadCardHistoryFiles = array();
+foreach ($wnDownloadCardFiles as $downloadFile) {
+    if (!empty($downloadFile['version_group']) && intval($downloadFile['version_group']) === 1) {
+        $wnDownloadCardHistoryFiles[] = $downloadFile;
+    } else {
+        $wnDownloadCardCurrentFiles[] = $downloadFile;
+    }
+}
+if (empty($wnDownloadCardCurrentFiles) && !empty($wnDownloadCardFiles)) {
+    $wnDownloadCardCurrentFiles[] = $wnDownloadCardFiles[0];
+    if (!empty($wnDownloadCardHistoryFiles)) {
+        array_shift($wnDownloadCardHistoryFiles);
+    }
+}
+$wnDownloadCardPrimaryFile = !empty($wnDownloadCardCurrentFiles[0]) ? $wnDownloadCardCurrentFiles[0] : array();
+$wnDownloadCardRatingText = trim((string)(isset($field['resource_rating']) ? $field['resource_rating'] : ''));
+$wnDownloadCardSupportBadges = wn_download_archive_support_badges(isset($field['version_support']) ? $field['version_support'] : '');
+$wnDownloadCardVersionText = trim((string)(isset($field['resource_version']) ? $field['resource_version'] : ''));
+if ($wnDownloadCardVersionText === '' && !empty($wnDownloadCardPrimaryFile['version_label'])) {
+    $wnDownloadCardVersionText = trim((string)$wnDownloadCardPrimaryFile['version_label']);
+}
+if ($wnDownloadCardVersionText === '') {
+    $wnDownloadCardVersionText = '-';
+}
+$wnDownloadCardSizeText = trim((string)(isset($field['resource_size']) ? $field['resource_size'] : ''));
+if ($wnDownloadCardSizeText === '' && !empty($wnDownloadCardPrimaryFile['file_size'])) {
+    $wnDownloadCardSizeText = wn_download_archive_human_size($wnDownloadCardPrimaryFile['file_size']);
+}
+if ($wnDownloadCardSizeText === '') {
+    $wnDownloadCardSizeText = '-';
+}
+$wnDownloadCardSummary = trim((string)(isset($field['seo_description']) ? $field['seo_description'] : ''));
+if ($wnDownloadCardSummary === '') {
+    $wnDownloadCardSummary = !empty($field['title']) ? $field['title'] : '资源下载';
+}
+$wnDownloadCardSummary = wn_download_archive_trim($wnDownloadCardSummary, 76);
+$wnDownloadCardDownloadValue = max(0, floatval(!empty($field['downcount']) ? $field['downcount'] : (!empty($field['click']) ? $field['click'] : 0)));
+$wnDownloadCardDownloadText = wn_download_archive_format_count($wnDownloadCardDownloadValue);
+$wnDownloadCardTimeText = !empty($field['update_time']) ? date('Y-m-d', intval($field['update_time'])) : (!empty($field['add_time']) ? date('Y-m-d', intval($field['add_time'])) : '-');
+$wnDownloadCardHasRealFile = !empty($wnDownloadCardPrimaryFile['file_url']) && !empty($wnDownloadCardPrimaryFile['downurl']);
+$wnDownloadCardPrimaryUrl = $wnDownloadCardHasRealFile ? $wnDownloadCardPrimaryFile['downurl'] : $field['arcurl'];
+$wnDownloadCardPrimaryLabel = !empty($wnDownloadCardPrimaryFile['version_label']) ? trim((string)$wnDownloadCardPrimaryFile['version_label']) : '';
+if ($wnDownloadCardPrimaryLabel === '') {
+    $wnDownloadCardPrimaryLabel = !empty($wnDownloadCardPrimaryFile['server_name']) ? trim((string)$wnDownloadCardPrimaryFile['server_name']) : '立即下载';
+}
+$wnDownloadCardActionLabel = $wnDownloadCardHasRealFile ? '下载' : '查看说明';
+$wnDownloadCardActionClass = $wnDownloadCardHasRealFile ? '' : ' is-info-only';
+$wnDownloadCardHistoryCount = count($wnDownloadCardHistoryFiles);
+foreach ($wnDownloadCardHistoryFiles as $historyKey => $historyFile) {
+    $historyLabel = !empty($historyFile['version_label']) ? trim((string)$historyFile['version_label']) : '';
+    if ($historyLabel === '') {
+        $historyLabel = !empty($historyFile['server_name']) ? trim((string)$historyFile['server_name']) : '历史版本 ' . ($historyKey + 1);
+    }
+    $historySupport = wn_download_archive_history_badge($historyLabel, isset($field['version_support']) ? $field['version_support'] : '');
+    $historyBadgeClass = 'wf-download-history-modal__badge';
+    if (strcasecmp($historySupport, 'V2') === 0) {
+        $historyBadgeClass .= ' is-v2';
+    } elseif (strcasecmp($historySupport, 'V3') === 0) {
+        $historyBadgeClass .= ' is-v3';
+    }
+    $historyTime = !empty($historyFile['update_time']) ? date('Y/m/d', intval($historyFile['update_time'])) : (!empty($historyFile['add_time']) ? date('Y/m/d', intval($historyFile['add_time'])) : '-');
+    $historySize = !empty($historyFile['file_size']) ? wn_download_archive_human_size($historyFile['file_size']) : '';
+    $historyDownloadCount = !empty($historyFile['downcount']) ? $historyFile['downcount'] : 0;
+    $wnDownloadCardHistoryFiles[$historyKey]['history_title'] = $historyLabel;
+    $wnDownloadCardHistoryFiles[$historyKey]['history_support'] = $historySupport;
+    $wnDownloadCardHistoryFiles[$historyKey]['history_badge_class'] = $historyBadgeClass;
+    $wnDownloadCardHistoryFiles[$historyKey]['history_size'] = $historySize !== '' ? $historySize : '-';
+    $wnDownloadCardHistoryFiles[$historyKey]['history_time'] = $historyTime;
+    $wnDownloadCardHistoryFiles[$historyKey]['history_count'] = wn_download_archive_format_count($historyDownloadCount);
+}
+$wnDownloadCardFormatTag = wn_download_archive_pick_label(isset($field['resource_format']) ? $field['resource_format'] : '', 12);
+$wnDownloadCardFeaturedTag = wn_download_archive_pick_label(isset($field['resource_featured_label']) ? $field['resource_featured_label'] : '', 12);
+$wnDownloadCardSourceTag = wn_download_archive_pick_label(isset($field['resource_source_name']) ? $field['resource_source_name'] : '', 14);
+if ($wnDownloadCardSourceTag === '') {
+    $wnDownloadCardSourceTag = wn_download_archive_pick_label(isset($field['resource_developer']) ? $field['resource_developer'] : '', 14);
+}
+$wnDownloadCardIdentifier = trim((string)(isset($field['resource_identifier']) ? $field['resource_identifier'] : ''));
+if ($wnDownloadCardIdentifier === '') {
+    $wnDownloadCardIdentifier = 'ID #' . intval($field['aid']);
+}
+$wnDownloadCardTagBadges = array();
+if ($wnDownloadCardRatingText !== '') {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--rating',
+        'text' => $wnDownloadCardRatingText
+    );
+}
+foreach ($wnDownloadCardSupportBadges as $supportBadge) {
+    $badgeClass = 'wf-download-crx-card__tag wf-download-crx-card__tag--support';
+    if (preg_match('/^V\d+$/i', $supportBadge)) {
+        $badgeClass .= ' is-version';
+        if (strcasecmp($supportBadge, 'V2') === 0) {
+            $badgeClass .= ' is-v2';
+        } elseif (strcasecmp($supportBadge, 'V3') === 0) {
+            $badgeClass .= ' is-v3';
+        }
+    }
+    $wnDownloadCardTagBadges[] = array(
+        'class' => $badgeClass,
+        'text' => $supportBadge
+    );
+}
+$wnDownloadCardTopVersionTag = '';
+if (empty($wnDownloadCardSupportBadges) && $wnDownloadCardVersionText !== '' && $wnDownloadCardVersionText !== '-') {
+    $wnDownloadCardTopVersionTag = wn_download_archive_pick_label($wnDownloadCardVersionText, 12);
+    if ($wnDownloadCardTopVersionTag !== '') {
+        $wnDownloadCardTagBadges[] = array(
+            'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--version',
+            'text' => $wnDownloadCardTopVersionTag
+        );
+    }
+}
+if ($wnDownloadCardFeaturedTag !== '') {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--featured',
+        'text' => $wnDownloadCardFeaturedTag
+    );
+}
+if ($wnDownloadCardFormatTag !== '') {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--format',
+        'text' => $wnDownloadCardFormatTag
+    );
+}
+if ($wnDownloadCardHistoryCount > 0) {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--history',
+        'text' => '历史' . $wnDownloadCardHistoryCount
+    );
+}
+if ($wnDownloadCardSourceTag !== '' && count($wnDownloadCardTagBadges) < 3) {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--source',
+        'text' => $wnDownloadCardSourceTag
+    );
+}
+$wnDownloadCardTypeTag = trim((string)(isset($field['typename']) ? $field['typename'] : ''));
+if ($wnDownloadCardTypeTag !== '') {
+    $wnDownloadCardTagBadges[] = array(
+        'class' => 'wf-download-crx-card__tag wf-download-crx-card__tag--type',
+        'text' => $wnDownloadCardTypeTag
+    );
+}
+$wnDownloadCardMediaTags = wn_download_archive_media_tags($field, 3);
+$wnDownloadCardAid = !empty($field['aid']) ? intval($field['aid']) : 0;
+$wnDownloadCardLitpic = !empty($field['litpic']) ? trim((string)$field['litpic']) : '';
+$wnDownloadCardFallback = '/template/pc/skin/wogaosuni/image/thumb-fallback-' . sprintf('%02d', ($wnDownloadCardAid % 8) + 1) . '.svg';
+$wnDownloadCardIsLegacyFallback = ($wnDownloadCardLitpic === '' || stripos($wnDownloadCardLitpic, 'open-source-logo.svg') !== false || stripos($wnDownloadCardLitpic, 'article-thumb-fallback.') !== false);
+$wnDownloadCardImage = !$wnDownloadCardIsLegacyFallback ? $wnDownloadCardLitpic : $wnDownloadCardFallback;
+$wnDownloadCardImageClass = $wnDownloadCardIsLegacyFallback ? ' wf-article-card__image--fallback' : '';
+{/eyou:php}
+<article class="wf-download-crx-card wf-download-tilt-card wf-article-card wf-article-card--ripro wf-article-card--tilt3d extension-card" data-content-type="download" data-wf-click="{$field.click}" data-wf-date="{eyou:notempty name='$field.add_time'}{$field.add_time}{eyou:else /}{$field.update_time}{/eyou:notempty}" data-wf-article-tilt>
+  <a class="wf-article-card__link wf-download-tilt-card__link" href="{$field.arcurl}" aria-label="查看 {$field.title} 详情"></a>
+  <div class="wf-download-tilt-card__body wf-article-card__body">
+    <div class="wf-download-tilt-card__headline wf-article-card__headline-row" data-wf-article-tilt-item="92">
+      <h2><a class="wf-download-tilt-card__title wf-article-card__title-link" href="{$field.arcurl}">{$field.title}</a></h2>
+      <span class="wf-download-tilt-card__type">{$wnDownloadCardTypeTag}</span>
+    </div>
+    <p class="wf-download-tilt-card__summary wf-article-card__summary" data-wf-article-tilt-item="72">{$wnDownloadCardSummary}</p>
+  </div>
+  <div class="wf-download-tilt-card__media wf-article-card__media" data-wf-article-tilt-item="220">
+    <img class="wf-article-card__image{$wnDownloadCardImageClass}" src="{$wnDownloadCardImage}" alt="{$field.title}" width="430" height="240" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('wf-article-card__image--fallback');this.src='{$wnDownloadCardFallback}';" />
+    {eyou:notempty name="$wnDownloadCardMediaTags"}
+    <div class="wf-download-tilt-card__badges">
+      {eyou:volist name="$wnDownloadCardMediaTags" id="tagBadge" offset="0" length="3"}
+      <span>{$tagBadge}</span>
+      {/eyou:volist}
+    </div>
+    {/eyou:notempty}
+  </div>
+  <div class="wf-download-tilt-card__meta" data-wf-article-tilt-item="72">
+    <span><b>版本</b>{$wnDownloadCardVersionText}</span>
+    <span><b>大小</b>{$wnDownloadCardSizeText}</span>
+    <span><b>更新</b>{$wnDownloadCardTimeText}</span>
+    <span><b>下载</b>{$wnDownloadCardDownloadText}</span>
+  </div>
+  <div class="wf-download-tilt-card__footer wf-article-card__footer">
+    <div class="wf-download-tilt-card__footer-left">
+      <a class="wf-download-tilt-card__detail wf-article-card__action wf-article-card__action--ghost detail-btn" href="{$field.arcurl}" data-wf-article-tilt-item="88">查看详情 →</a>
+      {eyou:gt name="$wnDownloadCardHistoryCount" value="0"}
+      <button class="wf-download-tilt-card__history wf-download-crx-card__action wf-download-crx-card__action--history history-btn" type="button" data-download-history-open="download-history-{$field.aid}" aria-controls="download-history-{$field.aid}" data-wf-article-tilt-item="84">历史版本</button>
+      {/eyou:gt}
+    </div>
+    <a class="wf-download-tilt-card__download wf-download-crx-card__action wf-download-crx-card__action--primary wf-article-card__detail download-btn{$wnDownloadCardActionClass}" href="{$wnDownloadCardPrimaryUrl}" rel="nofollow noopener noreferrer" data-wf-article-tilt-item="106">{$wnDownloadCardActionLabel}</a>
+  </div>
+  {eyou:gt name="$wnDownloadCardHistoryCount" value="0"}
+  <div class="wf-download-history-modal" id="download-history-{$field.aid}" hidden role="dialog" aria-modal="true" aria-labelledby="download-history-title-{$field.aid}">
+    <button class="wf-download-history-modal__backdrop" type="button" data-download-history-close aria-label="关闭历史版本弹窗"></button>
+    <div class="wf-download-history-modal__panel" role="document">
+      <div class="wf-download-history-modal__head">
+        <h3 id="download-history-title-{$field.aid}">历史版本</h3>
+        <button class="wf-download-history-modal__close" type="button" data-download-history-close aria-label="关闭">×</button>
+      </div>
+      <div class="wf-download-history-modal__list">
+        {eyou:volist name="$wnDownloadCardHistoryFiles" id="historyFile" key="historyIndex"}
+        <div class="wf-download-history-modal__row">
+          <div class="wf-download-history-modal__version-cell">
+            <span class="{$historyFile.history_badge_class}">{$historyFile.history_support}</span>
+            <strong>{$historyFile.history_title}</strong>
+          </div>
+          <div class="wf-download-history-modal__stat"><span>大小</span><b>{$historyFile.history_size}</b></div>
+          <div class="wf-download-history-modal__stat"><span>发布时间</span><b>{$historyFile.history_time}</b></div>
+          <div class="wf-download-history-modal__stat"><span>下载次数</span><b>{$historyFile.history_count}</b></div>
+          <div class="wf-download-history-modal__stat"><span>版本支持</span><b>{$historyFile.history_support}</b></div>
+          <a class="wf-download-history-modal__download" href="{$historyFile.downurl}" rel="nofollow noopener noreferrer">下载</a>
+        </div>
+        {/eyou:volist}
+      </div>
+    </div>
+  </div>
+  {/eyou:gt}
+</article>

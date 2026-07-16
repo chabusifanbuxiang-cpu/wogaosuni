@@ -1,0 +1,23 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body.nav-theme-v2 .topbar,
+body.nav-theme-v2 .site-main,
+body.nav-theme-v2 .site-footer {
+  max-width: calc(100vw - var(--sidebar-shell-width, 70px));
+}
+
+body.nav-theme-v2.is-sidebar-collapsed .topbar {
+  max-width: calc(100vw - 82px);
+}
+
+@media (max-width: 960px) {
+  body.nav-theme-v2 .topbar,
+  body.nav-theme-v2 .site-main,
+  body.nav-theme-v2 .site-footer {
+    max-width: 100vw;
+  }
+}

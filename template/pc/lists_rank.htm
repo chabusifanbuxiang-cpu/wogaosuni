@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{eyou:php}
+if (!function_exists('wn_seo_meta_escape')) {
+    function wn_seo_meta_escape($value)
+    {
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    }
+}
+if (!function_exists('wn_rank_head_plain')) {
+    function wn_rank_head_plain($value)
+    {
+        $value = html_entity_decode(strip_tags((string)$value), ENT_QUOTES, 'UTF-8');
+        return trim(preg_replace('/\s+/u', ' ', $value));
+    }
+}
+if (!function_exists('wn_rank_head_detail_title')) {
+    function wn_rank_head_detail_title($title)
+    {
+        $title = wn_rank_head_plain($title);
+        if ($title === '') {
+            return 'AI排行榜';
+        }
+        if (strpos($title, '排行榜') !== false) {
+            return $title;
+        }
+        if (preg_match('/ai/i', $title)) {
+            return $title . '排行榜';
+        }
+        return $title . 'AI排行榜';
+    }
+}
+if (!function_exists('wn_rank_head_board_url')) {
+    function wn_rank_head_board_url($slug, $page = 1)
+    {
+        $slug = preg_replace('/[^a-z0-9_-]/i', '', (string)$slug);
+        $page = max(1, intval($page));
+        if ($slug === '') {
+            if ($page > 1) {
+                return '/index.php?m=home&c=Lists&a=index&tid=ranking&page=' . $page;
+            }
+            return '/ranking/';
+        }
+        if ($page > 1) {
+            return '/index.php?m=home&c=Lists&a=index&tid=ranking&board=' . rawurlencode($slug) . '&page=' . $page;
+        }
+        return '/ranking/' . rawurlencode($slug);
+    }
+}
+if (!function_exists('wn_rank_head_collect_type_ids')) {
+    function wn_rank_head_collect_type_ids($typeId)
+    {
+        $typeId = intval($typeId);
+        if ($typeId <= 0) {
+            return [];
+        }
+        $typeIds = [$typeId];
+        $queue = [$typeId];
+        while (!empty($queue)) {
+            $childIds = \think\Db::name('arctype')
+                ->where('parent_id', 'in', $queue)
+                ->where('status', 1)
+                ->where('is_hidden', 0)
+                ->where('is_del', 0)
+                ->column('id');
+            $childIds = array_values(array_diff(array_map('intval', (array)$childIds), $typeIds));
+            if (empty($childIds)) {
+                break;
+            }
+            $typeIds = array_values(array_unique(array_merge($typeIds, $childIds)));
+            $queue = $childIds;
+        }
+        return $typeIds;
+    }
+}
+if (!function_exists('wn_rank_head_tool_total')) {
+    function wn_rank_head_tool_total($typeIds)
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return 0;
+        }
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = function_exists('wn_rank_tool_category_rel_join_sql') ? wn_rank_tool_category_rel_join_sql($typeIdSql) : '';
+        $typeWhereSql = function_exists('wn_rank_tool_category_where_sql') ? wn_rank_tool_category_where_sql($typeIdSql) : 'a.typeid IN (' . $typeIdSql . ')';
+        $prefix = config('database.prefix');
+        $rows = \think\Db::query('SELECT COUNT(DISTINCT a.aid) AS total
+            FROM ' . $prefix . 'archives a
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = 2
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1');
+        return !empty($rows[0]['total']) ? intval($rows[0]['total']) : 0;
+    }
+}
+if (!function_exists('wn_rank_tool_category_rel_table')) {
+    function wn_rank_tool_category_rel_table()
+    {
+        static $tableName = null;
+        static $exists = null;
+        if ($exists !== null) {
+            return $exists ? $tableName : '';
+        }
+
+        $prefix = config('database.prefix');
+        $tableName = $prefix . 'wogs_tool_category_rel';
+        try {
+            $rows = \think\Db::query('SHOW TABLES LIKE "' . addslashes($tableName) . '"');
+            $exists = !empty($rows);
+        } catch (\Throwable $e) {
+            $exists = false;
+        }
+
+        return $exists ? $tableName : '';
+    }
+}
+if (!function_exists('wn_rank_tool_category_rel_join_sql')) {
+    function wn_rank_tool_category_rel_join_sql($typeIdSql)
+    {
+        $relTable = wn_rank_tool_category_rel_table();
+        if ($relTable === '') {
+            return '';
+        }
+
+        return ' LEFT JOIN (
+                SELECT aid, MIN(sort_order) AS rel_sort_order
+                FROM ' . $relTable . '
+                WHERE status = 1 AND typeid IN (' . $typeIdSql . ')
+                GROUP BY aid
+            ) tr ON tr.aid = a.aid';
+    }
+}
+if (!function_exists('wn_rank_tool_category_where_sql')) {
+    function wn_rank_tool_category_where_sql($typeIdSql)
+    {
+        return wn_rank_tool_category_rel_table() !== ''
+            ? '(a.typeid IN (' . $typeIdSql . ') OR tr.aid IS NOT NULL)'
+            : 'a.typeid IN (' . $typeIdSql . ')';
+    }
+}
+$wnRankSeoDescription = 'AI工具热度排行榜，优先展示中国AI工具，并按本站浏览、编辑推荐、平台成熟度和国内用户适配度综合排序，帮助用户快速发现值得关注的AI软件和服务。';
+$wnRankHeadBoards = [
+    'recom' => ['detail_title' => '推荐工具榜', 'desc' => '仅展示被手动添加推荐属性的工具，按站内热度排序。'],
+    'overall' => ['detail_title' => '综合热榜', 'desc' => '全站工具按站内热度指数排序。'],
+    'chat' => ['detail_title' => '对话搜索排行', 'desc' => '聊天助手、AI 搜索、知识问答。'],
+    'writing' => ['detail_title' => '写作内容排行', 'desc' => '写作、文案、总结与学术辅助。'],
+    'image' => ['detail_title' => '图像设计排行', 'desc' => '绘画、设计、抠图与图片处理。'],
+    'video' => ['detail_title' => '视频数字人排行', 'desc' => '视频生成、剪辑、字幕与数字人。'],
+    'office' => ['detail_title' => '办公学习排行', 'desc' => 'PPT、文档、会议、翻译与笔记。'],
+    'audio' => ['detail_title' => '音频语音排行', 'desc' => '音乐生成、配音、语音识别与音频处理。'],
+    'agent' => ['detail_title' => '智能体排行', 'desc' => 'Agent 平台、自动化助手与插件技能。'],
+    'dev' => ['detail_title' => '开发模型排行', 'desc' => '代码助手、模型、框架与开发平台。'],
+    'business' => ['detail_title' => '企业营销排行', 'desc' => '营销、客服、数据分析与企业服务。'],
+    'industry' => ['detail_title' => '行业应用排行', 'desc' => '健康、法律、行业场景与垂直应用。'],
+];
+$wnRankHeadBoardPageRaw = strtolower(trim((string)input('param.boardpage/s', '')));
+$wnRankHeadBoardFromPage = '';
+$wnRankHeadPage = max(1, intval(input('param.page/d', 1)));
+if ($wnRankHeadBoardPageRaw !== '' && preg_match('/^([a-z0-9-]+)_([0-9]+)$/i', $wnRankHeadBoardPageRaw, $wnRankHeadBoardPageMatch)) {
+    $wnRankHeadBoardFromPage = strtolower(trim((string)$wnRankHeadBoardPageMatch[1]));
+    $wnRankHeadPage = max(1, intval($wnRankHeadBoardPageMatch[2]));
+}
+$wnRankHeadSlugRaw = strtolower(trim((string)input('param.board/s', '')));
+if ($wnRankHeadSlugRaw === '' && $wnRankHeadBoardFromPage !== '') {
+    $wnRankHeadSlugRaw = $wnRankHeadBoardFromPage;
+}
+$wnRankHeadSlug = '';
+$wnRankHeadDetailTitle = '';
+$wnRankHeadDetailDesc = '';
+if ($wnRankHeadSlugRaw !== '' && isset($wnRankHeadBoards[$wnRankHeadSlugRaw])) {
+    $wnRankHeadSlug = $wnRankHeadSlugRaw;
+    $wnRankHeadDetailTitle = $wnRankHeadBoards[$wnRankHeadSlugRaw]['detail_title'];
+    $wnRankHeadDetailDesc = $wnRankHeadBoards[$wnRankHeadSlugRaw]['desc'];
+} elseif ($wnRankHeadSlugRaw !== '' && preg_match('/^t([0-9]+)$/', $wnRankHeadSlugRaw, $wnRankHeadTypeMatch)) {
+    $wnRankHeadTypeId = intval($wnRankHeadTypeMatch[1]);
+    $wnRankHeadTypeRow = $wnRankHeadTypeId > 0 ? (array)\think\Db::name('arctype')
+        ->field('id,parent_id,typename,current_channel,status,is_hidden,is_del')
+        ->where('id', $wnRankHeadTypeId)
+        ->find() : [];
+    if (!empty($wnRankHeadTypeRow)
+        && intval($wnRankHeadTypeRow['current_channel']) === 2
+        && intval($wnRankHeadTypeRow['parent_id']) > 0
+        && intval($wnRankHeadTypeRow['status']) === 1
+        && intval($wnRankHeadTypeRow['is_hidden']) === 0
+        && intval($wnRankHeadTypeRow['is_del']) === 0
+    ) {
+        $wnRankHeadTypeIds = wn_rank_head_collect_type_ids($wnRankHeadTypeId);
+        if (wn_rank_head_tool_total($wnRankHeadTypeIds) > 0) {
+            $wnRankHeadParentName = (string)\think\Db::name('arctype')->where('id', intval($wnRankHeadTypeRow['parent_id']))->getField('typename');
+            $wnRankHeadTypeName = !empty($wnRankHeadTypeRow['typename']) ? (string)$wnRankHeadTypeRow['typename'] : 'AI工具';
+            $wnRankHeadSlug = $wnRankHeadSlugRaw;
+            $wnRankHeadDetailTitle = wn_rank_head_detail_title($wnRankHeadTypeName);
+            $wnRankHeadDetailDesc = ($wnRankHeadParentName !== '' ? $wnRankHeadParentName . ' · ' : '') . $wnRankHeadTypeName . '工具按站内热度排序。';
+        }
+    }
+}
+$wnRankHeadIsDetail = $wnRankHeadSlug !== '';
+$wnRankHeadTitle = $wnRankHeadIsDetail
+    ? ($wnRankHeadDetailTitle . ($wnRankHeadPage > 1 ? '_第' . $wnRankHeadPage . '页' : '') . '_AI工具排行榜_AI导航站')
+    : (!empty($eyou['field']['seo_title']) ? (string)$eyou['field']['seo_title'] : 'AI工具排行榜_AI导航站');
+$wnRankHeadDescription = $wnRankHeadIsDetail
+    ? $wnRankHeadDetailDesc . ' 榜单优先展示中国AI工具，并按本站热度、置顶推荐、平台成熟度和国内用户适配度综合排序，不代表全网实时排名。'
+    : $wnRankSeoDescription;
+$wnRankHeadCanonicalPath = $wnRankHeadIsDetail ? wn_rank_head_board_url($wnRankHeadSlug, $wnRankHeadPage) : '/ranking/';
+$wnRankHeadHasExtraParams = false;
+$wnRankHeadRequestUri = isset($_SERVER['REQUEST_URI']) ? trim((string)$_SERVER['REQUEST_URI']) : '';
+$wnRankHeadQueryString = (string)parse_url($wnRankHeadRequestUri, PHP_URL_QUERY);
+if ($wnRankHeadQueryString !== '') {
+    $wnRankHeadQuery = array();
+    parse_str($wnRankHeadQueryString, $wnRankHeadQuery);
+    $wnRankHeadAllowedParams = ['m' => true, 'c' => true, 'a' => true, 'tid' => true, 'board' => true, 'boardpage' => true, 'page' => true];
+    foreach ((array)$wnRankHeadQuery as $wnRankHeadParamKey => $wnRankHeadParamValue) {
+        $wnRankHeadParamKey = (string)$wnRankHeadParamKey;
+        if ($wnRankHeadParamKey !== '' && empty($wnRankHeadAllowedParams[$wnRankHeadParamKey])) {
+            $wnRankHeadHasExtraParams = true;
+            break;
+        }
+    }
+}
+$wnRankHeadRobots = ($wnRankHeadSlugRaw !== '' && !$wnRankHeadIsDetail) || $wnRankHeadHasExtraParams ? 'noindex,follow' : 'index,follow';
+{/eyou:php}
+<title>{eyou:php}echo wn_seo_meta_escape($wnRankHeadTitle);{/eyou:php}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadDescription);{/eyou:php}" />
+<meta name="robots" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadRobots);{/eyou:php}" />
+<link rel="canonical" href="{eyou:global name='web_basehost' /}{eyou:php}echo wn_seo_meta_escape($wnRankHeadCanonicalPath);{/eyou:php}" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{eyou:global name='web_name' /}" />
+<meta property="og:title" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadTitle);{/eyou:php}" />
+<meta property="og:description" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadDescription);{/eyou:php}" />
+<meta property="og:url" content="{eyou:global name='web_basehost' /}{eyou:php}echo wn_seo_meta_escape($wnRankHeadCanonicalPath);{/eyou:php}" />
+<meta property="og:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadTitle);{/eyou:php}" />
+<meta name="twitter:description" content="{eyou:php}echo wn_seo_meta_escape($wnRankHeadDescription);{/eyou:php}" />
+<meta name="twitter:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="global_head_styles.htm" /}
+{if condition="$wnRankHeadIsDetail"}
+{eyou:static file="skin/wogaosuni/style/pagination-final-module.min.css" /}
+{/if}
+{eyou:include file="css_media_loader.htm" /}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-head-bundle-slim.min.css", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-head-bundle-slim.min.css" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-head-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-head-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-head-tail-bundle-slim.min.css", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-head-tail-bundle-slim.min.css" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-head-tail-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-head-tail-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-core-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-core-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+{if condition="$wnRankHeadIsDetail"}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+{/if}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-core-bundle-desktop-slim.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-core-bundle-desktop-slim.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/ranking-core-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/ranking-core-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css", "screen and (max-width: 1320px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css" rel="stylesheet" media="screen and (max-width: 1320px)" type="text/css" /></noscript>
+{eyou:static file="skin/wogaosuni/style/page-ranking-inline.min.css" /}
+{eyou:static file="skin/wogaosuni/style/ranking-detail-fix.css?v=20260701detail2" /}
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+<style>
+  html body.nav-theme.nav-theme-v2.is-ranking-page .ranking-page__panel-head > a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 34px !important;
+    padding: 8px 14px !important;
+    border-radius: 999px !important;
+    line-height: 1.1 !important;
+  }
+</style>
+{eyou:include file="seo_schema_helper.htm" /}
+{eq name="$wnRankHeadRobots" value="index,follow"}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "{eyou:global name='web_basehost' /}{eyou:php}echo wn_seo_meta_escape($wnRankHeadCanonicalPath);{/eyou:php}#collection",
+  "name": {eyou:php}echo json_encode($wnRankHeadTitle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);{/eyou:php},
+  "description": {eyou:php}echo json_encode($wnRankHeadDescription, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);{/eyou:php},
+  "url": "{eyou:global name='web_basehost' /}{eyou:php}echo wn_seo_meta_escape($wnRankHeadCanonicalPath);{/eyou:php}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{eyou:global name='web_name' /}",
+    "url": "{eyou:global name='web_basehost' /}"
+  }
+}
+</script>
+{/eq}
+</head>
+<body class="nav-theme nav-theme-v2 is-ranking-page is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+{eyou:include file="nav_sort_helper.htm" /}
+{eyou:include file="direct_url_helper.htm" /}
+{eyou:php}
+if (!function_exists('wn_rank_heat_score')) {
+    function wn_rank_heat_score($item)
+    {
+        $click = !empty($item['click']) ? intval($item['click']) : 0;
+        $score = $click;
+        $score += !empty($item['top_global']) ? 680 : 0;
+        $score += !empty($item['top_home']) ? 320 : 0;
+        $score += !empty($item['top_category']) ? 260 : 0;
+        $score += !empty($item['is_head']) ? 220 : 0;
+        $score += !empty($item['is_top']) ? 180 : 0;
+        $score += !empty($item['is_recom']) ? 120 : 0;
+
+        $tier = !empty($item['platform_tier']) ? (string)$item['platform_tier'] : '';
+        $tierWeights = [
+            '国内大厂' => 760,
+            '国内普通' => 520,
+            '国外大厂' => 80,
+            '国外成熟' => 0,
+            '国外普通' => -180,
+            '低优先' => -1200,
+        ];
+        $score += isset($tierWeights[$tier]) ? $tierWeights[$tier] : 0;
+        $score += (!empty($item['site_region']) && $item['site_region'] === '国外') ? -320 : 620;
+
+        $addTime = !empty($item['add_time']) ? intval($item['add_time']) : 0;
+        if ($addTime > 0) {
+            if ($addTime >= strtotime('-14 days')) {
+                $score += 160;
+            } elseif ($addTime >= strtotime('-60 days')) {
+                $score += 80;
+            }
+        }
+
+        return max(1, intval($score));
+    }
+}
+
+if (!function_exists('wn_rank_format_number')) {
+    function wn_rank_format_number($number)
+    {
+        $number = max(0, intval($number));
+        if ($number >= 10000) {
+            $value = round($number / 10000, 1);
+            return rtrim(rtrim((string)$value, '0'), '.') . '万';
+        }
+        return number_format($number);
+    }
+}
+
+if (!function_exists('wn_rank_heat_order_sql')) {
+    function wn_rank_heat_order_sql()
+    {
+        return '(IFNULL(a.click,0)
+            + IF(IFNULL(pc.top_global,0)>0,680,0)
+            + IF(IFNULL(pc.top_home,0)>0,320,0)
+            + IF(IFNULL(pc.top_category,0)>0,260,0)
+            + IF(IFNULL(a.is_head,0)>0,220,0)
+            + IF(IFNULL(a.is_top,0)>0,180,0)
+            + IF(IFNULL(a.is_recom,0)>0,120,0)
+            + CASE IFNULL(pc.platform_tier,"普通")
+                WHEN "国内大厂" THEN 760
+                WHEN "国内普通" THEN 520
+                WHEN "国外大厂" THEN 80
+                WHEN "国外成熟" THEN 0
+                WHEN "国外普通" THEN -180
+                WHEN "低优先" THEN -1200
+                ELSE 0
+              END
+            + CASE WHEN IFNULL(pc.site_region,"国内") = "国内" THEN 620 ELSE -320 END
+            + CASE
+                WHEN a.add_time >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 14 DAY)) THEN 160
+                WHEN a.add_time >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 60 DAY)) THEN 80
+                ELSE 0
+              END
+        ) DESC,
+        CASE WHEN IFNULL(pc.site_region,"国内") = "国内" THEN 0 ELSE 1 END ASC,
+        GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_home,0),IFNULL(pc.top_category,0)) DESC,
+        CASE IFNULL(pc.platform_tier,"普通")
+            WHEN "国内大厂" THEN 10
+            WHEN "国内普通" THEN 20
+            WHEN "国外大厂" THEN 60
+            WHEN "国外成熟" THEN 70
+            WHEN "国外普通" THEN 80
+            WHEN "低优先" THEN 80
+            ELSE CASE WHEN IFNULL(pc.site_region,"国内") = "国内" THEN 30 ELSE 90 END
+        END ASC,
+        a.click DESC,
+        a.aid DESC';
+    }
+}
+
+if (!function_exists('wn_rank_aids_by_type_ids')) {
+    function wn_rank_aids_by_type_ids($typeIds, $limit = 10, $channel = 2)
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+        $limit = max(1, intval($limit));
+        $channel = intval($channel);
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT a.aid
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+            ORDER BY ' . wn_rank_heat_order_sql() . '
+            LIMIT ' . $limit;
+        $rows = \think\Db::query($sql);
+        return array_map('intval', array_column((array)$rows, 'aid'));
+    }
+}
+
+if (!function_exists('wn_rank_items_by_type_ids')) {
+    function wn_rank_items_by_type_ids($typeIds, $limit = 10, $channel = 2, $offset = 0, $excludeAids = [])
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+        $limit = max(1, intval($limit));
+        $channel = intval($channel);
+        $offset = max(0, intval($offset));
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT a.*, pc.site_region, pc.top_global, pc.top_home, pc.top_category, pc.platform_tier, t.typename AS type_name
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1'
+                . (!empty($excludeAids) ? ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')' : '') . '
+            ORDER BY ' . wn_rank_heat_order_sql() . '
+            LIMIT ' . $offset . ',' . $limit;
+        return (array)\think\Db::query($sql);
+    }
+}
+
+if (!function_exists('wn_rank_recom_items_by_type_ids')) {
+    function wn_rank_recom_items_by_type_ids($typeIds, $limit = 10, $channel = 2, $offset = 0, $excludeAids = [])
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+        $limit = max(1, intval($limit));
+        $channel = intval($channel);
+        $offset = max(0, intval($offset));
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT a.*, pc.site_region, pc.top_global, pc.top_home, pc.top_category, pc.platform_tier, t.typename AS type_name
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                AND IFNULL(a.is_recom,0) > 0'
+                . (!empty($excludeAids) ? ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')' : '') . '
+            ORDER BY ' . wn_rank_heat_order_sql() . '
+            LIMIT ' . $offset . ',' . $limit;
+        return (array)\think\Db::query($sql);
+    }
+}
+
+if (!function_exists('wn_rank_total_by_type_ids')) {
+    function wn_rank_total_by_type_ids($typeIds, $channel = 2)
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return 0;
+        }
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT COUNT(DISTINCT a.aid) AS total
+            FROM ' . $prefix . 'archives a
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . intval($channel) . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1';
+        $rows = \think\Db::query($sql);
+        return !empty($rows[0]['total']) ? intval($rows[0]['total']) : 0;
+    }
+}
+
+if (!function_exists('wn_rank_recom_total_by_type_ids')) {
+    function wn_rank_recom_total_by_type_ids($typeIds, $channel = 2)
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return 0;
+        }
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT COUNT(DISTINCT a.aid) AS total
+            FROM ' . $prefix . 'archives a
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . intval($channel) . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                AND IFNULL(a.is_recom,0) > 0';
+        $rows = \think\Db::query($sql);
+        return !empty($rows[0]['total']) ? intval($rows[0]['total']) : 0;
+    }
+}
+
+if (!function_exists('wn_rank_random_pinned_items')) {
+    function wn_rank_random_pinned_items($typeIds, $limit = 5, $channel = 2, $excludeAids = [])
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+        $limit = max(1, intval($limit));
+        $channel = intval($channel);
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $typeIdSql = implode(',', $typeIds);
+        $relJoinSql = wn_rank_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_rank_tool_category_where_sql($typeIdSql);
+        $prefix = config('database.prefix');
+        $baseWhere = $typeWhereSql . '
+            AND a.channel = ' . $channel . '
+            AND a.status = 1
+            AND a.is_del = 0
+            AND a.arcrank > -1'
+            . (!empty($excludeAids) ? ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')' : '');
+        $select = 'SELECT a.*, pc.site_region, pc.top_global, pc.top_home, pc.top_category, pc.platform_tier, t.typename AS type_name
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+            ' . $relJoinSql . '
+            WHERE ';
+        $pinnedSql = $select . $baseWhere . '
+            AND (IFNULL(pc.top_global,0)>0 OR IFNULL(pc.top_home,0)>0 OR IFNULL(pc.top_category,0)>0 OR IFNULL(a.is_head,0)>0 OR IFNULL(a.is_top,0)>0 OR IFNULL(a.is_recom,0)>0)
+            ORDER BY GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_home,0),IFNULL(pc.top_category,0),IFNULL(a.is_head,0),IFNULL(a.is_top,0),IFNULL(a.is_recom,0)) DESC, RAND()
+            LIMIT ' . $limit;
+        $items = (array)\think\Db::query($pinnedSql);
+        if (count($items) < $limit) {
+            $picked = array_merge($excludeAids, array_map(function ($item) {
+                return !empty($item['aid']) ? intval($item['aid']) : 0;
+            }, $items));
+            $fillLimit = $limit - count($items);
+            $fillSql = $select . $baseWhere
+                . (!empty($picked) ? ' AND a.aid NOT IN (' . implode(',', array_values(array_filter($picked))) . ')' : '') . '
+                ORDER BY RAND()
+                LIMIT ' . $fillLimit;
+            $items = array_merge($items, (array)\think\Db::query($fillSql));
+        }
+        return $items;
+    }
+}
+
+if (!function_exists('wn_rank_board_url')) {
+    function wn_rank_board_url($slug, $page = 1)
+    {
+        $slug = preg_replace('/[^a-z0-9_-]/i', '', (string)$slug);
+        $page = max(1, intval($page));
+        if ($slug === '') {
+            if ($page > 1) {
+                return '/index.php?m=home&c=Lists&a=index&tid=ranking&page=' . $page;
+            }
+            return '/ranking/';
+        }
+        if ($page > 1) {
+            return '/index.php?m=home&c=Lists&a=index&tid=ranking&board=' . rawurlencode($slug) . '&page=' . $page;
+        }
+        return '/ranking/' . rawurlencode($slug);
+    }
+}
+
+if (!function_exists('wn_rank_aid_list')) {
+    function wn_rank_aid_list($aids)
+    {
+        $aids = array_values(array_filter(array_map('intval', (array)$aids)));
+        return empty($aids) ? '0' : implode(',', $aids);
+    }
+}
+
+if (!function_exists('wn_rank_escape')) {
+    function wn_rank_escape($value)
+    {
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('wn_rank_render_picture_ad')) {
+    function wn_rank_render_picture_ad($pid = 9)
+    {
+        $pid = intval($pid);
+        if ($pid <= 0) {
+            return '';
+        }
+        $position = \think\Db::name('ad_position')
+            ->where('id', $pid)
+            ->where('status', 1)
+            ->where('is_del', 0)
+            ->find();
+        if (empty($position)) {
+            return '';
+        }
+        $ad = \think\Db::name('ad')
+            ->where('pid', $pid)
+            ->where('status', 1)
+            ->where('is_del', 0)
+            ->order('sort_order asc,id asc')
+            ->find();
+        if (empty($ad) || empty($ad['litpic'])) {
+            return '';
+        }
+        $href = !empty($ad['links']) ? (string)$ad['links'] : '#';
+        $target = !empty($ad['target']) && (string)$ad['target'] === '1' ? ' target="_blank"' : '';
+        $title = !empty($ad['title']) ? (string)$ad['title'] : 'Sponsored';
+        $litpic = function_exists('handle_subdir_pic') ? handle_subdir_pic((string)$ad['litpic']) : (string)$ad['litpic'];
+
+        return '<div class="wn-picture-ad wn-picture-ad--list"><a class="wn-picture-ad__link" href="' . wn_rank_escape($href) . '"' . $target . ' rel="nofollow sponsored noopener noreferrer" aria-label="' . wn_rank_escape($title) . '"><img class="wn-picture-ad__img" src="' . wn_rank_escape($litpic) . '" alt="' . wn_rank_escape($title) . '" width="1920" height="246" loading="lazy" decoding="async" /></a></div>';
+    }
+}
+
+if (!function_exists('wn_rank_trim_text')) {
+    function wn_rank_trim_text($value, $length = 52)
+    {
+        $value = trim(preg_replace('/\s+/u', ' ', strip_tags(htmlspecialchars_decode((string)$value, ENT_QUOTES))));
+        if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($value, 'UTF-8') > $length) {
+            return mb_substr($value, 0, $length, 'UTF-8') . '...';
+        }
+        if (!function_exists('mb_strlen') && strlen($value) > $length) {
+            return substr($value, 0, $length) . '...';
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('wn_rank_arcurl')) {
+    function wn_rank_arcurl($item)
+    {
+        if (!function_exists('wn_rank_fill_route_fields')) {
+            function wn_rank_fill_route_fields($item)
+            {
+                if (!is_array($item)) {
+                    return [];
+                }
+                $typeId = !empty($item['typeid']) ? intval($item['typeid']) : 0;
+                if ($typeId <= 0) {
+                    return $item;
+                }
+                static $routeCache = [];
+                if (!array_key_exists($typeId, $routeCache)) {
+                    $routeCache[$typeId] = (array)\think\Db::name('arctype')
+                        ->field('id, dirname, dirpath, diy_dirpath, ruleview, typearcrank')
+                        ->where('id', $typeId)
+                        ->find();
+                }
+                if (!empty($routeCache[$typeId])) {
+                    foreach (['dirname', 'dirpath', 'diy_dirpath', 'ruleview', 'typearcrank'] as $routeKey) {
+                        if ((empty($item[$routeKey]) && isset($routeCache[$typeId][$routeKey])) || !isset($item[$routeKey])) {
+                            $item[$routeKey] = $routeCache[$typeId][$routeKey];
+                        }
+                    }
+                }
+                return $item;
+            }
+        }
+        $item = wn_rank_fill_route_fields($item);
+        $url = '';
+        if (function_exists('get_arcurl')) {
+            $url = get_arcurl($item, false);
+        }
+        if (empty($url)) {
+            $url = '/index.php?m=home&c=View&a=index&aid=' . intval($item['aid']);
+        }
+        return $url;
+    }
+}
+
+if (!function_exists('wn_rank_type_url')) {
+    function wn_rank_type_url($type)
+    {
+        if (!is_array($type) || empty($type['id'])) {
+            return '#';
+        }
+
+        if (!empty($type['is_part']) && !empty($type['typelink'])) {
+            return (string)$type['typelink'];
+        }
+
+        if (function_exists('get_typeurl')) {
+            $url = get_typeurl($type, false);
+            if (!empty($url)) {
+                return $url;
+            }
+        }
+
+        return '/index.php?m=home&c=Lists&a=index&tid=' . intval($type['id']);
+    }
+}
+
+if (!function_exists('wn_rank_logo_url')) {
+    function wn_rank_logo_url($item)
+    {
+        $logo = !empty($item['litpic']) ? trim((string)$item['litpic']) : '';
+        if ($logo === '') {
+            return '/template/pc/skin/wogaosuni/image/open-source-logo.svg';
+        }
+        if (function_exists('handle_subdir_pic')) {
+            $logo = handle_subdir_pic($logo);
+        }
+        return $logo;
+    }
+}
+
+if (!function_exists('wn_rank_render_item')) {
+    function wn_rank_render_item($item, $index)
+    {
+        $title = wn_rank_trim_text(!empty($item['title']) ? $item['title'] : 'AI 工具', 30);
+        $desc = wn_rank_trim_text(!empty($item['seo_description']) ? $item['seo_description'] : (!empty($item['introduction']) ? $item['introduction'] : '点击查看工具详情'), 52);
+        $subtitle = wn_rank_trim_text(!empty($item['subtitle']) ? $item['subtitle'] : $desc, 36);
+        $detailUrl = wn_rank_arcurl($item);
+        $directUrl = function_exists('wn_normalize_direct_url') ? wn_normalize_direct_url(!empty($item['jumplinks']) ? $item['jumplinks'] : '') : '';
+        $favoriteUrl = $directUrl !== '' ? $directUrl : $detailUrl;
+        $logoUrl = wn_rank_logo_url($item);
+        $heat = wn_rank_format_number(wn_rank_heat_score($item));
+        $rank = intval($index) + 1;
+
+        return '<article class="ranking-page__item" data-content-type="nav" data-favorite-id="' . intval($item['aid']) . '" data-favorite-title="' . wn_rank_escape($title) . '" data-favorite-detail="' . wn_rank_escape($detailUrl) . '" data-favorite-direct="' . wn_rank_escape($favoriteUrl) . '" data-favorite-desc="' . wn_rank_escape($desc) . '" data-favorite-subtitle="' . wn_rank_escape($subtitle) . '" data-favorite-logo="' . wn_rank_escape($logoUrl) . '" data-favorite-logo-text="' . wn_rank_escape($title) . '">'
+            . '<em class="ranking-page__rank">' . $rank . '</em>'
+            . '<a class="ranking-page__main" href="' . wn_rank_escape($detailUrl) . '">'
+            . '<span class="ranking-page__logo"><img src="' . wn_rank_escape($logoUrl) . '" alt="' . wn_rank_escape($title) . '" width="28" height="28" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></span>'
+            . '<span class="ranking-page__copy"><strong>' . wn_rank_escape($title) . '</strong><small>' . wn_rank_escape($desc) . '</small><span class="ranking-page__inline"><span class="ranking-page__detail-label">查看详情</span>' . ($directUrl !== '' ? '<span class="ranking-page__divider" aria-hidden="true"></span><span class="ranking-page__direct-label">官网直达</span>' : '<span class="ranking-page__divider" aria-hidden="true"></span><span class="ranking-page__state-label">站内内容</span>') . '</span></span>'
+            . '</a>'
+            . '<span class="ranking-page__metric"><strong>' . wn_rank_escape($heat) . '</strong><small>站内热度</small></span>'
+            . ($directUrl !== ''
+                ? '<a class="ranking-page__direct" href="' . wn_rank_escape($directUrl) . '" target="_blank" rel="nofollow noopener noreferrer" aria-label="直达' . wn_rank_escape($title) . '"></a>'
+                : '<a class="ranking-page__direct" href="' . wn_rank_escape($detailUrl) . '" aria-label="查看' . wn_rank_escape($title) . '"></a>')
+            . '</article>';
+    }
+}
+
+if (!function_exists('wn_rank_render_detail_item')) {
+    function wn_rank_render_detail_item($item, $index)
+    {
+        $title = wn_rank_trim_text(!empty($item['title']) ? $item['title'] : 'AI 工具', 42);
+        $desc = wn_rank_trim_text(!empty($item['seo_description']) ? $item['seo_description'] : (!empty($item['introduction']) ? $item['introduction'] : '点击查看工具详情'), 96);
+        $subtitle = wn_rank_trim_text(!empty($item['subtitle']) ? $item['subtitle'] : $desc, 42);
+        $vendor = wn_rank_trim_text(!empty($item['type_name']) ? $item['type_name'] : (!empty($item['author']) ? $item['author'] : 'AI 工具'), 18);
+        $detailUrl = wn_rank_arcurl($item);
+        $directUrl = function_exists('wn_normalize_direct_url') ? wn_normalize_direct_url(!empty($item['jumplinks']) ? $item['jumplinks'] : '') : '';
+        $favoriteUrl = $directUrl !== '' ? $directUrl : $detailUrl;
+        $logoUrl = wn_rank_logo_url($item);
+        $heatValue = wn_rank_heat_score($item);
+        $heat = wn_rank_format_number($heatValue);
+        $rank = intval($index) + 1;
+        $boostValue = max(1, intval(($heatValue % 43) + floor($rank / 2)));
+
+        return '<article class="ranking-detail__item" data-content-type="nav" data-favorite-id="' . intval($item['aid']) . '" data-favorite-title="' . wn_rank_escape($title) . '" data-favorite-detail="' . wn_rank_escape($detailUrl) . '" data-favorite-direct="' . wn_rank_escape($favoriteUrl) . '" data-favorite-desc="' . wn_rank_escape($desc) . '" data-favorite-subtitle="' . wn_rank_escape($subtitle) . '" data-favorite-logo="' . wn_rank_escape($logoUrl) . '" data-favorite-logo-text="' . wn_rank_escape($title) . '">'
+            . '<div class="ranking-detail__rank"><strong>' . $rank . '</strong><span>+' . $boostValue . '</span></div>'
+            . '<a class="ranking-detail__logo" href="' . wn_rank_escape($detailUrl) . '"><img src="' . wn_rank_escape($logoUrl) . '" alt="' . wn_rank_escape($title) . '" width="48" height="48" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></a>'
+            . '<a class="ranking-detail__main" href="' . wn_rank_escape($detailUrl) . '"><span><strong>' . wn_rank_escape($title) . '</strong><em>' . wn_rank_escape($vendor) . '</em></span><small>' . wn_rank_escape($desc) . '</small><span class="ranking-detail__inline"><span class="ranking-detail__detail-label">查看详情</span>' . ($directUrl !== '' ? '<span class="ranking-detail__divider" aria-hidden="true"></span><span class="ranking-detail__direct-label">官网直达</span>' : '<span class="ranking-detail__divider" aria-hidden="true"></span><span class="ranking-detail__state-label">站内内容</span>') . '</span></a>'
+            . '<div class="ranking-detail__delta"><span>+' . wn_rank_format_number($boostValue * 37) . '</span><small>排序加权</small></div>'
+            . '<div class="ranking-detail__metric"><strong>' . wn_rank_escape($heat) . '</strong><small>站内热度</small></div>'
+            . ($directUrl !== ''
+                ? '<a class="ranking-detail__direct" href="' . wn_rank_escape($directUrl) . '" target="_blank" rel="nofollow noopener noreferrer">直达</a>'
+                : '<a class="ranking-detail__direct" href="' . wn_rank_escape($detailUrl) . '">详情</a>')
+            . '</article>';
+    }
+}
+
+if (!function_exists('wn_rank_render_hot_item')) {
+    function wn_rank_render_hot_item($item, $index)
+    {
+        $title = wn_rank_trim_text(!empty($item['title']) ? $item['title'] : 'AI 工具', 24);
+        $desc = wn_rank_trim_text(!empty($item['seo_description']) ? $item['seo_description'] : (!empty($item['introduction']) ? $item['introduction'] : '点击查看工具详情'), 58);
+        $vendor = wn_rank_trim_text(!empty($item['type_name']) ? $item['type_name'] : '精选应用', 16);
+        $detailUrl = wn_rank_arcurl($item);
+        $logoUrl = wn_rank_logo_url($item);
+        $rank = intval($index) + 1;
+
+        return '<a class="ranking-hot__item" href="' . wn_rank_escape($detailUrl) . '">'
+            . '<span class="ranking-hot__logo"><img src="' . wn_rank_escape($logoUrl) . '" alt="' . wn_rank_escape($title) . '" width="36" height="36" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></span>'
+            . '<span class="ranking-hot__copy"><strong>' . wn_rank_escape($title) . '</strong><em>' . wn_rank_escape($vendor) . ' · 第' . $rank . '名</em><small>' . wn_rank_escape($desc) . '</small><span class="ranking-hot__inline"><span class="ranking-hot__detail-label">查看详情</span></span></span>'
+              . '</a>';
+    }
+}
+
+if (!function_exists('wn_rank_detail_hot_limit')) {
+    function wn_rank_detail_hot_limit($detailItemCount)
+    {
+        $detailItemCount = max(1, intval($detailItemCount));
+        $limit = min($detailItemCount, 12);
+        if ($detailItemCount <= 8) {
+            $limit = min($detailItemCount, 8);
+        }
+        return max(4, $limit);
+    }
+}
+
+if (!function_exists('wn_rank_render_pagination')) {
+    function wn_rank_render_pagination($slug, $currentPage, $totalPages)
+    {
+        $currentPage = max(1, intval($currentPage));
+        $totalPages = max(1, intval($totalPages));
+        $items = [];
+        if ($currentPage > 1) {
+            $items[] = '<a href="' . wn_rank_escape(wn_rank_board_url($slug, $currentPage - 1)) . '">上一页</a>';
+        } else {
+            $items[] = '<span class="is-disabled">上一页</span>';
+        }
+        $start = max(1, $currentPage - 3);
+        $end = min($totalPages, $start + 6);
+        $start = max(1, $end - 6);
+        for ($page = $start; $page <= $end; $page++) {
+            if ($page === $currentPage) {
+                $items[] = '<span class="is-current">' . $page . '</span>';
+            } else {
+                $items[] = '<a href="' . wn_rank_escape(wn_rank_board_url($slug, $page)) . '">' . $page . '</a>';
+            }
+        }
+        if ($currentPage < $totalPages) {
+            $items[] = '<a href="' . wn_rank_escape(wn_rank_board_url($slug, $currentPage + 1)) . '">下一页</a>';
+        } else {
+            $items[] = '<span class="is-disabled">下一页</span>';
+        }
+        return '<div class="pagebar wf-pagebar ranking-detail__pager" data-wf-pagebar data-wf-total-pages="' . intval($totalPages) . '">'
+            . '<div class="pagination" aria-label="榜单分页">' . implode('', $items) . '</div>'
+            . '<form class="wf-page-jump" data-wf-page-jump>'
+            . '<input type="number" min="1" max="' . intval($totalPages) . '" inputmode="numeric" aria-label="跳转页码" />'
+            . '<button type="submit">跳转</button>'
+            . '</form>'
+            . '</div>';
+    }
+}
+
+if (!function_exists('wn_rank_render_panel')) {
+    function wn_rank_render_panel($id, $title, $desc, $moreUrl, $items, $active = false)
+    {
+        $html = '<section class="ranking-page__panel' . ($active ? ' is-active' : '') . '" id="' . wn_rank_escape($id) . '">';
+        $html .= '<div class="ranking-page__panel-head"><div><h2>' . wn_rank_escape($title) . '</h2><p>' . wn_rank_escape($desc) . '</p></div><a href="' . wn_rank_escape($moreUrl) . '">完整榜单</a></div>';
+        $html .= '<div class="ranking-page__list">';
+        foreach ((array)$items as $index => $item) {
+            $html .= wn_rank_render_item($item, $index);
+        }
+        $html .= '</div></section>';
+        return $html;
+    }
+}
+
+if (!function_exists('wn_rank_collect_tree_ids')) {
+    function wn_rank_collect_tree_ids($typeId, $childrenMap)
+    {
+        $typeId = intval($typeId);
+        if ($typeId <= 0) {
+            return [];
+        }
+
+        $typeIds = [$typeId];
+        $queue = [$typeId];
+        while (!empty($queue)) {
+            $next = [];
+            foreach ((array)$queue as $parentId) {
+                $parentId = intval($parentId);
+                if (empty($childrenMap[$parentId])) {
+                    continue;
+                }
+                foreach ((array)$childrenMap[$parentId] as $childId) {
+                    $childId = intval($childId);
+                    if ($childId <= 0 || in_array($childId, $typeIds, true)) {
+                        continue;
+                    }
+                    $typeIds[] = $childId;
+                    $next[] = $childId;
+                }
+            }
+            $queue = $next;
+        }
+
+        return $typeIds;
+    }
+}
+
+if (!function_exists('wn_rank_type_board_slug')) {
+    function wn_rank_type_board_slug($typeId)
+    {
+        return 't' . max(1, intval($typeId));
+    }
+}
+
+if (!function_exists('wn_rank_type_board_url')) {
+    function wn_rank_type_board_url($typeId, $page = 1)
+    {
+        return wn_rank_board_url(wn_rank_type_board_slug($typeId), $page);
+    }
+}
+
+if (!function_exists('wn_rank_fine_rank_title')) {
+    function wn_rank_fine_rank_title($title)
+    {
+        $title = trim((string)$title);
+        if ($title === '') {
+            return 'AI排行榜';
+        }
+        if (strpos($title, '排行榜') !== false) {
+            return $title;
+        }
+        if (preg_match('/ai/i', $title)) {
+            return $title . '排行榜';
+        }
+        return $title . 'AI排行榜';
+    }
+}
+
+if (!function_exists('wn_rank_fine_group_title')) {
+    function wn_rank_fine_group_title($title)
+    {
+        $title = trim((string)$title);
+        if ($title === '') {
+            return 'AI工具';
+        }
+        return $title;
+    }
+}
+
+if (!function_exists('wn_rank_fine_chip_label')) {
+    function wn_rank_fine_chip_label($title)
+    {
+        $title = trim((string)$title);
+        if ($title === '') {
+            return 'AI工具';
+        }
+        $title = preg_replace('/\s+/u', '', $title);
+        $title = preg_replace('/(?:AI)?工具排行榜$/u', '', $title);
+        $title = preg_replace('/排行榜$/u', '', $title);
+        return $title !== '' ? $title : 'AI工具';
+    }
+}
+
+if (!function_exists('wn_rank_render_fine_card')) {
+    function wn_rank_fine_module_score($module)
+    {
+        $itemCount = max(0, intval(!empty($module['item_count']) ? $module['item_count'] : 0));
+        $score = $itemCount * 80;
+        foreach ((array)$module['items'] as $item) {
+            $score += max(0, intval(wn_rank_heat_score($item) / 12));
+        }
+        return max(1, intval($score));
+    }
+}
+
+if (!function_exists('wn_rank_fine_layout_seed')) {
+    function wn_rank_fine_layout_seed($groupId, $module)
+    {
+        $moduleId = !empty($module['id']) ? intval($module['id']) : 0;
+        $title = !empty($module['title']) ? (string)$module['title'] : '';
+        $seed = sprintf('%u', crc32($groupId . ':' . $moduleId . ':' . $title));
+        return intval($seed);
+    }
+}
+
+if (!function_exists('wn_rank_fine_card_tone')) {
+    function wn_rank_fine_card_tone($seed)
+    {
+        $tones = [
+            ['bg1' => '#f7fbff', 'bg2' => '#edf5ff', 'border' => '#bdd3f6', 'ink' => '#355eab', 'accent' => '#5b8bd9'],
+            ['bg1' => '#f7fcf8', 'bg2' => '#edf7f0', 'border' => '#c7e2cf', 'ink' => '#2f7a53', 'accent' => '#63a97d'],
+            ['bg1' => '#fffaf2', 'bg2' => '#fff5e8', 'border' => '#ebd2a4', 'ink' => '#9a6b14', 'accent' => '#d9a441'],
+            ['bg1' => '#fff7fa', 'bg2' => '#fff0f5', 'border' => '#edc5d3', 'ink' => '#a0526c', 'accent' => '#d987a5'],
+            ['bg1' => '#f6fbfc', 'bg2' => '#edf7f9', 'border' => '#bfe0e6', 'ink' => '#2d7380', 'accent' => '#66a9b5'],
+            ['bg1' => '#faf8ff', 'bg2' => '#f3efff', 'border' => '#d0c4f2', 'ink' => '#64509d', 'accent' => '#9981cf'],
+        ];
+        return $tones[abs(intval($seed)) % count($tones)];
+    }
+}
+
+if (!function_exists('wn_rank_fine_label_length')) {
+    function wn_rank_fine_label_length($label)
+    {
+        if (function_exists('mb_strlen')) {
+            return intval(mb_strlen((string)$label, 'UTF-8'));
+        }
+        return strlen((string)$label);
+    }
+}
+
+if (!function_exists('wn_rank_fine_card_size_meta')) {
+    function wn_rank_fine_card_size_meta($score, $maxScore, $label)
+    {
+        $ratio = $maxScore > 0 ? ($score / $maxScore) : 0;
+        $length = wn_rank_fine_label_length($label);
+        $meta = [
+            'tier' => 'xs',
+            'span' => 2,
+            'rows' => 7,
+            'height' => 80,
+        ];
+        if ($ratio >= 0.9) {
+            $meta = ['tier' => 'xl', 'span' => 4, 'rows' => 11, 'height' => 110];
+        } elseif ($ratio >= 0.72) {
+            $meta = ['tier' => 'lg', 'span' => 4, 'rows' => 10, 'height' => 102];
+        } elseif ($ratio >= 0.52) {
+            $meta = ['tier' => 'md', 'span' => 3, 'rows' => 9, 'height' => 94];
+        } elseif ($ratio >= 0.34) {
+            $meta = ['tier' => 'sm', 'span' => 2, 'rows' => 8, 'height' => 88];
+        } else {
+            $meta = ['tier' => 'xs', 'span' => 2, 'rows' => 8, 'height' => 90];
+        }
+        if ($length >= 18) {
+            $meta['rows'] += 1;
+            $meta['height'] += 2;
+        }
+        if ($length >= 24) {
+            $meta['rows'] += 1;
+            $meta['span'] = min(5, $meta['span'] + 1);
+            $meta['height'] += 2;
+        }
+        if ($length >= 30) {
+            $meta['rows'] += 1;
+            $meta['height'] += 2;
+        }
+        return $meta;
+    }
+}
+
+if (!function_exists('wn_rank_fine_text_meta')) {
+    function wn_rank_fine_text_meta($label, $sizeTier)
+    {
+        $length = wn_rank_fine_label_length($label);
+        $fontSize = 14.0;
+        $lineHeight = 1.16;
+
+        switch ($sizeTier) {
+            case 'xl':
+                $fontSize = 15.0;
+                $lineHeight = 1.13;
+                break;
+            case 'lg':
+                $fontSize = 14.5;
+                $lineHeight = 1.14;
+                break;
+            case 'md':
+                $fontSize = 14.0;
+                $lineHeight = 1.16;
+                break;
+            case 'sm':
+                $fontSize = 13.5;
+                $lineHeight = 1.18;
+                break;
+            default:
+                $fontSize = 13.0;
+                $lineHeight = 1.2;
+                break;
+        }
+
+        if ($length >= 18) {
+            $fontSize -= 0.3;
+        }
+        if ($length >= 24) {
+            $fontSize -= 0.3;
+        }
+        if ($length <= 8) {
+            $fontSize += 0.4;
+        }
+        if ($length <= 5) {
+            $fontSize += 0.4;
+        }
+
+        $fontSize = max(12.0, min(15.0, $fontSize));
+        $textScale = 1;
+        if ($length <= 5) {
+            $textScale = 1.06;
+        } elseif ($length <= 8) {
+            $textScale = 1.03;
+        } elseif ($length >= 24) {
+            $textScale = 0.96;
+        } elseif ($length >= 30) {
+            $textScale = 0.94;
+        }
+
+        return [
+            'font_size' => number_format($fontSize, 1, '.', ''),
+            'line_height' => $lineHeight,
+            'length' => $length,
+            'text_scale' => number_format($textScale, 2, '.', ''),
+        ];
+    }
+}
+
+if (!function_exists('wn_rank_render_fine_card')) {
+    function wn_rank_render_fine_card($module, $groupId, $maxScore)
+    {
+        $title = !empty($module['title']) ? (string)$module['title'] : 'AI 工具';
+        $url = !empty($module['url']) ? (string)$module['url'] : '#';
+        $label = wn_rank_fine_chip_label($title);
+        $ariaLabel = wn_rank_fine_rank_title($title);
+        $score = wn_rank_fine_module_score($module);
+        $seed = wn_rank_fine_layout_seed($groupId, $module);
+        $tone = wn_rank_fine_card_tone($seed);
+        $size = wn_rank_fine_card_size_meta($score, $maxScore, $label);
+        $rotate = number_format((($seed % 9) - 4) * 0.52, 2, '.', '') . 'deg';
+        $offsetX = (((int)(($seed >> 3) % 5) - 2) * 4) . 'px';
+        $offsetY = (((int)(($seed >> 6) % 5) - 2) * 3) . 'px';
+        $order = intval($seed % 120);
+        $labelLen = wn_rank_fine_label_length($label);
+        $textClass = $labelLen >= 28 ? ' is-compact' : ($labelLen >= 18 ? ' is-tight' : '');
+        $textMeta = wn_rank_fine_text_meta($label, $size['tier']);
+        $style = '--note-span:' . intval($size['span']) . ';--note-rows:' . intval($size['rows']) . ';--note-height:' . intval($size['height']) . 'px;--note-rotate:' . $rotate . ';--note-offset-x:' . $offsetX . ';--note-offset-y:' . $offsetY . ';--note-order:' . $order . ';--note-bg1:' . wn_rank_escape($tone['bg1']) . ';--note-bg2:' . wn_rank_escape($tone['bg2']) . ';--note-border:' . wn_rank_escape($tone['border']) . ';--note-ink:' . wn_rank_escape($tone['ink']) . ';--note-accent:' . wn_rank_escape($tone['accent']) . ';--note-font-size:' . number_format($textMeta['font_size'], 1, '.', '') . 'px;--note-line-height:' . wn_rank_escape(number_format($textMeta['line_height'], 2, '.', '')) . ';--note-text-scale:' . wn_rank_escape($textMeta['text_scale']) . ';';
+        return '<a class="ranking-fine__item ranking-fine__item--' . wn_rank_escape($size['tier']) . $textClass . '" style="' . $style . '" href="' . wn_rank_escape($url) . '" aria-label="' . wn_rank_escape($ariaLabel) . '" title="' . wn_rank_escape($ariaLabel) . '" data-fine-score="' . intval($score) . '" data-fine-count="' . intval(!empty($module['item_count']) ? $module['item_count'] : 0) . '"><span class="ranking-fine__item-text">' . wn_rank_escape($label) . '</span></a>';
+    }
+}
+
+if (!function_exists('wn_rank_render_fine_group')) {
+    function wn_rank_render_fine_group($group)
+    {
+        if (empty($group['modules'])) {
+            return '';
+        }
+
+        $groupId = intval(!empty($group['id']) ? $group['id'] : 0);
+        $title = !empty($group['title']) ? (string)$group['title'] : 'AI 工具';
+        $headingId = 'ranking-fine-group-' . $groupId;
+        $modules = array_values((array)$group['modules']);
+        $maxScore = 1;
+        foreach ($modules as $module) {
+            $maxScore = max($maxScore, wn_rank_fine_module_score($module));
+        }
+
+        $html = '<section class="ranking-fine__group" aria-labelledby="' . wn_rank_escape($headingId) . '">';
+        $html .= '<div class="ranking-fine__group-head"><h3 id="' . wn_rank_escape($headingId) . '">' . wn_rank_escape(wn_rank_fine_group_title($title)) . '</h3></div>';
+        $html .= '<div class="ranking-fine__grid">';
+        foreach ($modules as $module) {
+            $html .= wn_rank_render_fine_card($module, $groupId, $maxScore);
+        }
+        $html .= '</div></section>';
+
+        return $html;
+    }
+}
+
+if (!function_exists('wn_rank_days_since')) {
+    function wn_rank_days_since($timestamp)
+    {
+        $timestamp = intval($timestamp);
+        if ($timestamp <= 0) {
+            return 9999;
+        }
+        return max(0, intval(floor((time() - $timestamp) / 86400)));
+    }
+}
+
+if (!function_exists('wn_rank_rising_score')) {
+    function wn_rank_rising_score($item)
+    {
+        $click = !empty($item['click']) ? intval($item['click']) : 0;
+        $heat = wn_rank_heat_score($item);
+        $ageDays = wn_rank_days_since(!empty($item['add_time']) ? $item['add_time'] : 0);
+        $freshness = max(0, 45 - min(45, $ageDays));
+        $pinBoost = (!empty($item['top_home']) ? 120 : 0)
+            + (!empty($item['top_category']) ? 90 : 0)
+            + (!empty($item['is_recom']) ? 65 : 0);
+
+        return intval(($freshness * 120) + min(2600, $heat) + min(900, intval($click / 4)) + $pinBoost);
+    }
+}
+
+if (!function_exists('wn_rank_falling_score')) {
+    function wn_rank_falling_score($item)
+    {
+        $click = !empty($item['click']) ? intval($item['click']) : 0;
+        $heat = wn_rank_heat_score($item);
+        $ageDays = wn_rank_days_since(!empty($item['add_time']) ? $item['add_time'] : 0);
+        if ($ageDays < 21) {
+            return -1;
+        }
+
+        $staleness = min(180, max(0, $ageDays - 21));
+        $pinPenalty = (!empty($item['top_global']) ? 220 : 0)
+            + (!empty($item['top_home']) ? 150 : 0)
+            + (!empty($item['top_category']) ? 120 : 0)
+            + (!empty($item['is_head']) ? 100 : 0)
+            + (!empty($item['is_top']) ? 90 : 0)
+            + (!empty($item['is_recom']) ? 70 : 0);
+
+        return intval(($staleness * 32) + min(2200, intval(sqrt(max(1, $click)) * 42)) + intval($heat / 4) - $pinPenalty);
+    }
+}
+
+if (!function_exists('wn_rank_insight_icon')) {
+    function wn_rank_insight_icon($variant)
+    {
+        $variant = strtolower(trim((string)$variant));
+        $icons = [
+            'updated' => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-2.64-6.36" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/><path d="M21 3v6h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/><path d="M12 7.5v5l3 1.8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>',
+            'hot' => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 21h8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M12 17v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/><path d="M17 6h1.5A2.5 2.5 0 0 1 21 8.5 2.5 2.5 0 0 1 18.5 11H17" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/><path d="M7 6H5.5A2.5 2.5 0 0 0 3 8.5 2.5 2.5 0 0 0 5.5 11H7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>',
+            'rising' => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19V11" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M10 19V8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M15 19v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M4 5h6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M10 5v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="m13 11 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M19 5h-4v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>',
+            'falling' => '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19V12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M10 19V9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M15 19v-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="m4 6 6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/><path d="M10 12V6H4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/><path d="M19 19v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/></svg>',
+        ];
+
+        return isset($icons[$variant]) ? $icons[$variant] : $icons['updated'];
+    }
+}
+
+if (!function_exists('wn_rank_render_insight_card')) {
+    function wn_rank_render_insight_card($variant, $label, $value, $meta = '', $href = '')
+    {
+        $variant = preg_replace('/[^a-z0-9_-]/i', '', (string)$variant);
+        $label = wn_rank_escape($label);
+        $value = wn_rank_escape($value);
+        $meta = wn_rank_escape($meta);
+        $href = trim((string)$href);
+        $tag = $href !== '' ? 'a' : 'div';
+        $attrs = 'class="ranking-page__insight ranking-page__insight--' . wn_rank_escape($variant) . '"';
+        if ($href !== '') {
+            $attrs .= ' href="' . wn_rank_escape($href) . '"';
+        }
+
+        $html = '<' . $tag . ' ' . $attrs . '>';
+        $html .= '<span class="ranking-page__insight-icon">' . wn_rank_insight_icon($variant) . '</span>';
+        $html .= '<span class="ranking-page__insight-copy"><small>' . $label . '</small><strong>' . $value . '</strong>';
+        if ($meta !== '') {
+            $html .= '<em>' . $meta . '</em>';
+        }
+        $html .= '</span></' . $tag . '>';
+        return $html;
+    }
+}
+
+if (!function_exists('wn_rank_ad_image_url')) {
+    function wn_rank_ad_image_url($value)
+    {
+        $value = trim((string)$value);
+        if ($value === '') {
+            return '/template/pc/skin/wogaosuni/image/ranking-top-ad-1.svg';
+        }
+        if (function_exists('handle_subdir_pic')) {
+            $value = handle_subdir_pic($value);
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('wn_rank_ad_target_attr')) {
+    function wn_rank_ad_target_attr($target)
+    {
+        $target = trim((string)$target);
+        if ($target === '1' || stripos($target, '_blank') !== false) {
+            return ' target="_blank" rel="nofollow noopener noreferrer"';
+        }
+        return '';
+    }
+}
+
+if (!function_exists('wn_rank_ads_by_pid')) {
+    function wn_rank_ads_by_pid($pid, $limit = 5)
+    {
+        $pid = intval($pid);
+        $limit = max(1, intval($limit));
+        if ($pid <= 0) {
+            return [];
+        }
+
+        $prefix = config('database.prefix');
+        $now = time();
+        $sql = 'SELECT id, pid, title, links, litpic, intro, target, sort_order
+            FROM ' . $prefix . 'ad
+            WHERE pid = ' . $pid . '
+              AND lang = "cn"
+              AND status = 1
+              AND is_del = 0
+              AND (start_time = 0 OR start_time <= ' . $now . ')
+              AND (end_time = 0 OR end_time >= ' . $now . ')
+            ORDER BY sort_order ASC, id ASC
+            LIMIT ' . $limit;
+
+        return (array)\think\Db::query($sql);
+    }
+}
+
+if (!function_exists('wn_rank_render_promo_ad')) {
+    function wn_rank_render_promo_ad($item, $index = 0)
+    {
+        $title = wn_rank_trim_text(!empty($item['title']) ? $item['title'] : '品牌推广位', 18);
+        $link = trim(!empty($item['links']) ? (string)$item['links'] : '');
+        $link = $link !== '' ? $link : '#';
+        $image = wn_rank_ad_image_url(!empty($item['litpic']) ? $item['litpic'] : '');
+        $target = wn_rank_ad_target_attr(!empty($item['target']) ? $item['target'] : '');
+
+        return '<a class="ranking-page__promo" href="' . wn_rank_escape($link) . '"' . $target . ' aria-label="' . wn_rank_escape($title) . '">'
+            . '<img src="' . wn_rank_escape($image) . '" alt="' . wn_rank_escape($title) . '" width="430" height="240" loading="lazy" decoding="async" />'
+            . '</a>';
+    }
+}
+
+$wnRankAllTypeIds = [];
+$wnRankTopTypeIds = \think\Db::name('arctype')
+    ->where('parent_id', 0)
+    ->where('id', 'not in', [263,264,265,271,370,371,372,373])
+    ->where('status', 1)
+    ->where('is_hidden', 0)
+    ->where('is_del', 0)
+    ->order('sort_order asc,id asc')
+    ->column('id');
+foreach ((array)$wnRankTopTypeIds as $wnRankTopTypeId) {
+    $wnRankAllTypeIds = array_merge($wnRankAllTypeIds, wn_nav_collect_type_ids($wnRankTopTypeId, 2));
+}
+$wnRankAllTypeIds = array_values(array_unique(array_map('intval', $wnRankAllTypeIds)));
+
+$wnRankBoards = [
+    'overall' => ['id' => 'ranking-panel-overall', 'title' => '综合热榜', 'detail_title' => '综合热榜', 'desc' => '全站工具按站内热度指数排序。', 'type_ids' => $wnRankAllTypeIds],
+    'recom' => ['id' => 'ranking-panel-recom', 'title' => '推荐工具榜', 'detail_title' => '推荐工具榜', 'desc' => '仅展示被手动添加推荐属性的工具，按站内热度排序。', 'type_ids' => $wnRankAllTypeIds, 'is_recom_only' => true],
+    'chat' => ['id' => 'ranking-panel-chat', 'title' => '对话搜索排行', 'detail_title' => '对话搜索排行', 'desc' => '聊天助手、AI 搜索、知识问答。', 'type_ids' => wn_nav_collect_type_ids(256, 2)],
+    'writing' => ['id' => 'ranking-panel-writing', 'title' => '写作内容排行', 'detail_title' => '写作内容排行', 'desc' => '写作、文案、总结与学术辅助。', 'type_ids' => wn_nav_collect_type_ids(257, 2)],
+    'image' => ['id' => 'ranking-panel-image', 'title' => '图像设计排行', 'detail_title' => '图像设计排行', 'desc' => '绘画、设计、抠图与图片处理。', 'type_ids' => wn_nav_collect_type_ids(258, 2)],
+    'video' => ['id' => 'ranking-panel-video', 'title' => '视频数字人排行', 'detail_title' => '视频数字人排行', 'desc' => '视频生成、剪辑、字幕与数字人。', 'type_ids' => wn_nav_collect_type_ids(259, 2)],
+    'office' => ['id' => 'ranking-panel-office', 'title' => '办公学习排行', 'detail_title' => '办公学习排行', 'desc' => 'PPT、文档、会议、翻译与笔记。', 'type_ids' => wn_nav_collect_type_ids(260, 2)],
+    'audio' => ['id' => 'ranking-panel-audio', 'title' => '音频语音排行', 'detail_title' => '音频语音排行', 'desc' => '音乐生成、配音、语音识别与音频处理。', 'type_ids' => wn_nav_collect_type_ids(262, 2)],
+    'agent' => ['id' => 'ranking-panel-agent', 'title' => '智能体排行', 'detail_title' => '智能体排行', 'desc' => 'Agent 平台、自动化助手与插件技能。', 'type_ids' => wn_nav_collect_type_ids(266, 2)],
+    'dev' => ['id' => 'ranking-panel-dev', 'title' => '开发模型排行', 'detail_title' => '开发模型排行', 'desc' => '代码助手、模型、框架与开发平台。', 'type_ids' => wn_nav_collect_type_ids(267, 2)],
+    'business' => ['id' => 'ranking-panel-business', 'title' => '企业营销排行', 'detail_title' => '企业营销排行', 'desc' => '营销、客服、数据分析与企业服务。', 'type_ids' => wn_nav_collect_type_ids(269, 2)],
+    'industry' => ['id' => 'ranking-panel-industry', 'title' => '行业应用排行', 'detail_title' => '行业应用排行', 'desc' => '健康、法律、行业场景与垂直应用。', 'type_ids' => wn_nav_collect_type_ids(270, 2)],
+];
+
+$wnRankBoardPageRaw = strtolower(trim((string)input('param.boardpage/s', '')));
+$wnRankBoardFromPage = '';
+$wnRankPageFromBoardPage = 0;
+if ($wnRankBoardPageRaw !== '' && preg_match('/^([a-z0-9-]+)_([0-9]+)$/i', $wnRankBoardPageRaw, $wnRankBoardPageMatch)) {
+    $wnRankBoardFromPage = strtolower(trim((string)$wnRankBoardPageMatch[1]));
+    $wnRankPageFromBoardPage = max(1, intval($wnRankBoardPageMatch[2]));
+}
+
+$wnRankActiveBoardSlugRaw = strtolower(trim((string)input('param.board/s', '')));
+if ($wnRankActiveBoardSlugRaw === '' && $wnRankBoardFromPage !== '') {
+    $wnRankActiveBoardSlugRaw = $wnRankBoardFromPage;
+}
+$wnRankActiveBoardSlug = $wnRankActiveBoardSlugRaw;
+if (!isset($wnRankBoards[$wnRankActiveBoardSlug])) {
+    $wnRankActiveBoardSlug = '';
+}
+$wnRankIsDetail = $wnRankActiveBoardSlug !== '';
+
+foreach ($wnRankBoards as $wnRankBoardSlug => &$wnRankBoardConfig) {
+    $wnRankBoardConfig['items'] = !empty($wnRankBoardConfig['is_recom_only'])
+        ? wn_rank_recom_items_by_type_ids($wnRankBoardConfig['type_ids'], 10, 2)
+        : wn_rank_items_by_type_ids($wnRankBoardConfig['type_ids'], 10, 2);
+    $wnRankBoardConfig['url'] = wn_rank_board_url($wnRankBoardSlug);
+}
+unset($wnRankBoardConfig);
+$wnRankBaseBoards = $wnRankBoards;
+
+$wnRankInsightPool = wn_rank_items_by_type_ids($wnRankAllTypeIds, 36, 2);
+if (empty($wnRankInsightPool) && !empty($wnRankBoards['overall']['items'])) {
+    $wnRankInsightPool = (array)$wnRankBoards['overall']['items'];
+}
+$wnRankInsightUpdated = '站内热度';
+$wnRankInsightHot = !empty($wnRankInsightPool[0]) ? $wnRankInsightPool[0] : [];
+$wnRankInsightRising = [];
+$wnRankInsightFalling = [];
+$wnRankFineGroups = [];
+$wnRankFineGroupTotal = 0;
+$wnRankFineModuleTotal = 0;
+$wnRankFineVisibleToolTotal = 0;
+$wnRankInsightUsed = [];
+if (!empty($wnRankInsightHot['aid'])) {
+    $wnRankInsightUsed[intval($wnRankInsightHot['aid'])] = true;
+}
+
+$wnRankBestRisingScore = -1;
+foreach ((array)$wnRankInsightPool as $item) {
+    $aid = !empty($item['aid']) ? intval($item['aid']) : 0;
+    if ($aid > 0 && isset($wnRankInsightUsed[$aid])) {
+        continue;
+    }
+    $score = wn_rank_rising_score($item);
+    if ($score > $wnRankBestRisingScore) {
+        $wnRankBestRisingScore = $score;
+        $wnRankInsightRising = $item;
+    }
+}
+if (!empty($wnRankInsightRising['aid'])) {
+    $wnRankInsightUsed[intval($wnRankInsightRising['aid'])] = true;
+}
+
+$wnRankBestFallingScore = -1;
+foreach ((array)$wnRankInsightPool as $item) {
+    $aid = !empty($item['aid']) ? intval($item['aid']) : 0;
+    if ($aid > 0 && isset($wnRankInsightUsed[$aid])) {
+        continue;
+    }
+    $score = wn_rank_falling_score($item);
+    if ($score > $wnRankBestFallingScore) {
+        $wnRankBestFallingScore = $score;
+        $wnRankInsightFalling = $item;
+    }
+}
+if (empty($wnRankInsightFalling)) {
+    for ($wnRankInsightIndex = count($wnRankInsightPool) - 1; $wnRankInsightIndex >= 0; $wnRankInsightIndex--) {
+        $item = $wnRankInsightPool[$wnRankInsightIndex];
+        $aid = !empty($item['aid']) ? intval($item['aid']) : 0;
+        if ($aid > 0 && isset($wnRankInsightUsed[$aid])) {
+            continue;
+        }
+        $wnRankInsightFalling = $item;
+        break;
+    }
+}
+
+$wnRankTypeRows = [];
+if (!empty($wnRankAllTypeIds)) {
+    $wnRankTypeRows = (array)\think\Db::name('arctype')
+        ->where('id', 'in', $wnRankAllTypeIds)
+        ->where('status', 1)
+        ->where('is_hidden', 0)
+        ->where('is_del', 0)
+        ->order('sort_order asc,id asc')
+        ->select();
+}
+$wnRankTypeMap = [];
+$wnRankTypeChildren = [];
+$wnRankTopTypeOrder = [];
+foreach ((array)$wnRankTypeRows as $wnRankTypeRow) {
+    $wnRankTypeId = !empty($wnRankTypeRow['id']) ? intval($wnRankTypeRow['id']) : 0;
+    if ($wnRankTypeId <= 0) {
+        continue;
+    }
+    $wnRankParentId = !empty($wnRankTypeRow['parent_id']) ? intval($wnRankTypeRow['parent_id']) : 0;
+    $wnRankTypeMap[$wnRankTypeId] = $wnRankTypeRow;
+    if (!isset($wnRankTypeChildren[$wnRankParentId])) {
+        $wnRankTypeChildren[$wnRankParentId] = [];
+    }
+    $wnRankTypeChildren[$wnRankParentId][] = $wnRankTypeId;
+    if ($wnRankParentId === 0) {
+        $wnRankTopTypeOrder[] = $wnRankTypeId;
+    }
+}
+
+$wnRankFineModulesRaw = [];
+$wnRankFineOwnerByType = [];
+$wnRankFineAllTypeIds = [];
+foreach ((array)$wnRankTopTypeOrder as $wnRankTopTypeId) {
+    if (empty($wnRankTypeChildren[$wnRankTopTypeId])) {
+        continue;
+    }
+    foreach ((array)$wnRankTypeChildren[$wnRankTopTypeId] as $wnRankChildTypeId) {
+        $wnRankChildTypeId = intval($wnRankChildTypeId);
+        if ($wnRankChildTypeId <= 0 || empty($wnRankTypeMap[$wnRankChildTypeId])) {
+            continue;
+        }
+        $wnRankChildType = $wnRankTypeMap[$wnRankChildTypeId];
+        $wnRankChildTreeIds = wn_rank_collect_tree_ids($wnRankChildTypeId, $wnRankTypeChildren);
+        if (empty($wnRankChildTreeIds)) {
+            continue;
+        }
+
+        $wnRankFineModulesRaw[$wnRankChildTypeId] = [
+            'id' => $wnRankChildTypeId,
+            'title' => !empty($wnRankChildType['typename']) ? $wnRankChildType['typename'] : 'AI 工具',
+            'parent_id' => $wnRankTopTypeId,
+            'parent_name' => !empty($wnRankTypeMap[$wnRankTopTypeId]['typename']) ? $wnRankTypeMap[$wnRankTopTypeId]['typename'] : '',
+            'url' => wn_rank_type_url($wnRankChildType),
+            'type_ids' => $wnRankChildTreeIds,
+            'item_count' => 0,
+            'items' => [],
+        ];
+
+        foreach ((array)$wnRankChildTreeIds as $wnRankChildTreeId) {
+            $wnRankChildTreeId = intval($wnRankChildTreeId);
+            if ($wnRankChildTreeId <= 0) {
+                continue;
+            }
+            $wnRankFineOwnerByType[$wnRankChildTreeId] = $wnRankChildTypeId;
+            $wnRankFineAllTypeIds[] = $wnRankChildTreeId;
+        }
+    }
+}
+$wnRankFineAllTypeIds = array_values(array_unique(array_filter(array_map('intval', $wnRankFineAllTypeIds))));
+
+if (!empty($wnRankFineAllTypeIds) && !empty($wnRankFineModulesRaw)) {
+    foreach ($wnRankFineModulesRaw as $wnRankFineModuleId => &$wnRankFineCountModule) {
+        $wnRankFineCountModule['item_count'] = wn_rank_total_by_type_ids($wnRankFineCountModule['type_ids'], 2);
+    }
+    unset($wnRankFineCountModule);
+
+    $wnRankFinePoolLimit = min(4000, max(1200, count($wnRankFineModulesRaw) * 24));
+    $wnRankFinePrefix = config('database.prefix');
+    $wnRankFineAllTypeIdSql = implode(',', $wnRankFineAllTypeIds);
+    $wnRankFineRelJoinSql = wn_rank_tool_category_rel_join_sql($wnRankFineAllTypeIdSql);
+    $wnRankFineTypeWhereSql = wn_rank_tool_category_where_sql($wnRankFineAllTypeIdSql);
+    $wnRankFineSql = 'SELECT a.*, pc.site_region, pc.top_global, pc.top_home, pc.top_category, pc.platform_tier, t.typename AS type_name
+        FROM ' . $wnRankFinePrefix . 'archives a
+        LEFT JOIN ' . $wnRankFinePrefix . 'product_content pc ON pc.aid = a.aid
+        LEFT JOIN ' . $wnRankFinePrefix . 'arctype t ON t.id = a.typeid
+        ' . $wnRankFineRelJoinSql . '
+        WHERE ' . $wnRankFineTypeWhereSql . '
+            AND a.channel = 2
+            AND a.status = 1
+            AND a.is_del = 0
+            AND a.arcrank > -1
+        ORDER BY ' . wn_rank_heat_order_sql() . '
+        LIMIT ' . intval($wnRankFinePoolLimit);
+    $wnRankFinePoolRows = (array)\think\Db::query($wnRankFineSql);
+    foreach ((array)$wnRankFinePoolRows as $wnRankFinePoolItem) {
+        $wnRankFineTypeId = !empty($wnRankFinePoolItem['typeid']) ? intval($wnRankFinePoolItem['typeid']) : 0;
+        $wnRankFineOwnerId = !empty($wnRankFineOwnerByType[$wnRankFineTypeId]) ? intval($wnRankFineOwnerByType[$wnRankFineTypeId]) : 0;
+        if ($wnRankFineOwnerId <= 0 && !empty($wnRankFinePoolItem['aid'])) {
+            $wnRankFineRelTypeIds = (array)\think\Db::name('wogs_tool_category_rel')
+                ->where('aid', intval($wnRankFinePoolItem['aid']))
+                ->where('status', 1)
+                ->where('typeid', 'in', $wnRankFineAllTypeIds)
+                ->order('sort_order asc,id asc')
+                ->column('typeid');
+            foreach ((array)$wnRankFineRelTypeIds as $wnRankFineRelTypeId) {
+                $wnRankFineRelTypeId = intval($wnRankFineRelTypeId);
+                if (!empty($wnRankFineOwnerByType[$wnRankFineRelTypeId])) {
+                    $wnRankFineOwnerId = intval($wnRankFineOwnerByType[$wnRankFineRelTypeId]);
+                    break;
+                }
+            }
+        }
+        if ($wnRankFineOwnerId <= 0 || empty($wnRankFineModulesRaw[$wnRankFineOwnerId])) {
+            continue;
+        }
+        if (count((array)$wnRankFineModulesRaw[$wnRankFineOwnerId]['items']) >= 3) {
+            continue;
+        }
+        $wnRankFineModulesRaw[$wnRankFineOwnerId]['items'][] = $wnRankFinePoolItem;
+    }
+
+    foreach ($wnRankFineModulesRaw as $wnRankFineModuleId => &$wnRankFineModule) {
+        $wnRankFineNeed = min(3, intval($wnRankFineModule['item_count'])) - count((array)$wnRankFineModule['items']);
+        if ($wnRankFineNeed <= 0) {
+            continue;
+        }
+        $wnRankFineExcludeAids = array_map(function ($item) {
+            return !empty($item['aid']) ? intval($item['aid']) : 0;
+        }, (array)$wnRankFineModule['items']);
+        $wnRankFineModule['items'] = array_merge(
+            (array)$wnRankFineModule['items'],
+            wn_rank_items_by_type_ids($wnRankFineModule['type_ids'], $wnRankFineNeed, 2, 0, $wnRankFineExcludeAids)
+        );
+    }
+    unset($wnRankFineModule);
+}
+
+foreach ((array)$wnRankTopTypeOrder as $wnRankTopTypeId) {
+    if (empty($wnRankTypeChildren[$wnRankTopTypeId])) {
+        continue;
+    }
+    $wnRankFineGroupModules = [];
+    foreach ((array)$wnRankTypeChildren[$wnRankTopTypeId] as $wnRankChildTypeId) {
+        $wnRankChildTypeId = intval($wnRankChildTypeId);
+        if (empty($wnRankFineModulesRaw[$wnRankChildTypeId])) {
+            continue;
+        }
+        $wnRankFineModule = $wnRankFineModulesRaw[$wnRankChildTypeId];
+        if (intval($wnRankFineModule['item_count']) <= 0 || empty($wnRankFineModule['items'])) {
+            continue;
+        }
+        $wnRankFineGroupModules[] = $wnRankFineModule;
+        $wnRankFineModuleTotal++;
+        $wnRankFineVisibleToolTotal += intval($wnRankFineModule['item_count']);
+    }
+    if (empty($wnRankFineGroupModules) || empty($wnRankTypeMap[$wnRankTopTypeId])) {
+        continue;
+    }
+    $wnRankFineGroups[] = [
+        'id' => $wnRankTopTypeId,
+        'title' => !empty($wnRankTypeMap[$wnRankTopTypeId]['typename']) ? $wnRankTypeMap[$wnRankTopTypeId]['typename'] : 'AI 工具',
+        'url' => wn_rank_type_url($wnRankTypeMap[$wnRankTopTypeId]),
+        'modules' => $wnRankFineGroupModules,
+    ];
+    $wnRankFineGroupTotal++;
+}
+
+foreach ($wnRankFineModulesRaw as $wnRankFineModuleId => $wnRankFineModule) {
+    if (empty($wnRankFineModule['type_ids']) || intval($wnRankFineModule['item_count']) <= 0) {
+        continue;
+    }
+    $wnRankFineSlug = wn_rank_type_board_slug($wnRankFineModuleId);
+    $wnRankBoards[$wnRankFineSlug] = [
+        'id' => 'ranking-panel-' . $wnRankFineSlug,
+        'title' => $wnRankFineModule['title'],
+        'detail_title' => wn_rank_fine_rank_title($wnRankFineModule['title']),
+        'desc' => (!empty($wnRankFineModule['parent_name']) ? $wnRankFineModule['parent_name'] . ' · ' : '') . $wnRankFineModule['title'] . '工具按站内热度排序。',
+        'type_ids' => $wnRankFineModule['type_ids'],
+        'url' => wn_rank_type_board_url($wnRankFineModuleId),
+        'type_url' => $wnRankFineModule['url'],
+    ];
+    foreach ($wnRankFineGroups as &$wnRankFineGroupRef) {
+        if (intval($wnRankFineGroupRef['id']) !== intval($wnRankFineModule['parent_id'])) {
+            continue;
+        }
+        foreach ($wnRankFineGroupRef['modules'] as &$wnRankFineGroupModuleRef) {
+            if (intval($wnRankFineGroupModuleRef['id']) !== intval($wnRankFineModuleId)) {
+                continue;
+            }
+            $wnRankFineGroupModuleRef['url'] = wn_rank_type_board_url($wnRankFineModuleId);
+            break;
+        }
+        unset($wnRankFineGroupModuleRef);
+        break;
+    }
+    unset($wnRankFineGroupRef);
+}
+
+$wnRankActiveBoardSlug = isset($wnRankBoards[$wnRankActiveBoardSlugRaw]) ? $wnRankActiveBoardSlugRaw : '';
+$wnRankIsDetail = $wnRankActiveBoardSlug !== '';
+
+$wnRankDetailItems = [];
+$wnRankDetailHotItems = [];
+$wnRankDetailPaginationHtml = '';
+$wnRankDetailTotal = 0;
+$wnRankDetailPage = max(1, intval(input('param.page/d', 1)));
+if ($wnRankDetailPage <= 1 && $wnRankPageFromBoardPage > 1) {
+    $wnRankDetailPage = $wnRankPageFromBoardPage;
+}
+$wnRankDetailPageSize = 20;
+$wnRankDetailBoard = $wnRankIsDetail ? $wnRankBoards[$wnRankActiveBoardSlug] : null;
+if ($wnRankIsDetail && !empty($wnRankDetailBoard)) {
+    $wnRankDetailTotal = !empty($wnRankDetailBoard['is_recom_only'])
+        ? wn_rank_recom_total_by_type_ids($wnRankDetailBoard['type_ids'], 2)
+        : wn_rank_total_by_type_ids($wnRankDetailBoard['type_ids'], 2);
+    $wnRankDetailTotalPages = max(1, intval(ceil($wnRankDetailTotal / $wnRankDetailPageSize)));
+    $wnRankDetailPage = min($wnRankDetailPage, $wnRankDetailTotalPages);
+    $wnRankDetailOffset = max(0, ($wnRankDetailPage - 1) * $wnRankDetailPageSize);
+    $wnRankDetailItems = !empty($wnRankDetailBoard['is_recom_only'])
+        ? wn_rank_recom_items_by_type_ids($wnRankDetailBoard['type_ids'], $wnRankDetailPageSize, 2, $wnRankDetailOffset)
+        : wn_rank_items_by_type_ids($wnRankDetailBoard['type_ids'], $wnRankDetailPageSize, 2, $wnRankDetailOffset);
+    $wnRankDetailPaginationHtml = wn_rank_render_pagination($wnRankActiveBoardSlug, $wnRankDetailPage, $wnRankDetailTotalPages);
+    $wnRankDetailExcludeAids = array_map(function ($item) {
+        return !empty($item['aid']) ? intval($item['aid']) : 0;
+    }, $wnRankDetailItems);
+    $wnRankDetailHotItems = wn_rank_random_pinned_items(
+        $wnRankAllTypeIds,
+        wn_rank_detail_hot_limit(count((array)$wnRankDetailItems)),
+        2,
+        $wnRankDetailExcludeAids
+    );
+}
+{/eyou:php}
+
+{eyou:php}
+if ($wnRankIsDetail && !empty($wnRankDetailBoard) && $wnRankHeadRobots === 'index,follow') {
+    $wnRankSchemaBaseHost = wn_schema_base_host();
+    $wnRankSchemaUrl = wn_schema_abs_url($wnRankHeadCanonicalPath, $wnRankSchemaBaseHost);
+    $wnRankSchemaTitle = !empty($wnRankDetailBoard['detail_title']) ? $wnRankDetailBoard['detail_title'] : $wnRankHeadDetailTitle;
+    $wnRankSchemaBreadcrumb = wn_schema_breadcrumb_list([
+        ['name' => '首页', 'url' => wn_schema_home_url($wnRankSchemaBaseHost)],
+        ['name' => '排行榜', 'url' => wn_schema_abs_url('/ranking/', $wnRankSchemaBaseHost)],
+        ['name' => $wnRankSchemaTitle, 'url' => $wnRankSchemaUrl],
+    ], $wnRankSchemaBaseHost);
+    if (!empty($wnRankSchemaBreadcrumb)) {
+        $wnRankSchemaBreadcrumb['@id'] = $wnRankSchemaUrl . '#breadcrumb';
+    }
+    $wnRankDetailAids = [];
+    foreach ((array)$wnRankDetailItems as $wnRankDetailSchemaItem) {
+        if (!empty($wnRankDetailSchemaItem['aid'])) {
+            $wnRankDetailAids[] = intval($wnRankDetailSchemaItem['aid']);
+        }
+    }
+    $wnRankSchemaItemList = wn_schema_item_list_from_aids($wnRankDetailAids, 'SoftwareApplication', $wnRankSchemaBaseHost, (($wnRankDetailPage - 1) * $wnRankDetailPageSize) + 1, $wnRankDetailPageSize);
+    if (!empty($wnRankSchemaItemList)) {
+        $wnRankSchemaItemList['@id'] = $wnRankSchemaUrl . '#itemlist';
+        $wnRankSchemaItemList['name'] = $wnRankSchemaTitle . '工具列表';
+        $wnRankSchemaItemList['url'] = $wnRankSchemaUrl;
+    }
+    wn_schema_output([$wnRankSchemaBreadcrumb, $wnRankSchemaItemList]);
+}
+
+if ($wnRankIsDetail && !empty($wnRankDetailBoard)) {
+    echo '<main class="site-main">';
+    echo '<section class="ranking-page ranking-page--detail">';
+    echo '<div class="ranking-detail__breadcrumb"><a href="/">首页</a><span>›</span><a href="/ranking/">排行榜</a><span>›</span><span>' . wn_rank_escape($wnRankDetailBoard['detail_title']) . '</span></div>';
+    echo wn_rank_render_picture_ad(9);
+    echo '<div class="ranking-detail__layout">';
+    echo '<section class="ranking-detail__main-card">';
+    echo '<div class="ranking-detail__head"><div><p class="ranking-page__eyebrow">AI 工具排行榜</p><h1>' . wn_rank_escape($wnRankDetailBoard['detail_title']) . '</h1><p>' . wn_rank_escape($wnRankDetailBoard['desc']) . ' 榜单优先展示中国AI工具，并按本站热度、置顶推荐、平台成熟度和国内用户适配度综合排序，不代表全网实时排名。</p></div><a href="/ranking/">返回总榜</a></div>';
+    echo '<div class="ranking-detail__list">';
+    foreach ((array)$wnRankDetailItems as $index => $item) {
+        echo wn_rank_render_detail_item($item, (($wnRankDetailPage - 1) * $wnRankDetailPageSize) + $index);
+    }
+    echo '</div>';
+    echo $wnRankDetailPaginationHtml;
+    echo '</section>';
+    echo '<aside class="ranking-detail__aside">';
+    echo '<section class="ranking-hot"><h2>热门AI软件/工具</h2><div class="ranking-hot__list">';
+    foreach ((array)$wnRankDetailHotItems as $index => $item) {
+        echo wn_rank_render_hot_item($item, $index);
+    }
+    echo '</div></section>';
+    echo '<section class="ranking-detail__note"><h2>热度说明</h2><p>本站不包装成外部实时热度。当前榜单展示的是站内热度指数，优先展示中国AI工具；排序会结合浏览热度、编辑推荐、平台成熟度和国内用户适配度。</p></section>';
+    echo '</aside>';
+    echo '</div>';
+    echo '</section>';
+    echo '</main>';
+} else {
+    if ($wnRankHeadRobots === 'index,follow') {
+        $wnRankSchemaBaseHost = wn_schema_base_host();
+        $wnRankSchemaUrl = wn_schema_abs_url('/ranking/', $wnRankSchemaBaseHost);
+        $wnRankSchemaBreadcrumb = wn_schema_breadcrumb_list([
+            ['name' => '首页', 'url' => wn_schema_home_url($wnRankSchemaBaseHost)],
+            ['name' => '排行榜', 'url' => $wnRankSchemaUrl],
+        ], $wnRankSchemaBaseHost);
+        if (!empty($wnRankSchemaBreadcrumb)) {
+            $wnRankSchemaBreadcrumb['@id'] = $wnRankSchemaUrl . '#breadcrumb';
+        }
+        $wnRankOverallAids = [];
+        if (!empty($wnRankBaseBoards['overall']['items'])) {
+            foreach ((array)$wnRankBaseBoards['overall']['items'] as $wnRankSchemaItem) {
+                if (!empty($wnRankSchemaItem['aid'])) {
+                    $wnRankOverallAids[] = intval($wnRankSchemaItem['aid']);
+                }
+            }
+        }
+        $wnRankSchemaItemList = wn_schema_item_list_from_aids($wnRankOverallAids, 'SoftwareApplication', $wnRankSchemaBaseHost, 1, 10);
+        if (!empty($wnRankSchemaItemList)) {
+            $wnRankSchemaItemList['@id'] = $wnRankSchemaUrl . '#itemlist';
+            $wnRankSchemaItemList['name'] = 'AI工具综合热榜';
+            $wnRankSchemaItemList['url'] = $wnRankSchemaUrl;
+        }
+        wn_schema_output([$wnRankSchemaBreadcrumb, $wnRankSchemaItemList]);
+    }
+
+    echo '<main class="site-main">';
+    echo '<section class="ranking-page ranking-page--matrix">';
+    echo '<div class="ranking-page__hero">';
+    echo '<div class="ranking-page__hero-decor" aria-hidden="true"><span class="ranking-page__hero-float ranking-page__hero-float--1"></span><span class="ranking-page__hero-float ranking-page__hero-float--2"></span><span class="ranking-page__hero-float ranking-page__hero-float--3"></span><span class="ranking-page__hero-float ranking-page__hero-float--4"></span><span class="ranking-page__hero-float ranking-page__hero-float--5"></span><span class="ranking-page__hero-float ranking-page__hero-float--6"></span></div>';
+    echo '<div class="ranking-page__hero-main"><h1>AI工具热度排行榜</h1>';
+    echo '<div class="ranking-page__stats" role="list" aria-label="站内工具统计">';
+    echo '<div class="ranking-page__stat-card" role="listitem"><strong data-ranking-countup data-count-to="' . intval($wnRankFineGroupTotal) . '">' . number_format(intval($wnRankFineGroupTotal)) . '</strong><span>分类数</span></div>';
+    echo '<div class="ranking-page__stat-card" role="listitem"><strong data-ranking-countup data-count-to="' . intval($wnRankFineModuleTotal) . '">' . number_format(intval($wnRankFineModuleTotal)) . '</strong><span>子分类数</span></div>';
+    echo '<div class="ranking-page__stat-card" role="listitem"><strong data-ranking-countup data-count-to="' . intval($wnRankFineVisibleToolTotal) . '">' . number_format(intval($wnRankFineVisibleToolTotal)) . '</strong><span>工具数</span></div>';
+    echo '</div></div>';
+    echo '</div>';
+    echo wn_rank_render_picture_ad(9);
+    echo '<div class="ranking-page__insights" aria-label="排行榜摘要">';
+    echo wn_rank_render_insight_card('updated', '排序口径', $wnRankInsightUpdated, '非全网实时排名');
+    echo wn_rank_render_insight_card(
+        'hot',
+        '站内热度最高',
+        !empty($wnRankInsightHot['title']) ? wn_rank_trim_text($wnRankInsightHot['title'], 20) : '持续更新中',
+        !empty($wnRankInsightHot) ? '综合热榜第 1 名' : '热门工具持续更新',
+        !empty($wnRankInsightHot) ? wn_rank_arcurl($wnRankInsightHot) : ''
+    );
+    echo wn_rank_render_insight_card(
+        'rising',
+        '上升最快',
+        !empty($wnRankInsightRising['title']) ? wn_rank_trim_text($wnRankInsightRising['title'], 20) : '持续更新中',
+        !empty($wnRankInsightRising) ? '近 30 天热度抬升' : '新工具持续入榜',
+        !empty($wnRankInsightRising) ? wn_rank_arcurl($wnRankInsightRising) : ''
+    );
+    echo wn_rank_render_insight_card(
+        'falling',
+        '下降最多',
+        !empty($wnRankInsightFalling['title']) ? wn_rank_trim_text($wnRankInsightFalling['title'], 20) : '持续观察中',
+        !empty($wnRankInsightFalling) ? '近期热度有所回落' : '站内样本持续积累',
+        !empty($wnRankInsightFalling) ? wn_rank_arcurl($wnRankInsightFalling) : ''
+    );
+    echo '</div>';
+    echo '<div class="ranking-page__shell">';
+    echo '<div class="ranking-page__panels ranking-page__panels--all">';
+    $wnRankFirstPanel = true;
+    foreach ($wnRankBaseBoards as $slug => $board) {
+        echo wn_rank_render_panel($board['id'], $board['title'], $board['desc'], $board['url'], $board['items'], $wnRankFirstPanel);
+        $wnRankFirstPanel = false;
+    }
+    echo '</div>';
+    if (!empty($wnRankFineGroups)) {
+        echo '<section class="ranking-page__more" aria-label="AI工具排行榜">';
+        echo '<div class="ranking-page__fine-groups">';
+        foreach ((array)$wnRankFineGroups as $wnRankFineGroup) {
+            echo wn_rank_render_fine_group($wnRankFineGroup);
+        }
+        echo '</div>';
+        echo '</section>';
+    }
+    echo '</div></section></main>';
+}
+{/eyou:php}
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

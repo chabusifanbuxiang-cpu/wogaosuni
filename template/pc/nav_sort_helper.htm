@@ -1,0 +1,413 @@
+{eyou:php}
+if (!function_exists('wn_nav_priority_order_sql')) {
+    function wn_nav_priority_order_sql($context = 'category', $useCategoryRelSort = false)
+    {
+        $tierOrderExpr = 'CASE IFNULL(pc.platform_tier,"普通")
+                WHEN "国内大厂" THEN 10
+                WHEN "国内普通" THEN 20
+                WHEN "国外大厂" THEN 60
+                WHEN "国外成熟" THEN 70
+                WHEN "国外普通" THEN 80
+                WHEN "低优先" THEN 80
+                ELSE CASE WHEN IFNULL(pc.site_region,"国内") = "国内" THEN 30 ELSE 90 END
+            END ASC';
+        $allTopExpr = 'GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_home,0),IFNULL(pc.top_category,0)) DESC';
+
+        if ($context === 'click') {
+            return $tierOrderExpr . ',
+            ' . $allTopExpr . ',
+            a.sort_order ASC,
+            a.click DESC,
+            a.update_time DESC,
+            a.aid DESC';
+        }
+
+        if ($context === 'latest') {
+            return $tierOrderExpr . ',
+            ' . $allTopExpr . ',
+            a.sort_order ASC,
+            a.add_time DESC,
+            a.update_time DESC,
+            a.click DESC,
+            a.aid DESC';
+        }
+
+        $contextTopExpr = $context === 'home'
+            ? 'GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_home,0)) DESC'
+            : 'GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_category,0)) DESC';
+        if ($context === 'home') {
+            $contextSortExpr = 'IFNULL(pc.home_sort_order,100) ASC';
+        } else {
+            $contextSortExpr = $useCategoryRelSort
+                ? 'CASE WHEN tr.rel_sort_order IS NULL THEN IFNULL(pc.category_sort_order,100) ELSE tr.rel_sort_order END ASC,
+            IFNULL(pc.category_sort_order,100) ASC'
+                : 'IFNULL(pc.category_sort_order,100) ASC';
+        }
+
+        return $tierOrderExpr . ',
+            ' . $contextTopExpr . ',
+            ' . $contextSortExpr . ',
+            a.sort_order ASC,
+            a.click DESC,
+            a.aid DESC';
+    }
+}
+
+if (!function_exists('wn_nav_tool_category_rel_table')) {
+    function wn_nav_tool_category_rel_table()
+    {
+        static $tableName = null;
+        static $exists = null;
+        if ($exists !== null) {
+            return $exists ? $tableName : '';
+        }
+
+        $prefix = config('database.prefix');
+        $tableName = $prefix . 'wogs_tool_category_rel';
+        try {
+            $rows = \think\Db::query('SHOW TABLES LIKE "' . addslashes($tableName) . '"');
+            $exists = !empty($rows);
+        } catch (\Throwable $e) {
+            $exists = false;
+        }
+
+        return $exists ? $tableName : '';
+    }
+}
+
+if (!function_exists('wn_nav_tool_category_rel_join_sql')) {
+    function wn_nav_tool_category_rel_join_sql($typeIdSql)
+    {
+        $relTable = wn_nav_tool_category_rel_table();
+        if ($relTable === '') {
+            return '';
+        }
+
+        return ' LEFT JOIN (
+                SELECT aid, MIN(sort_order) AS rel_sort_order
+                FROM ' . $relTable . '
+                WHERE status = 1 AND typeid IN (' . $typeIdSql . ')
+                GROUP BY aid
+            ) tr ON tr.aid = a.aid';
+    }
+}
+
+if (!function_exists('wn_nav_tool_category_where_sql')) {
+    function wn_nav_tool_category_where_sql($typeIdSql)
+    {
+        return wn_nav_tool_category_rel_table() !== ''
+            ? '(a.typeid IN (' . $typeIdSql . ') OR tr.aid IS NOT NULL)'
+            : 'a.typeid IN (' . $typeIdSql . ')';
+    }
+}
+
+if (!function_exists('wn_nav_region_where_sql')) {
+    function wn_nav_region_where_sql($region = '')
+    {
+        $region = trim((string)$region);
+        if ($region === 'foreign') {
+            return ' AND IFNULL(pc.site_region,"国内") = "国外"';
+        }
+
+        if ($region === 'domestic') {
+            return ' AND IFNULL(pc.site_region,"国内") <> "国外"';
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('wn_nav_idlist_order_sql')) {
+    function wn_nav_idlist_order_sql($aidList)
+    {
+        $aids = is_array($aidList) ? $aidList : explode(',', (string)$aidList);
+        $aids = array_values(array_unique(array_filter(array_map('intval', $aids))));
+        if (empty($aids)) {
+            return '';
+        }
+
+        $parts = [];
+        foreach ($aids as $aid) {
+            if ($aid > 0) {
+                $parts[] = 'a.aid=' . $aid . ' DESC';
+            }
+        }
+
+        return implode(',', $parts);
+    }
+}
+
+if (!function_exists('wn_nav_collect_type_ids')) {
+    function wn_nav_collect_type_ids($typeid, $channel = 2)
+    {
+        $typeid = intval($typeid);
+        $channel = intval($channel);
+        if ($typeid <= 0) {
+            return [];
+        }
+
+        $typeIds = [$typeid];
+        $queue = [$typeid];
+        while (!empty($queue)) {
+            $childIds = \think\Db::name('arctype')
+                ->where('parent_id', 'in', $queue)
+                ->where('status', 1)
+                ->where('is_hidden', 0)
+                ->where('is_del', 0)
+                ->column('id');
+            $childIds = array_values(array_diff(array_map('intval', (array)$childIds), $typeIds));
+            if (empty($childIds)) {
+                break;
+            }
+            $typeIds = array_values(array_unique(array_merge($typeIds, $childIds)));
+            $queue = $childIds;
+        }
+        return $typeIds;
+    }
+}
+
+if (!function_exists('wn_nav_priority_aids')) {
+    function wn_nav_priority_aids($typeIds, $limit = 18, $offset = 0, $context = 'category', $channel = 2, $excludeAids = [], $region = '')
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $typeIdSql = implode(',', $typeIds);
+        $excludeSql = '';
+        if (!empty($excludeAids)) {
+            $excludeSql = ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+        }
+        $limit = max(1, intval($limit));
+        $offset = max(0, intval($offset));
+        $channel = intval($channel);
+        $relJoinSql = wn_nav_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_nav_tool_category_where_sql($typeIdSql);
+        $orderSql = wn_nav_priority_order_sql($context, $relJoinSql !== '');
+        $regionSql = wn_nav_region_where_sql($region);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT a.aid
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                ' . $regionSql . '
+                ' . $excludeSql . '
+            ORDER BY ' . $orderSql . '
+            LIMIT ' . $offset . ',' . $limit;
+
+        $rows = \think\Db::query($sql);
+        return array_map('intval', array_column((array)$rows, 'aid'));
+    }
+}
+
+if (!function_exists('wn_nav_hot_aids')) {
+    function wn_nav_hot_aids($typeIds, $limit = 18, $offset = 0, $channel = 2, $excludeAids = [], $region = '')
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return [];
+        }
+
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        $typeIdSql = implode(',', $typeIds);
+        $excludeSql = '';
+        if (!empty($excludeAids)) {
+            $excludeSql = ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+        }
+        $limit = max(1, intval($limit));
+        $offset = max(0, intval($offset));
+        $channel = intval($channel);
+        $relJoinSql = wn_nav_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_nav_tool_category_where_sql($typeIdSql);
+        $regionSql = wn_nav_region_where_sql($region);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT a.aid
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                ' . $regionSql . '
+                ' . $excludeSql . '
+            ORDER BY a.click DESC,
+                a.update_time DESC,
+                a.add_time DESC,
+                a.aid DESC
+            LIMIT ' . $offset . ',' . $limit;
+
+        $rows = \think\Db::query($sql);
+        return array_map('intval', array_column((array)$rows, 'aid'));
+    }
+}
+
+if (!function_exists('wn_nav_priority_total')) {
+    function wn_nav_priority_total($typeIds, $channel = 2, $region = '')
+    {
+        $typeIds = array_values(array_filter(array_map('intval', (array)$typeIds)));
+        if (empty($typeIds)) {
+            return 0;
+        }
+
+        $typeIdSql = implode(',', $typeIds);
+        $channel = intval($channel);
+        $relJoinSql = wn_nav_tool_category_rel_join_sql($typeIdSql);
+        $typeWhereSql = wn_nav_tool_category_where_sql($typeIdSql);
+        $regionSql = wn_nav_region_where_sql($region);
+        $prefix = config('database.prefix');
+        $sql = 'SELECT COUNT(DISTINCT a.aid) AS total
+            FROM ' . $prefix . 'archives a
+            LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+            ' . $relJoinSql . '
+            WHERE ' . $typeWhereSql . '
+                AND a.channel = ' . $channel . '
+                AND a.status = 1
+                AND a.is_del = 0
+                AND a.arcrank > -1
+                ' . $regionSql;
+
+        $rows = \think\Db::query($sql);
+        return !empty($rows[0]['total']) ? intval($rows[0]['total']) : 0;
+    }
+}
+
+if (!function_exists('wn_nav_related_subtype_click_aids')) {
+    function wn_nav_related_subtype_click_aids($baseTypeId, $limit = 6, $channel = 2, $excludeAids = [])
+    {
+        $baseTypeId = intval($baseTypeId);
+        $limit = max(1, intval($limit));
+        $channel = intval($channel);
+        $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+        if ($baseTypeId <= 0) {
+            return [];
+        }
+
+        $children = (array)\think\Db::name('arctype')
+            ->field('id,sort_order')
+            ->where('parent_id', $baseTypeId)
+            ->where('status', 1)
+            ->where('is_hidden', 0)
+            ->where('is_del', 0)
+            ->order('sort_order asc,id asc')
+            ->select();
+
+        $allTypeIds = [];
+        $typeToChildId = [];
+        $childInfo = [];
+        foreach ($children as $child) {
+            $childId = !empty($child['id']) ? intval($child['id']) : 0;
+            if ($childId <= 0) {
+                continue;
+            }
+            $subTypeIds = wn_nav_collect_type_ids($childId, $channel);
+            if (empty($subTypeIds)) {
+                continue;
+            }
+            $childInfo[$childId] = [
+                'id' => $childId,
+                'sort_order' => !empty($child['sort_order']) ? intval($child['sort_order']) : 0,
+                'total_click' => 0,
+                'type_ids' => $subTypeIds,
+                'aids' => [],
+            ];
+            foreach ($subTypeIds as $subTypeId) {
+                $subTypeId = intval($subTypeId);
+                if ($subTypeId <= 0) {
+                    continue;
+                }
+                $allTypeIds[$subTypeId] = $subTypeId;
+                $typeToChildId[$subTypeId] = $childId;
+            }
+        }
+
+        if (empty($childInfo)) {
+            $allTypeIds = wn_nav_collect_type_ids($baseTypeId, $channel);
+            return wn_nav_priority_aids($allTypeIds, $limit, 0, 'click', $channel, $excludeAids);
+        }
+
+        if (!empty($allTypeIds)) {
+            $clickRows = (array)\think\Db::name('archives')
+                ->field('typeid,SUM(click) AS total_click')
+                ->where('typeid', 'in', array_values($allTypeIds))
+                ->where('channel', $channel)
+                ->where('status', 1)
+                ->where('is_del', 0)
+                ->where('arcrank', '>', -1)
+                ->group('typeid')
+                ->select();
+            foreach ($clickRows as $row) {
+                $typeId = !empty($row['typeid']) ? intval($row['typeid']) : 0;
+                if ($typeId <= 0 || empty($typeToChildId[$typeId])) {
+                    continue;
+                }
+                $childId = $typeToChildId[$typeId];
+                if (!isset($childInfo[$childId])) {
+                    continue;
+                }
+                $childInfo[$childId]['total_click'] += !empty($row['total_click']) ? intval($row['total_click']) : 0;
+            }
+        }
+
+        uasort($childInfo, function ($left, $right) {
+            if ($left['total_click'] === $right['total_click']) {
+                if ($left['sort_order'] === $right['sort_order']) {
+                    return $left['id'] <=> $right['id'];
+                }
+                return $left['sort_order'] <=> $right['sort_order'];
+            }
+            return $right['total_click'] <=> $left['total_click'];
+        });
+
+        $orderedChildren = array_values($childInfo);
+        foreach ($orderedChildren as $index => $child) {
+            $orderedChildren[$index]['aids'] = wn_nav_priority_aids($child['type_ids'], $limit, 0, 'click', $channel, $excludeAids);
+        }
+
+        $selectedAids = [];
+        $seenAids = array_fill_keys($excludeAids, true);
+        for ($round = 0; count($selectedAids) < $limit && $round < $limit; $round++) {
+            foreach ($orderedChildren as $child) {
+                if (empty($child['aids'][$round])) {
+                    continue;
+                }
+                $aid = intval($child['aids'][$round]);
+                if ($aid <= 0 || isset($seenAids[$aid])) {
+                    continue;
+                }
+                $selectedAids[] = $aid;
+                $seenAids[$aid] = true;
+                if (count($selectedAids) >= $limit) {
+                    break 2;
+                }
+            }
+        }
+
+        if (count($selectedAids) < $limit) {
+            $fallbackTypeIds = wn_nav_collect_type_ids($baseTypeId, $channel);
+            $fallbackAids = wn_nav_priority_aids($fallbackTypeIds, $limit, 0, 'click', $channel, array_merge($excludeAids, $selectedAids));
+            foreach ($fallbackAids as $aid) {
+                $aid = intval($aid);
+                if ($aid <= 0 || isset($seenAids[$aid])) {
+                    continue;
+                }
+                $selectedAids[] = $aid;
+                $seenAids[$aid] = true;
+                if (count($selectedAids) >= $limit) {
+                    break;
+                }
+            }
+        }
+
+        return $selectedAids;
+    }
+}
+{/eyou:php}

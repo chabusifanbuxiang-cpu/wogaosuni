@@ -1,0 +1,31 @@
+{eyou:php}
+if (!function_exists('wn_normalize_direct_url')) {
+    function wn_normalize_direct_url($url)
+    {
+        $value = trim((string)$url);
+        $value = str_replace(["\r", "\n"], '', $value);
+        if ('' === $value || preg_match('/^(javascript|data|vbscript):/i', $value)) {
+            return '';
+        }
+
+        if (0 === strpos($value, '//')) {
+            $value = 'https:' . $value;
+        } elseif (!preg_match('#^https?://#i', $value)) {
+            if (preg_match('#^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}(?::\d+)?(?:[/?#].*)?$#i', $value)) {
+                $value = 'https://' . $value;
+            } else {
+                return '';
+            }
+        }
+
+        if (preg_match('#^https?://(?:www\.)?example\.com/go/tool-\d+/?(?:[?#].*)?$#i', $value)) {
+            return '';
+        }
+        if (preg_match('#^https?://(?:127\.0\.0\.1|localhost)(?::\d+)?/(?:index\.php|go/tool-)#i', $value)) {
+            return '';
+        }
+
+        return $value;
+    }
+}
+{/eyou:php}

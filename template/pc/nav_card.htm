@@ -1,0 +1,98 @@
+{eyou:php}
+if (!function_exists('wn_normalize_direct_url')) {
+    function wn_normalize_direct_url($url)
+    {
+        $value = trim((string)$url);
+        $value = str_replace(["\r", "\n"], '', $value);
+        if ('' === $value || preg_match('/^(javascript|data|vbscript):/i', $value)) {
+            return '';
+        }
+
+        if (0 === strpos($value, '//')) {
+            $value = 'https:' . $value;
+        } elseif (!preg_match('#^https?://#i', $value)) {
+            if (preg_match('#^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}(?::\d+)?(?:[/?#].*)?$#i', $value)) {
+                $value = 'https://' . $value;
+            } else {
+                return '';
+            }
+        }
+
+        if (preg_match('#^https?://(?:www\.)?example\.com/go/tool-\d+/?(?:[?#].*)?$#i', $value)) {
+            return '';
+        }
+        if (preg_match('#^https?://(?:127\.0\.0\.1|localhost)(?::\d+)?/(?:index\.php|go/tool-)#i', $value)) {
+            return '';
+        }
+
+        return $value;
+    }
+}
+if (!isset($GLOBALS['wnNavCardRegionCache']) || !is_array($GLOBALS['wnNavCardRegionCache'])) {
+    $GLOBALS['wnNavCardRegionCache'] = [];
+}
+$wnNavCardAid = !empty($field['aid']) ? intval($field['aid']) : 0;
+$wnNavCardDirectUrl = wn_normalize_direct_url(!empty($field['jumplinks']) ? $field['jumplinks'] : '');
+$wnNavCardLitpic = !empty($field['litpic']) ? trim((string)$field['litpic']) : '';
+$wnNavCardUsesFallbackLogo = ('' === $wnNavCardLitpic || false !== stripos($wnNavCardLitpic, 'open-source-logo.svg')) ? 1 : 0;
+$wnNavCardRegion = !empty($field['site_region']) ? $field['site_region'] : '';
+if ('国外' != $wnNavCardRegion && 0 < $wnNavCardAid) {
+    if (!isset($GLOBALS['wnNavCardRegionCache'][$wnNavCardAid])) {
+        $GLOBALS['wnNavCardRegionCache'][$wnNavCardAid] = \think\Db::name('product_content')->where('aid', $wnNavCardAid)->value('site_region');
+    }
+    $wnNavCardRegion = $GLOBALS['wnNavCardRegionCache'][$wnNavCardAid];
+}
+if ('国外' != $wnNavCardRegion) {
+    $wnNavCardRegion = '国内';
+}
+$wnNavCardIntroDesc = !empty($field['introduction']) ? trim((string)$field['introduction']) : '';
+$wnNavCardSubtitle = !empty($field['subtitle']) ? trim((string)$field['subtitle']) : '';
+$wnNavCardTooltipDesc = !empty($field['seo_description']) ? trim((string)$field['seo_description']) : '';
+$wnNavCardBodyDesc = '' !== $wnNavCardIntroDesc ? $wnNavCardIntroDesc : ('' !== $wnNavCardTooltipDesc ? $wnNavCardTooltipDesc : $wnNavCardSubtitle);
+if ('' === $wnNavCardBodyDesc) {
+    $wnNavCardBodyDesc = '点击查看详情';
+}
+if ('' === $wnNavCardTooltipDesc) {
+    $wnNavCardTooltipDesc = $wnNavCardBodyDesc;
+}
+{/eyou:php}
+<article class="nav-card nav-card--chip-visual" data-content-type="nav" data-favorite-id="{$field.aid}" data-favorite-title="{$field.title}" data-favorite-detail="{$field.arcurl}" data-favorite-direct="{eyou:notempty name='$wnNavCardDirectUrl'}{$wnNavCardDirectUrl}{eyou:else /}{$field.arcurl}{/eyou:notempty}" data-favorite-desc="{$wnNavCardTooltipDesc|html_msubstr=###,0,88,true}" data-favorite-subtitle="{$wnNavCardBodyDesc|html_msubstr=###,0,88,true}" data-favorite-logo="{$field.litpic}" data-favorite-logo-text="{$field.title}" data-favorite-overseas="{eyou:eq name='$wnNavCardRegion' value='国外'}1{eyou:else /}0{/eyou:eq}" data-favorite-badge="{eyou:eq name='$wnNavCardRegion' value='国外'}国外{eyou:else /}工具{/eyou:eq}" data-track-click="1">
+  {eyou:eq name="$wnNavCardRegion" value="国外"}
+  <span class="nav-card__foreign-badge" title="国外网站可能无法直接访问">国外</span>
+  {/eyou:eq}
+  {eyou:eq name="$wnNavCardUsesFallbackLogo" value="0"}
+  <div class="nav-card__watermark-clip nav-card__watermark-clip--image" aria-hidden="true">
+    <div class="nav-card__ghost-logo">
+      <img src="{$field.litpic}" alt="{$field.title}" width="48" height="48" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+    </div>
+  </div>
+  {/eyou:eq}
+  <a class="nav-card__mainlink" href="{$field.arcurl}" aria-label="查看{$field.title}详情"><span class="wn-visually-hidden">{$field.title}</span></a>
+  <div class="nav-card__head">
+    <div class="nav-card__logo" aria-hidden="true">
+      <img src="{$field.litpic}" alt="{$field.title}" width="48" height="48" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+    </div>
+    <div class="nav-card__content">
+      <div class="nav-card__title">
+        <div class="nav-card__title-row">
+          <h3><a class="nav-card__title-link" href="{$field.arcurl}">{$field.title}</a></h3>
+        </div>
+      </div>
+      <div class="nav-card__body">
+        <p class="nav-card__desc">{$wnNavCardBodyDesc|html_msubstr=###,0,88,true}</p>
+      </div>
+    </div>
+  </div>
+  <div class="nav-card__tooltip">
+    <div class="nav-card__tooltip-arrow"></div>
+    <div class="nav-card__tooltip-body">{$wnNavCardTooltipDesc|html_msubstr=###,0,88,true}</div>
+  </div>
+  {eyou:notempty name="$wnNavCardDirectUrl"}
+  <a class="nav-card__badge-anchor nav-card__badge-anchor--direct" href="{$wnNavCardDirectUrl}" target="_blank" rel="nofollow noopener noreferrer" aria-label="直达{$field.title}" data-card-tip="直达官网">
+    <span class="nav-card__badge-chip nav-card__badge-chip--direct" aria-hidden="true">↗</span>
+  </a>
+  {/eyou:notempty}
+  <button class="nav-card__favorite" type="button" data-favorite-toggle aria-pressed="false" aria-label="收藏{$field.title}" data-card-tip="点击收藏">
+    <span class="nav-card__favorite-icon" aria-hidden="true"></span>
+  </button>
+</article>

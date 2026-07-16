@@ -1,0 +1,1904 @@
+/* From view_article.htm style#article-square-corners-final-20260529 */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-content-card--article-body,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tag-chip-list,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list {
+  border-radius: 0 !important;
+}
+
+/* 2026-06-24: final reader rail parity with tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}
+
+/* 2026-06-29: collapse the first article body gap so the reader card matches detail pages. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > :first-child {
+  margin-top: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > h2:first-child,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > h3:first-child,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > h4:first-child,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > h2.aiph-rich-heading--primary:first-child,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > h3.aiph-rich-heading--secondary:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body .aiph-richtext > p:first-child:empty {
+  display: none !important;
+  margin: 0 !important;
+}
+
+/* 2026-06-09: final desktop article reader spacing, after legacy paper polish blocks. */
+@media (min-width: 1451px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article {
+    --aiph-left-reader-width: 320px !important;
+    --aiph-reader-width: 260px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: 320px minmax(0, 805px) 260px !important;
+    gap: 24px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: min(100% - 48px, 1433px) !important;
+    max-width: 1433px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    grid-column: 1 !important;
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 2 !important;
+    width: 805px !important;
+    min-width: 0 !important;
+    max-width: 805px !important;
+    justify-self: stretch !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 805px !important;
+    max-width: 805px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    grid-column: 3 !important;
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+  }
+}
+
+/* 2026-06-24: final article reader body rail matches tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}
+
+/* 2026-06-24: match ordinary article reader layout to the tool-detail reader at medium desktop widths. */
+@media (min-width: 1280px) and (max-width: 1450px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article {
+    --aiph-left-reader-width: 0px !important;
+    --aiph-reader-width: 230px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: minmax(0, 706px) 230px !important;
+    gap: 18px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: min(100% - 48px, 954px) !important;
+    max-width: 954px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 706px !important;
+    min-width: 0 !important;
+    max-width: 706px !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    box-sizing: border-box !important;
+    width: 706px !important;
+    max-width: 706px !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    display: grid !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-content: start !important;
+    justify-self: stretch !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: sticky !important;
+    top: 92px !important;
+    left: auto !important;
+    overflow: visible !important;
+    z-index: 8 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: var(--aiph-reader-width, 230px) !important;
+    min-width: var(--aiph-reader-width, 230px) !important;
+    max-width: var(--aiph-reader-width, 230px) !important;
+  }
+}
+
+/* 2026-06-24: match tool-detail handoff breakpoint: no half-rendered rails between 1221px and 1279px. */
+@media (min-width: 1221px) and (max-width: 1279px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: block !important;
+    width: min(100% - 48px, 805px) !important;
+    max-width: 805px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 805px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+}
+
+/* 2026-06-24: true final reader rail parity with tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}
+
+/* 2026-06-24: true final reader rail parity with tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}
+
+/* 2026-06-24: ordinary article body uses the same reader shell as tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}
+
+@media (min-width: 1280px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    top: 112px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    width: var(--aiph-reader-width, 260px) !important;
+    min-width: var(--aiph-reader-width, 260px) !important;
+    max-width: var(--aiph-reader-width, 260px) !important;
+    top: var(--aiph-reader-top, 112px) !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__index {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-content-card--article-body::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-content-card--article-body::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tag-chip-list::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tag-chip-list::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list::after {
+  border-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-article-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-tool-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-hot-tag-list__item {
+  border-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-article-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-article-card::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-tool-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-side-tool-card::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-hot-tag-list__item::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-hot-tag-list__item::after {
+  border-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--tag-cloud.aiph-side-widget--tag-chip-list,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tag-cloud.aiph-side-widget--tag-chip-list {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher .aiph-side-article-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher .aiph-side-article-card:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-hot-tag-list .aiph-hot-tag-list__item,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-hot-tag-list .aiph-hot-tag-list__item:hover {
+  border-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-start-start-radius: 4px !important;
+  border-start-end-radius: 4px !important;
+  border-end-start-radius: 4px !important;
+  border-end-end-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher:hover {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::after {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card:hover {
+  border-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-start-start-radius: 4px !important;
+  border-start-end-radius: 4px !important;
+  border-end-start-radius: 4px !important;
+  border-end-end-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card::after,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-hot-tag-list > a.aiph-hot-tag-list__item::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-hot-tag-list > a.aiph-hot-tag-list__item::after {
+  border-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-start-start-radius: 4px !important;
+  border-start-end-radius: 4px !important;
+  border-end-start-radius: 4px !important;
+  border-end-end-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::after {
+  border-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid a.aiph-side-tool-card,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid a.aiph-side-tool-card:hover {
+  border-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-start-start-radius: 4px !important;
+  border-start-end-radius: 4px !important;
+  border-end-start-radius: 4px !important;
+  border-end-end-radius: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid a.aiph-side-tool-card::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid a.aiph-side-tool-card::after {
+  border-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-start-start-radius: 4px !important;
+  border-start-end-radius: 4px !important;
+  border-end-start-radius: 4px !important;
+  border-end-end-radius: 4px !important;
+}
+
+/* From view_article.htm style#article-side-related-card-hover-neutral-20260529 */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:focus-visible {
+  border-color: #edf2f7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.045) !important;
+  filter: none !important;
+  transform: translate3d(0, -1px, 0) !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:hover .aiph-side-article-card__body strong,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.aiph-single--article .aiph-left-rail.aiph-left-rail--article > section.aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:focus-visible .aiph-side-article-card__body strong {
+  color: #1b2430 !important;
+}
+
+/* From view_article.htm style#article-card-title-dot-red-restore-20260529 */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher .aiph-side-widget__head::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher .aiph-side-widget__head::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tag-chip-list .aiph-side-widget__head::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-side-widget__head::before {
+  background: #ef4444 !important;
+  background-image: none !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12) !important;
+}
+
+/* From view_article.htm style#article-related-tools-tight-final-20260529 */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget--tool-switcher,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget--tool-switcher:hover {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  block-size: auto !important;
+  min-block-size: 0 !important;
+  max-block-size: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher .aiph-side-widget__panels,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget--tool-switcher .aiph-side-widget__panels,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--tool-switcher .aiph-side-widget__panel.is-active,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar-follow-stack .aiph-side-widget--tool-switcher .aiph-side-widget__panel.is-active {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  block-size: auto !important;
+  min-block-size: 0 !important;
+  max-block-size: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper aside.aiph-left-rail.aiph-left-rail--article.wn-news-aside.wn-news-aside--single > div.aiph-sidebar-follow-stack > section.aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  block-size: auto !important;
+  min-block-size: 0 !important;
+  max-block-size: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+  inset: var(--aiph-reader-top, 92px) auto auto var(--aiph-reader-left, auto) !important;
+  top: var(--aiph-reader-top, 92px) !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: var(--aiph-reader-left, auto) !important;
+  width: var(--aiph-reader-width, 260px) !important;
+  min-width: var(--aiph-reader-width, 260px) !important;
+  max-width: var(--aiph-reader-width, 260px) !important;
+}
+
+/* 2026-05-29: final article reader stability pass. Keep side cards readable and body semantics native. */
+@media (min-width: 1280px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    position: fixed !important;
+    inset: var(--aiph-left-reader-top, 92px) auto auto var(--aiph-left-reader-left, auto) !important;
+    top: var(--aiph-left-reader-top, 92px) !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: var(--aiph-left-reader-left, auto) !important;
+    width: var(--aiph-left-reader-width, 312px) !important;
+    min-width: var(--aiph-left-reader-width, 312px) !important;
+    max-width: var(--aiph-left-reader-width, 312px) !important;
+    max-height: calc(100vh - var(--aiph-left-reader-top, 92px) - 18px) !important;
+    overflow-x: visible !important;
+    overflow-y: auto !important;
+    z-index: 43 !important;
+    scrollbar-width: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ol {
+  margin: 0 0 1.22em !important;
+  padding-left: 1.55em !important;
+  list-style-position: outside !important;
+  color: #334155 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul {
+  list-style-type: disc !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ol {
+  list-style-type: decimal !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul ul {
+  margin-top: 0.42em !important;
+  padding-left: 1.45em !important;
+  list-style-type: circle !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul ul ul {
+  list-style-type: square !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ol ol {
+  margin-top: 0.42em !important;
+  padding-left: 1.45em !important;
+  list-style-type: lower-alpha !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext li {
+  display: list-item !important;
+  margin: 0.42em 0 !important;
+  padding-left: 0 !important;
+  background: none !important;
+  background-image: none !important;
+  line-height: 1.9 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul li,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ul ul li,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext ol li {
+  padding-left: 0 !important;
+  background: none !important;
+  background-image: none !important;
+  background-position: 0 0 !important;
+  background-size: auto !important;
+  background-repeat: repeat !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext li::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext li::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card .aiph-richtext li::marker {
+  color: #2563eb !important;
+  font-weight: 700 !important;
+}
+
+@media (min-width: 1280px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    position: fixed !important;
+    inset: var(--aiph-reader-top, 92px) auto auto var(--aiph-reader-left, auto) !important;
+    top: var(--aiph-reader-top, 92px) !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: var(--aiph-reader-left, auto) !important;
+    width: var(--aiph-reader-width, 230px) !important;
+    min-width: var(--aiph-reader-width, 230px) !important;
+    max-width: var(--aiph-reader-width, 230px) !important;
+    z-index: 45 !important;
+  }
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating > .aiph-outline-follow-stack.aiph-sidebar-follow-stack.is-reader-stack-floating {
+  box-sizing: border-box !important;
+  width: var(--aiph-reader-width, 230px) !important;
+  min-width: var(--aiph-reader-width, 230px) !important;
+  max-width: var(--aiph-reader-width, 230px) !important;
+  overflow-x: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  border: 1px solid #edf2f7 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  perspective: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 8px 10px 12px !important;
+  overflow: hidden !important;
+  grid-template-columns: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list__item {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  flex: 0 1 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 27px !important;
+  padding: 5px 10px !important;
+  border: 0 !important;
+  border-radius: 4px !important;
+  color: #475569 !important;
+  background: #f1f5f9 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  perspective: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list__item:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.28) !important;
+  outline-offset: 2px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list__item::before,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list__item::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack .aiph-side-widget--tag-chip-list .aiph-hot-tag-list__item strong {
+  display: block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  color: inherit !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* 2026-05-30: keep medium desktop article layout in CSS instead of writing inline styles on scroll. */
+@media (min-width: 961px) and (max-width: 1279px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    align-items: start !important;
+    justify-content: center !important;
+    width: min(100% - 48px, 872px) !important;
+    max-width: 872px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+}
+
+/* 2026-05-30: 1280px is too narrow for the full three-rail reader once browser scrollbars are present. */
+@media (min-width: 1280px) and (max-width: 1365px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article.article-reader-theme {
+    --aiph-left-reader-width: 0px !important;
+    --aiph-reader-width: 230px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: minmax(0, 706px) 230px !important;
+    gap: 18px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    width: min(100% - 48px, 954px) !important;
+    max-width: 954px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    display: grid !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-content: start !important;
+    justify-self: stretch !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: sticky !important;
+    top: 92px !important;
+    left: auto !important;
+    overflow: visible !important;
+    z-index: 8 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack.aiph-sidebar-follow-stack.is-reader-stack-floating {
+    width: var(--aiph-reader-width, 230px) !important;
+    min-width: var(--aiph-reader-width, 230px) !important;
+    max-width: var(--aiph-reader-width, 230px) !important;
+  }
+}
+
+/* 2026-05-30: final mobile lock for the article related cards, loaded after legacy article layout blocks. */
+@media (max-width: 1220px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher {
+    border-radius: 16px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher .aiph-side-article-card {
+    height: auto !important;
+    max-height: none !important;
+    border-radius: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article .aiph-side-widget--article-switcher .aiph-side-article-card__body strong {
+    display: -webkit-box !important;
+    white-space: normal !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+}
+
+/* 2026-05-31: true EOF mobile lock for article related-tools cards; must stay after duplicated legacy blocks. */
+@media (max-width: 1220px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher:hover {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 10px 11px 13px !important;
+    background: #ffffff !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid > a.aiph-side-tool-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid > a.aiph-side-tool-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-grid > a.aiph-side-tool-card:focus-visible {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    padding: 8px 10px !important;
+    overflow: hidden !important;
+    border: 1px solid #edf2f7 !important;
+    border-radius: 14px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+    text-decoration: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card__logo {
+    display: inline-flex !important;
+    flex: 0 0 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
+    background: #f8fafc !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card__logo img {
+    display: block !important;
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card__title,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher .aiph-side-tool-card:hover .aiph-side-tool-card__title {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    -webkit-line-clamp: unset !important;
+    transform: none !important;
+  }
+}
+
+/* 2026-06-08: desktop-only article reader shell polish; keep the approved bare TOC unchanged. */
+@media (min-width: 1221px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card:hover {
+    overflow: hidden !important;
+    border: 1px solid #e8eef5 !important;
+    border-radius: 14px !important;
+    background: #ffffff !important;
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.055) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card::after {
+    border-radius: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card .aiph-hero,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-main > .wf-article-main-card.article-reader-card .aiph-content-card--article-body {
+    border-radius: 12px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tag-cloud.aiph-side-widget--tag-chip-list {
+    overflow: hidden !important;
+    border: 1px solid #e7edf5 !important;
+    border-radius: 14px !important;
+    background: #ffffff !important;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.045) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::after,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--articles.aiph-side-widget--article-tools.aiph-side-widget--article-switcher::after,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tools.aiph-side-widget--article-tools.aiph-side-widget--tool-switcher::after,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tag-cloud.aiph-side-widget--tag-chip-list::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget.aiph-side-widget--tag-cloud.aiph-side-widget--tag-chip-list::after {
+    border-radius: 14px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:focus-visible,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--articles .aiph-side-article-list > a.aiph-side-article-card:focus-visible {
+    border-radius: 10px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-grid {
+    gap: 8px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-grid > a.aiph-side-tool-card:focus-visible {
+    display: grid !important;
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 7px 9px !important;
+    overflow: hidden !important;
+    border: 1px solid #edf2f7 !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-card__logo {
+    display: inline-flex !important;
+    flex: 0 0 24px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-card__logo img {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    object-fit: contain !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-card__title,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news.is-card-theme-toolify:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme.article-reader-theme--paper .aiph-left-rail.aiph-left-rail--article > .aiph-sidebar-follow-stack > .aiph-side-widget--tools .aiph-side-tool-card:hover .aiph-side-tool-card__title {
+    display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    transform: none !important;
+  }
+}
+
+/* 2026-06-09: true EOF article reader spacing lock; loaded after duplicated legacy blocks. */
+@media (min-width: 1451px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article {
+    --aiph-left-reader-width: 320px !important;
+    --aiph-reader-width: 260px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: 320px minmax(0, 805px) 260px !important;
+    gap: 24px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: min(100% - 48px, 1433px) !important;
+    max-width: 1433px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    grid-column: 1 !important;
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 2 !important;
+    width: 805px !important;
+    min-width: 0 !important;
+    max-width: 805px !important;
+    justify-self: stretch !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 805px !important;
+    max-width: 805px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    grid-column: 3 !important;
+    width: 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    top: 112px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    width: var(--aiph-reader-width, 260px) !important;
+    min-width: var(--aiph-reader-width, 260px) !important;
+    max-width: var(--aiph-reader-width, 260px) !important;
+    top: var(--aiph-reader-top, 112px) !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__index {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* 2026-06-09: medium desktop article reader spacing; preserve transparent dot TOC. */
+@media (min-width: 1366px) and (max-width: 1450px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article {
+    --aiph-left-reader-width: 312px !important;
+    --aiph-reader-width: 230px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: 312px minmax(0, 706px) 230px !important;
+    gap: 24px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: min(100% - 48px, 1296px) !important;
+    max-width: 1296px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    display: grid !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 312px !important;
+    min-width: 312px !important;
+    max-width: 312px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article.is-article-left-floating {
+    width: 312px !important;
+    min-width: 312px !important;
+    max-width: 312px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 706px !important;
+    min-width: 0 !important;
+    max-width: 706px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 706px !important;
+    max-width: 706px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__head {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 28px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 0 10px !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__title,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__head h3 {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    min-height: 18px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+  }
+}
+
+/* 2026-06-14: keep article ending actionable when prev/next data is empty. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback[hidden] {
+  display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext:has(.wf-article-prenext__row) .wf-article-prenext__fallback {
+  display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext.is-empty {
+  display: block !important;
+  margin-top: 18px !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: auto repeat(2, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+  border: 1px solid #e7edf5 !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback-link {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  overflow: hidden !important;
+  border: 1px solid #dbe6f2 !important;
+  border-radius: 10px !important;
+  color: #1f2937 !important;
+  background: #f8fafc !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  transition: border-color 0.16s ease, color 0.16s ease, background-color 0.16s ease !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback-link:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback-link:focus-visible {
+  border-color: #c7d7ea !important;
+  color: #111827 !important;
+  background: #eef6ff !important;
+  outline: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-prenext__fallback-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
+}
+
+/* 2026-06-14: lightweight detail feedback card after the reader actions. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin-top: 14px !important;
+  padding: 14px !important;
+  border: 1px solid #e7edf5 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__avatar {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 14px !important;
+  background: #eff6ff !important;
+  color: #1768f5 !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__body {
+  min-width: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__title {
+  color: #111827 !important;
+  font-size: 14px !important;
+  font-weight: 850 !important;
+  line-height: 1.35 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__body p {
+  margin: 3px 0 0 !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__link {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border: 1px solid #dbe6f2 !important;
+  border-radius: 10px !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__link--primary {
+  border-color: #bfdbfe !important;
+  background: #eff6ff !important;
+  color: #1768f5 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__link:hover,
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-detail-feedback__link:focus-visible {
+  border-color: #c7d7ea !important;
+  background: #eef6ff !important;
+  color: #111827 !important;
+  outline: none !important;
+}
+
+/* 2026-06-17: keep desktop article side tabs above tiny-control threshold. */
+@media (min-width: 1221px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--mixed-related .aiph-side-widget__tabs,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--tool-switcher .aiph-side-widget__tabs {
+    min-height: 34px !important;
+    height: 34px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--mixed-related .aiph-side-widget__tab,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) article.aiph-single.aiph-single--article.article-reader-theme .aiph-left-rail.aiph-left-rail--article .aiph-side-widget--tool-switcher .aiph-side-widget__tab {
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 0 8px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* 2026-06-24: ordinary article outline is a 1:1 clone of the tool detail reader outline. */
+@media (min-width: 1221px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: var(--aiph-reader-width, 230px) !important;
+    min-width: var(--aiph-reader-width, 230px) !important;
+    max-width: var(--aiph-reader-width, 230px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 138px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: visible !important;
+    z-index: 45 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    position: fixed !important;
+    inset: 120px auto auto var(--aiph-reader-left, auto) !important;
+    top: 120px !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: var(--aiph-reader-left, auto) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__head {
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 28px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 0 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    gap: 10px !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__title,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__head h3 {
+    display: block !important;
+    position: relative !important;
+    visibility: visible !important;
+    height: auto !important;
+    min-height: 18px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 0 0 11px !important;
+    background: transparent !important;
+    color: #111827 !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.4 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__progress {
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__nav {
+    position: relative !important;
+    display: grid !important;
+    gap: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 0 0 1px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: linear-gradient(90deg, transparent 0, transparent 9px, #c7d0dc 9px, #c7d0dc 10px, transparent 10px) !important;
+    max-height: min(58vh, calc(100vh - 196px)) !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+    scrollbar-width: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__nav::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__nav::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__nav::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-level-3,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-level-3.is-active {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 5px 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #737373 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: color 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 2 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link::before,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active::before {
+    content: "" !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    display: inline-flex !important;
+    flex: 0 0 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: radial-gradient(circle, #f1f5f9 0 5px, transparent 5.5px), #ffffff !important;
+    box-shadow: 0 0 0 2px #e5e7eb !important;
+    transform: none !important;
+    transform-origin: center !important;
+    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 2 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link::after,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__pill {
+    order: 2 !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    max-width: 184px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: rgba(15, 23, 42, 0.07) !important;
+    color: inherit !important;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0) !important;
+    opacity: 0 !important;
+    transform: translateX(-20px) !important;
+    transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1), background 0.18s cubic-bezier(0.4, 0, 0.2, 1), color 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.24s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    pointer-events: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__index {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__text {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    max-width: 154px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    line-height: 15.6px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link:hover,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link:focus-visible,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active {
+    color: #111827 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link:hover .aiph-outline-card__pill,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link:focus-visible .aiph-outline-card__pill,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active .aiph-outline-card__pill {
+    background: rgba(17, 24, 39, 0.08) !important;
+    color: #111827 !important;
+    box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.2) !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link.is-active::before {
+    background: radial-gradient(circle, #d7ff3f 0 5.5px, transparent 6px), #111111 !important;
+    box-shadow: 0 0 0 1px #111111, 0 7px 18px rgba(17, 17, 17, 0.22) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline] .aiph-outline-card__link:focus-visible {
+    outline: 2px solid rgba(17, 24, 39, 0.18) !important;
+    outline-offset: 4px !important;
+  }
+}
+
+/* 2026-06-24: final article detail reader layout clone of the tool-detail breakpoint skeleton. */
+@media (min-width: 1280px) and (max-width: 1450px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article {
+    --aiph-left-reader-width: 0px !important;
+    --aiph-reader-width: 230px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: grid !important;
+    grid-template-columns: minmax(0, 706px) 230px !important;
+    gap: 18px !important;
+    align-items: start !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: min(100% - 48px, 954px) !important;
+    max-width: 954px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    justify-self: stretch !important;
+    width: 706px !important;
+    min-width: 0 !important;
+    max-width: 706px !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    box-sizing: border-box !important;
+    width: 706px !important;
+    max-width: 706px !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating {
+    display: grid !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-content: start !important;
+    justify-self: stretch !important;
+    width: 230px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: sticky !important;
+    top: 92px !important;
+    left: auto !important;
+    overflow: visible !important;
+    z-index: 8 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack {
+    width: var(--aiph-reader-width, 230px) !important;
+    min-width: var(--aiph-reader-width, 230px) !important;
+    max-width: var(--aiph-reader-width, 230px) !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline].is-reader-floating {
+    inset: 120px auto auto var(--aiph-reader-left, auto) !important;
+    top: 120px !important;
+  }
+}
+
+@media (min-width: 1221px) and (max-width: 1279px) {
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single.aiph-single--article > .aiph-body,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-body {
+    display: block !important;
+    width: min(100% - 48px, 805px) !important;
+    max-width: 805px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 805px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-detail-breadcrumb,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-entry-action-card,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-left-rail--article,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article > .aiph-body > .aiph-left-rail.aiph-left-rail--article.is-article-left-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline.is-reader-rail-floating,
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-card[data-aiph-outline],
+  html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-sidebar.wn-news-aside.aiph-sidebar--article-outline > .aiph-outline-follow-stack {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: hidden !important;
+    z-index: 0 !important;
+  }
+}
+
+/* 2026-06-24: final article reader body rail matches tool/download detail. */
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .aiph-main > .wf-article-main-card.article-reader-card {
+  padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.single.article.is-single-article-news:not(.is-single-download-news):not(.is-single-tool-article) .aiph-single--article .wf-article-main-card.article-reader-card > .aiph-content-card--article-body {
+  padding: 15px !important;
+}

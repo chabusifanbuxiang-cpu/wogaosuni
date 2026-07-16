@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="noindex,follow" />
+<link rel="canonical" href="{eyou:global name='web_basehost' /}{$eyou.field.typeurl}" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="legacy_article_detail_head_assets.htm" /}
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+</head>
+<body class="nav-theme nav-theme-v2 single article is-single-article-news is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+
+<main class="site-main single-wrap single-wrap--clean">
+  <article class="aiph-single aiph-single--article eyou-single-page">
+    <nav class="aiph-crumb" aria-label="面包屑">
+      <a href="{eyou:global name='web_basehost' /}">首页</a>
+      <span>›</span>
+      <em>{$eyou.field.typename}</em>
+    </nav>
+
+    <div class="aiph-body aiph-body--single-page">
+      <main class="aiph-main">
+        <header class="aiph-hero aiph-hero--article">
+          <div class="aiph-hero__main">
+            <div class="aiph-article-headline">
+              <span class="aiph-article-headline__badge">单页</span>
+              <h1>{$eyou.field.typename}</h1>
+            </div>
+            {eyou:notempty name="$eyou.field.seo_description"}
+            <p class="aiph-summary">{$eyou.field.seo_description}</p>
+            {/eyou:notempty}
+          </div>
+        </header>
+
+        <section class="aiph-content-card aiph-content-card--article-body">
+          <div class="single-entry__content aiph-richtext">{$eyou.field.content}</div>
+        </section>
+      </main>
+
+      <aside class="aiph-sidebar wn-news-aside wn-news-aside--single">
+        <section class="wn-news-sidecard wn-news-sidecard--hot">
+          <div class="wn-news-sidecard__head">
+            <h3>热门工具</h3>
+          </div>
+          <div class="wn-news-hotlist">
+            {eyou:artlist channelid='2' orderby='click' titlelen='32' loop='8'}
+            <a class="wn-news-hotlist__item" href="{$field.arcurl}" title="{$field.title}">
+              <em class="wn-news-hotlist__rank {eyou:lt name='$i' value='4'}is-top{/eyou:lt}">{$i}</em>
+              <span class="wn-news-hotlist__title">{$field.title}</span>
+            </a>
+            {/eyou:artlist}
+          </div>
+        </section>
+      </aside>
+    </div>
+  </article>
+</main>
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

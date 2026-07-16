@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {eyou:php}
+  if (!function_exists('wn_article_head_escape')) {
+      function wn_article_head_escape($value)
+      {
+          return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+      }
+  }
+
+  if (!function_exists('wn_article_head_abs_url')) {
+      function wn_article_head_abs_url($url, $baseHost = '')
+      {
+          $url = trim((string)$url);
+          $baseHost = rtrim((string)$baseHost, '/');
+          if ($url === '') {
+              return $baseHost;
+          }
+          if (preg_match('#^(?:https?:)?//#i', $url)) {
+              return stripos($url, '//') === 0 ? ('https:' . $url) : $url;
+          }
+          if ($baseHost === '') {
+              return $url;
+          }
+          if ($url[0] === '/') {
+              return $baseHost . $url;
+          }
+          return $baseHost . '/' . ltrim($url, '/');
+      }
+  }
+
+  if (!function_exists('wn_article_head_iso8601')) {
+      function wn_article_head_iso8601($timestamp)
+      {
+          $timestamp = intval($timestamp);
+          if ($timestamp <= 0) {
+              return '';
+          }
+          return date('c', $timestamp);
+      }
+  }
+
+  if (!function_exists('wn_article_head_plain')) {
+      function wn_article_head_plain($value)
+      {
+          $value = html_entity_decode(strip_tags((string)$value), ENT_QUOTES, 'UTF-8');
+          return trim(preg_replace('/\s+/u', ' ', $value));
+      }
+  }
+
+  if (!function_exists('wn_article_head_description')) {
+      function wn_article_head_description($value, $fallback)
+      {
+          $value = wn_article_head_plain($value);
+          $fallback = wn_article_head_plain($fallback);
+          $length = function_exists('mb_strlen') ? mb_strlen($value, 'UTF-8') : strlen($value);
+          $result = $length >= 55 ? $value : $fallback;
+          $resultLength = function_exists('mb_strlen') ? mb_strlen($result, 'UTF-8') : strlen($result);
+          if ($resultLength > 160 && function_exists('mb_substr')) {
+              $result = mb_substr($result, 0, 158, 'UTF-8');
+          }
+          return $result;
+      }
+  }
+
+  if (!function_exists('wn_article_head_direct_url')) {
+      function wn_article_head_direct_url($url)
+      {
+          $value = trim((string)$url);
+          $value = str_replace(["\r", "\n"], '', $value);
+          if ($value === '' || preg_match('/^(javascript|data|vbscript):/i', $value)) {
+              return '';
+          }
+          if (strpos($value, '//') === 0) {
+              $value = 'https:' . $value;
+          } elseif (!preg_match('#^https?://#i', $value)) {
+              if (preg_match('#^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}(?::\d+)?(?:[/?#].*)?$#i', $value)) {
+                  $value = 'https://' . $value;
+              } else {
+                  return '';
+              }
+          }
+          if (preg_match('#^https?://(?:127\.0\.0\.1|localhost)(?::\d+)?/(?:index\.php|go/tool-)#i', $value)) {
+              return '';
+          }
+          return $value;
+      }
+  }
+
+  if (!function_exists('wn_article_head_type_url')) {
+      function wn_article_head_type_url($type, $fallback = '')
+      {
+          if (is_numeric($type)) {
+              $typeId = intval($type);
+              if ($typeId > 0) {
+                  $type = (array)\think\Db::name('arctype')
+                      ->field('id, parent_id, typename, dirname, dirpath, diy_dirpath, rulelist, ruleview, typearcrank, is_part, typelink')
+                      ->where('id', $typeId)
+                      ->find();
+              } else {
+                  $type = [];
+              }
+          }
+          $type = is_array($type) ? $type : [];
+          if (empty($type)) {
+              return (string)$fallback;
+          }
+          if (!empty($type['is_part']) && !empty($type['typelink'])) {
+              return (string)$type['typelink'];
+          }
+          if (function_exists('get_typeurl')) {
+              $url = get_typeurl($type, false);
+              if (!empty($url)) {
+                  return (string)$url;
+              }
+          }
+          return !empty($type['id']) ? ('/index.php?m=home&c=Lists&a=index&tid=' . intval($type['id'])) : (string)$fallback;
+      }
+  }
+
+  if (!function_exists('wn_trusted_web_base_host')) {
+      function wn_trusted_web_base_host()
+      {
+          if (!function_exists('tpCache')) {
+              return '';
+          }
+          $configured = trim((string)tpCache('web.web_basehost'));
+          if ($configured === '' || preg_match('/[\x00-\x20\x7f]/', $configured)) {
+              return '';
+          }
+          $parts = @parse_url($configured);
+          if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
+              return '';
+          }
+          $scheme = strtolower((string)$parts['scheme']);
+          if (!in_array($scheme, ['http', 'https'], true)
+              || isset($parts['user']) || isset($parts['pass'])
+              || isset($parts['query']) || isset($parts['fragment'])
+              || (isset($parts['path']) && $parts['path'] !== '' && $parts['path'] !== '/')) {
+              return '';
+          }
+          $host = trim((string)$parts['host'], '[]');
+          $isIp = filter_var($host, FILTER_VALIDATE_IP) !== false;
+          $isHostname = strlen($host) <= 253
+              && preg_match('/^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i', $host);
+          if (!$isIp && !$isHostname) {
+              return '';
+          }
+          $port = isset($parts['port']) ? intval($parts['port']) : 0;
+          if (isset($parts['port']) && ($port < 1 || $port > 65535)) {
+              return '';
+          }
+          $authorityHost = strpos($host, ':') !== false ? '[' . strtolower($host) . ']' : strtolower($host);
+          return $scheme . '://' . $authorityHost . ($port > 0 ? ':' . $port : '');
+      }
+  }
+
+  if (!function_exists('wn_article_head_internal_url')) {
+      function wn_article_head_internal_url($url, $baseHost)
+      {
+          $baseHost = rtrim((string)$baseHost, '/');
+          $url = trim((string)$url);
+          if ($baseHost === '') {
+              return '';
+          }
+          if ($url === '' || $url === '#') {
+              return $baseHost;
+          }
+          if (preg_match('/[\x00-\x20\x7f]/', $url) || preg_match('/^(?:javascript|data|vbscript):/i', $url)) {
+              return $baseHost;
+          }
+          $parseTarget = strpos($url, '//') === 0 ? ('https:' . $url) : $url;
+          $parts = @parse_url($parseTarget);
+          if (!is_array($parts)) {
+              return $baseHost;
+          }
+          $path = isset($parts['path']) ? (string)$parts['path'] : '/';
+          if ($path === '') {
+              $path = '/';
+          } elseif ($path[0] !== '/') {
+              $path = '/' . ltrim($path, '/');
+          }
+          $query = isset($parts['query']) && $parts['query'] !== '' ? ('?' . $parts['query']) : '';
+          return $baseHost . $path . $query;
+      }
+  }
+  $wnArticleHeadBaseHost = wn_trusted_web_base_host();
+  $wnArticleHeadHomeUrl = $wnArticleHeadBaseHost !== '' ? rtrim($wnArticleHeadBaseHost, '/') . '/' : '';
+
+  $wnArticleHeadCanonicalUrl = !empty($eyou['field']['arcurl']) ? wn_article_head_internal_url($eyou['field']['arcurl'], $wnArticleHeadBaseHost) : $wnArticleHeadBaseHost;
+  $wnArticleHeadTitle = !empty($eyou['field']['title']) ? trim((string)$eyou['field']['title']) : 'AI工具详情';
+  $wnArticleHeadSeoDescription = wn_article_head_description(
+      !empty($eyou['field']['seo_description']) ? $eyou['field']['seo_description'] : '',
+      $wnArticleHeadTitle . '，本页整理工具定位、核心功能、适用场景、官方入口和相关AI工具，帮助国内用户快速判断是否适合自己的工作流。'
+  );
+  $wnArticleHeadSiteName = trim((string)tpCache('web.web_name'));
+  if ($wnArticleHeadSiteName === '') {
+      $wnArticleHeadSiteName = trim((string)tpCache('web.web_title'));
+  }
+  if ($wnArticleHeadSiteName === '') {
+      $wnArticleHeadSiteName = 'AI导航站';
+  }
+  $wnArticleHeadRawImage = !empty($eyou['field']['litpic']) ? trim((string)$eyou['field']['litpic']) : '/template/pc/skin/wogaosuni/image/open-source-logo.svg';
+  if ($wnArticleHeadRawImage === '') {
+      $wnArticleHeadRawImage = '/template/pc/skin/wogaosuni/image/open-source-logo.svg';
+  }
+  if (function_exists('handle_subdir_pic')) {
+      $wnArticleHeadRawImage = handle_subdir_pic($wnArticleHeadRawImage);
+  }
+  $wnArticleHeadShareImage = wn_article_head_abs_url($wnArticleHeadRawImage, $wnArticleHeadBaseHost);
+  $wnArticleHeadPublishedTimestamp = !empty($eyou['field']['add_time']) ? intval($eyou['field']['add_time']) : (!empty($eyou['field']['update_time']) ? intval($eyou['field']['update_time']) : 0);
+  $wnArticleHeadModifiedTimestamp = !empty($eyou['field']['update_time']) ? intval($eyou['field']['update_time']) : $wnArticleHeadPublishedTimestamp;
+  $wnArticleHeadPublishedIso = wn_article_head_iso8601($wnArticleHeadPublishedTimestamp);
+  $wnArticleHeadModifiedIso = wn_article_head_iso8601($wnArticleHeadModifiedTimestamp);
+  $wnArticleHeadTypeId = !empty($eyou['field']['typeid']) ? intval($eyou['field']['typeid']) : 0;
+  $wnArticleHeadTopTypeId = !empty($eyou['field']['topid']) ? intval($eyou['field']['topid']) : 0;
+  $wnArticleHeadParentTypeId = !empty($eyou['field']['parent_id']) ? intval($eyou['field']['parent_id']) : 0;
+  $wnArticleHeadHubTypeId = $wnArticleHeadTopTypeId > 0 ? $wnArticleHeadTopTypeId : ($wnArticleHeadParentTypeId > 0 ? $wnArticleHeadParentTypeId : $wnArticleHeadTypeId);
+  $wnArticleHeadHubType = $wnArticleHeadHubTypeId > 0 ? (array)\think\Db::name('arctype')
+      ->field('id, parent_id, typename, dirname, dirpath, diy_dirpath, rulelist, ruleview, typearcrank, is_part, typelink')
+      ->where('id', $wnArticleHeadHubTypeId)
+      ->find() : [];
+  $wnArticleHeadHubName = !empty($wnArticleHeadHubType['typename']) ? trim((string)$wnArticleHeadHubType['typename']) : 'AI百科';
+  $wnArticleHeadHubUrl = wn_article_head_internal_url(wn_article_head_type_url($wnArticleHeadHubType, '/ai-guides-news/'), $wnArticleHeadBaseHost);
+  $wnArticleHeadCurrentTypeName = !empty($eyou['field']['typename']) ? trim((string)$eyou['field']['typename']) : $wnArticleHeadHubName;
+  $wnArticleHeadCurrentTypeUrl = wn_article_head_internal_url(!empty($eyou['field']['typeurl']) ? $eyou['field']['typeurl'] : wn_article_head_type_url($wnArticleHeadTypeId, '/ai-guides-news/'), $wnArticleHeadBaseHost);
+  $wnArticleHeadToolDirectUrl = wn_article_head_direct_url(!empty($eyou['field']['jumplinks']) ? $eyou['field']['jumplinks'] : '');
+
+  $wnArticleHeadBreadcrumbItems = [
+      [
+          '@type' => 'ListItem',
+          'position' => 1,
+          'name' => '首页',
+          'item' => $wnArticleHeadHomeUrl !== '' ? $wnArticleHeadHomeUrl : $wnArticleHeadBaseHost,
+      ],
+  ];
+  if ($wnArticleHeadHubName !== '' && $wnArticleHeadHubUrl !== '') {
+      $wnArticleHeadBreadcrumbItems[] = [
+          '@type' => 'ListItem',
+          'position' => count($wnArticleHeadBreadcrumbItems) + 1,
+          'name' => $wnArticleHeadHubName,
+          'item' => $wnArticleHeadHubUrl,
+      ];
+  }
+  if ($wnArticleHeadCurrentTypeName !== '' && $wnArticleHeadCurrentTypeUrl !== '' && $wnArticleHeadCurrentTypeUrl !== $wnArticleHeadHubUrl) {
+      $wnArticleHeadBreadcrumbItems[] = [
+          '@type' => 'ListItem',
+          'position' => count($wnArticleHeadBreadcrumbItems) + 1,
+          'name' => $wnArticleHeadCurrentTypeName,
+          'item' => $wnArticleHeadCurrentTypeUrl,
+      ];
+  }
+  $wnArticleHeadBreadcrumbItems[] = [
+      '@type' => 'ListItem',
+      'position' => count($wnArticleHeadBreadcrumbItems) + 1,
+      'name' => !empty($eyou['field']['title']) ? (string)$eyou['field']['title'] : '文章详情',
+      'item' => $wnArticleHeadCanonicalUrl,
+  ];
+
+  $wnArticleHeadSchema = [
+      '@context' => 'https://schema.org',
+      '@graph' => [
+          [
+              '@type' => 'BreadcrumbList',
+              '@id' => $wnArticleHeadCanonicalUrl . '#breadcrumb',
+              'itemListElement' => $wnArticleHeadBreadcrumbItems,
+          ],
+          [
+              '@type' => 'WebPage',
+              '@id' => $wnArticleHeadCanonicalUrl . '#webpage',
+              'name' => $wnArticleHeadTitle,
+              'description' => $wnArticleHeadSeoDescription,
+              'url' => $wnArticleHeadCanonicalUrl,
+              'inLanguage' => 'zh-Hans',
+              'datePublished' => $wnArticleHeadPublishedIso,
+              'dateModified' => $wnArticleHeadModifiedIso,
+              'isPartOf' => [
+                  '@type' => 'WebSite',
+                  'name' => $wnArticleHeadSiteName,
+                  'url' => $wnArticleHeadBaseHost,
+              ],
+              'primaryImageOfPage' => [
+                  '@type' => 'ImageObject',
+                  'url' => $wnArticleHeadShareImage,
+              ],
+              'breadcrumb' => [
+                  '@id' => $wnArticleHeadCanonicalUrl . '#breadcrumb',
+              ],
+              'mainEntity' => [
+                  '@id' => $wnArticleHeadCanonicalUrl . '#software',
+              ],
+          ],
+          [
+              '@type' => ['SoftwareApplication', 'WebApplication'],
+              '@id' => $wnArticleHeadCanonicalUrl . '#software',
+              'name' => $wnArticleHeadTitle,
+              'description' => $wnArticleHeadSeoDescription,
+              'url' => $wnArticleHeadToolDirectUrl !== '' ? $wnArticleHeadToolDirectUrl : $wnArticleHeadCanonicalUrl,
+              'mainEntityOfPage' => [
+                  '@id' => $wnArticleHeadCanonicalUrl . '#webpage',
+              ],
+              'image' => $wnArticleHeadShareImage,
+              'thumbnailUrl' => $wnArticleHeadShareImage,
+              'applicationCategory' => $wnArticleHeadCurrentTypeName,
+              'operatingSystem' => 'Web',
+              'keywords' => !empty($eyou['field']['seo_keywords']) ? (string)$eyou['field']['seo_keywords'] : '',
+              'inLanguage' => 'zh-Hans',
+          ],
+      ],
+  ];
+  if ($wnArticleHeadToolDirectUrl !== '') {
+      $wnArticleHeadSchema['@graph'][2]['sameAs'] = [$wnArticleHeadToolDirectUrl];
+  }
+  {/eyou:php}
+  <title>{$eyou.field.seo_title}</title>
+  <meta name="keywords" content="{$eyou.field.seo_keywords}" />
+  <meta name="description" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadSeoDescription);{/eyou:php}" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="{eyou:php}echo wn_article_head_escape($wnArticleHeadCanonicalUrl);{/eyou:php}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{eyou:global name='web_name' /}" />
+  <meta property="og:title" content="{$eyou.field.seo_title}" />
+  <meta property="og:description" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadSeoDescription);{/eyou:php}" />
+  <meta property="og:url" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadCanonicalUrl);{/eyou:php}" />
+  <meta property="og:image" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadShareImage);{/eyou:php}" />
+  <meta property="og:image:alt" content="{$eyou.field.title}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{$eyou.field.seo_title}" />
+  <meta name="twitter:description" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadSeoDescription);{/eyou:php}" />
+  <meta name="twitter:image" content="{eyou:php}echo wn_article_head_escape($wnArticleHeadShareImage);{/eyou:php}" />
+  <meta name="twitter:image:alt" content="{$eyou.field.title}" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="global_head_styles.htm" /}
+{eyou:include file="css_media_loader.htm" /}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-common-head-bundle-desktop-lean.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-common-head-bundle-desktop-lean.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-common-head-bundle-mobile-lean.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-common-head-bundle-mobile-lean.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-core-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-core-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-detail-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-detail-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-tool-pre-reader-bundle-desktop-slim.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-tool-pre-reader-bundle-desktop-slim.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-tool-pre-reader-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-tool-pre-reader-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<link rel="preload" href="/template/pc/skin/Lib/photoswipe/css/photoswipe.css?v=5.4.4" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="/template/pc/skin/Lib/photoswipe/css/photoswipe.css?v=5.4.4" /></noscript>
+<link rel="stylesheet" href="/template/pc/skin/wogaosuni/style/article-lightbox.css?v=20260716" />
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-tool-reader-bundle-desktop-slim.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-tool-reader-bundle-desktop-slim.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-tool-reader-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-tool-reader-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/detail-mobile-fit.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/detail-mobile-fit.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css", "screen and (max-width: 1320px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css" rel="stylesheet" media="screen and (max-width: 1320px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/page-detail-inline.min.css", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/page-detail-inline.min.css" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<style>
+html body.nav-theme.nav-theme-v2.single.article.is-single-tool-article .aiph-side-widget__tabs--slim .aiph-side-widget__tab {
+  min-height: 32px !important;
+  padding: 4px 14px !important;
+  border-radius: 999px !important;
+  line-height: 1.15 !important;
+}
+</style>
+<link href="/template/pc/skin/wogaosuni/style/detail-card-unified.css?v=20260630cards5" rel="stylesheet" type="text/css" />
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+{eyou:static file="skin/Lib/photoswipe/js/photoswipe.umd.min.js" defer="1" /}
+{eyou:static file="skin/Lib/photoswipe/js/photoswipe-lightbox.umd.min.js" defer="1" /}
+{eyou:static file="skin/wogaosuni/script/article-lightbox.js" defer="1" /}
+</head>
+<body class="nav-theme nav-theme-v2 single article is-single-article-news is-single-tool-article is-single-tool-reader is-sidebar-collapsed is-card-theme-toolify" data-current-channel="2" data-current-typeid="{$eyou.field.typeid}" data-current-topid="{eyou:php}echo intval($wnArticleHeadHubTypeId);{/eyou:php}">
+<script>
+  (function () {
+    try {
+      var initialHash = window.location.hash || "";
+
+      var shouldResetReaderScroll = /^#(?:article|tool)-section-\d+$/i.test(initialHash);
+
+      if (shouldResetReaderScroll && window.history && window.history.replaceState) {
+
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+
+      }
+
+      if (shouldResetReaderScroll) {
+
+        var resetInitialReaderScroll = function () {
+
+          window.scrollTo(0, 0);
+
+          document.documentElement.scrollTop = 0;
+
+          document.body.scrollTop = 0;
+
+        };
+
+        document.addEventListener("DOMContentLoaded", resetInitialReaderScroll, { once: true });
+
+        window.addEventListener("load", resetInitialReaderScroll, { once: true });
+
+      }
+
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+{eyou:include file="direct_url_helper.htm" /}
+{eyou:php}
+echo '<script type="application/ld+json">' . json_encode($wnArticleHeadSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+{/eyou:php}
+
+<main class="site-main single-wrap single-wrap--clean">
+  {eyou:php}
+  $wnArticleCurrentAid = !empty($eyou['field']['aid']) ? intval($eyou['field']['aid']) : 0;
+  $wnArticleTypeId = !empty($eyou['field']['typeid']) ? intval($eyou['field']['typeid']) : 0;
+  $wnArticleParentTypeId = !empty($eyou['field']['parent_id']) ? intval($eyou['field']['parent_id']) : 0;
+  $wnArticleBaseTypeId = $wnArticleParentTypeId > 0 ? $wnArticleParentTypeId : $wnArticleTypeId;
+
+  if (!function_exists('wn_article_escape')) {
+      function wn_article_escape($value)
+      {
+          return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+      }
+  }
+
+  if (!function_exists('wn_article_trim_text')) {
+      function wn_article_trim_text($value, $length = 52)
+      {
+          $value = trim(preg_replace('/\s+/u', ' ', strip_tags(htmlspecialchars_decode((string)$value, ENT_QUOTES))));
+          if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($value, 'UTF-8') > $length) {
+              return mb_substr($value, 0, $length, 'UTF-8') . '...';
+          }
+          if (!function_exists('mb_strlen') && strlen($value) > $length) {
+              return substr($value, 0, $length) . '...';
+          }
+          return $value;
+      }
+  }
+
+  if (!function_exists('wn_article_image_alt')) {
+      function wn_article_image_alt($item, $fallback = '')
+      {
+          $item = is_array($item) ? $item : [];
+          $candidates = [
+              !empty($item['img_alt']) ? $item['img_alt'] : '',
+              !empty($item['image_alt']) ? $item['image_alt'] : '',
+              !empty($item['litpic_alt']) ? $item['litpic_alt'] : '',
+              !empty($item['title']) ? $item['title'] : '',
+              !empty($item['seo_keywords']) ? preg_replace('/[,，、\s]+/u', ' ', (string)$item['seo_keywords']) : '',
+              !empty($item['type_name']) ? $item['type_name'] : '',
+              $fallback,
+          ];
+          foreach ($candidates as $candidate) {
+              $candidate = wn_article_trim_text($candidate, 32);
+              if ($candidate !== '') {
+                  return $candidate;
+              }
+          }
+          return 'AI导航站';
+      }
+  }
+
+  if (!function_exists('wn_article_first_paragraph_text')) {
+      function wn_article_first_paragraph_text($content)
+      {
+          $content = (string)$content;
+          if ($content === '') {
+              return '';
+          }
+          $decoded = htmlspecialchars_decode($content, ENT_QUOTES);
+          if (preg_match('/<p\b[^>]*>(.*?)<\/p>/is', $decoded, $matches)) {
+              $paragraph = trim(preg_replace('/\s+/u', ' ', strip_tags($matches[1])));
+              if ($paragraph !== '') {
+                  return $paragraph;
+              }
+          }
+          $blocks = preg_split('/<\/p>|<br\s*\/?>|<\/div>|<\/h[1-6]>/i', $decoded);
+          if (is_array($blocks)) {
+              foreach ($blocks as $block) {
+                  $paragraph = trim(preg_replace('/\s+/u', ' ', strip_tags($block)));
+                  if ($paragraph !== '') {
+                      return $paragraph;
+                  }
+              }
+          }
+          return trim(preg_replace('/\s+/u', ' ', strip_tags($decoded)));
+      }
+  }
+
+  if (!function_exists('wn_article_arcurl')) {
+      function wn_article_arcurl($item)
+      {
+          if (!is_array($item)) {
+              return '#';
+          }
+          $url = '';
+          if (function_exists('get_arcurl')) {
+              $url = get_arcurl($item, false);
+          }
+          if (empty($url)) {
+              $url = '/index.php?m=home&c=View&a=index&aid=' . (!empty($item['aid']) ? intval($item['aid']) : 0);
+          }
+          return $url;
+      }
+  }
+
+  if (!function_exists('wn_article_logo_url')) {
+      function wn_article_logo_url($item)
+      {
+          $logo = !empty($item['litpic']) ? trim((string)$item['litpic']) : '';
+          if ($logo === '') {
+              return '/template/pc/skin/wogaosuni/image/open-source-logo.svg';
+          }
+          if (function_exists('handle_subdir_pic')) {
+              $logo = handle_subdir_pic($logo);
+          }
+          return $logo;
+      }
+  }
+
+  if (!function_exists('wn_article_fill_route_fields')) {
+      function wn_article_fill_route_fields($item)
+      {
+          if (!is_array($item)) {
+              return [];
+          }
+          $typeId = !empty($item['typeid']) ? intval($item['typeid']) : 0;
+          if ($typeId <= 0) {
+              return $item;
+          }
+          static $routeCache = [];
+          if (!array_key_exists($typeId, $routeCache)) {
+              $routeCache[$typeId] = (array)\think\Db::name('arctype')
+                  ->field('id, dirname, dirpath, diy_dirpath, ruleview, typearcrank')
+                  ->where('id', $typeId)
+                  ->find();
+          }
+          if (!empty($routeCache[$typeId])) {
+              foreach (['dirname', 'dirpath', 'diy_dirpath', 'ruleview', 'typearcrank'] as $routeKey) {
+                  if ((empty($item[$routeKey]) && isset($routeCache[$typeId][$routeKey])) || !isset($item[$routeKey])) {
+                      $item[$routeKey] = $routeCache[$typeId][$routeKey];
+                  }
+              }
+          }
+          return $item;
+      }
+  }
+
+  if (!function_exists('wn_article_relative_time')) {
+      function wn_article_relative_time($timestamp)
+      {
+          $timestamp = intval($timestamp);
+          if ($timestamp <= 0) {
+              return '刚刚';
+          }
+          $diff = time() - $timestamp;
+          if ($diff < 60) {
+              return '刚刚';
+          }
+          if ($diff < 3600) {
+              return floor($diff / 60) . '分钟前';
+          }
+          if ($diff < 86400) {
+              return floor($diff / 3600) . '小时前';
+          }
+          if ($diff < 2592000) {
+              return floor($diff / 86400) . '天前';
+          }
+          return date('Y-m-d', $timestamp);
+      }
+  }
+
+  if (!function_exists('wn_article_query_tools')) {
+      function wn_article_query_tools($limit = 12, $excludeAids = [], $sortMode = 'hot')
+      {
+          $limit = max(1, intval($limit));
+          $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+
+          $prefix = config('database.prefix');
+          $where = 'a.channel = 2 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+          if (!empty($excludeAids)) {
+              $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+          }
+          if ($sortMode === 'latest') {
+              $orderSql = 'a.add_time DESC, a.aid DESC';
+          } elseif ($sortMode === 'random') {
+              $orderSql = 'RAND()';
+          } else {
+              $orderSql = 'GREATEST(IFNULL(pc.top_global,0),IFNULL(pc.top_home,0),IFNULL(pc.top_category,0),IFNULL(a.is_head,0),IFNULL(a.is_top,0),IFNULL(a.is_recom,0)) DESC, IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC';
+          }
+          if (!empty($filters['same_category'])) {
+              $typeId = !empty($filters['typeid']) ? intval($filters['typeid']) : 0;
+              $parentTypeId = !empty($filters['parent_id']) ? intval($filters['parent_id']) : 0;
+              $baseTypeId = $parentTypeId > 0 ? $parentTypeId : $typeId;
+              $typeName = !empty($filters['typename']) ? trim((string)$filters['typename']) : '';
+              $categoryParts = [];
+              if ($typeId > 0) {
+                  $categoryParts[] = 'a.typeid = ' . $typeId;
+              }
+              if ($baseTypeId > 0) {
+                  $categoryParts[] = 'IFNULL(t.parent_id, 0) = ' . $baseTypeId;
+              }
+              if ($typeName !== '' && !preg_match('/^(AI|AIGC|工具|教程|资讯|下载|文章|百科)$/u', $typeName)) {
+                  $typeName = str_replace(['%', '_'], ['\%', '\_'], $typeName);
+                  $categoryParts[] = "t.typename LIKE '" . addslashes('%' . $typeName . '%') . "'";
+              }
+              if (!empty($categoryParts)) {
+                  $where .= ' AND (' . implode(' OR ', array_values(array_unique($categoryParts))) . ')';
+              }
+          }
+          if ($sortMode === 'random') {
+              $orderSql = 'RAND()';
+          } elseif ($sortMode === 'hot') {
+              $orderSql = 'IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC';
+          } else {
+              $orderSql = 'a.add_time DESC, a.aid DESC';
+          }
+
+          $sql = 'SELECT a.*, t.typename AS type_name
+              FROM ' . $prefix . 'archives a
+              LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+              LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+              WHERE ' . $where . '
+              ORDER BY ' . $orderSql . '
+              LIMIT ' . $limit;
+          $items = (array)\think\Db::query($sql);
+          foreach ($items as $index => $item) {
+              $items[$index] = wn_article_fill_route_fields($item);
+          }
+          return $items;
+      }
+  }
+
+  if (!function_exists('wn_article_render_sidebar_tool_card')) {
+      function wn_article_render_sidebar_tool_card($item)
+      {
+          $title = wn_article_trim_text(!empty($item['title']) ? $item['title'] : 'AI 工具', 18);
+          $detailUrl = wn_article_arcurl($item);
+          $logoUrl = wn_article_logo_url($item);
+          $imageAlt = wn_article_image_alt($item, $title);
+          return '<a class="aiph-side-tool-card" href="' . wn_article_escape($detailUrl) . '">'
+              . '<span class="aiph-side-tool-card__logo"><img src="' . wn_article_escape($logoUrl) . '" alt="' . wn_article_escape($imageAlt) . '" width="16" height="16" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></span>'
+              . '<span class="aiph-side-tool-card__title">' . wn_article_escape($title) . '</span>'
+              . '</a>';
+      }
+  }
+
+  if (!function_exists('wn_article_query_articles')) {
+      function wn_article_query_articles($limit = 5, $excludeAids = [], $sortMode = 'latest', $filters = [])
+      {
+          $limit = max(1, intval($limit));
+          $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+          $filters = is_array($filters) ? $filters : [];
+
+          $prefix = config('database.prefix');
+          $where = 'a.channel = 1 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+          if (!empty($excludeAids)) {
+              $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+          }
+          if (!empty($filters['same_category'])) {
+
+              $typeId = !empty($filters['typeid']) ? intval($filters['typeid']) : 0;
+
+              $parentTypeId = !empty($filters['parent_id']) ? intval($filters['parent_id']) : 0;
+
+              $baseTypeId = $parentTypeId > 0 ? $parentTypeId : $typeId;
+
+              $typeName = !empty($filters['typename']) ? trim((string)$filters['typename']) : '';
+
+              $categoryParts = [];
+
+              if ($typeId > 0) {
+
+                  $categoryParts[] = 'a.typeid = ' . $typeId;
+
+              }
+
+              if ($baseTypeId > 0) {
+
+                  $categoryParts[] = 'IFNULL(t.parent_id, 0) = ' . $baseTypeId;
+
+              }
+
+              if ($typeName !== '' && !preg_match('/^(AI|AIGC|工具|教程|资讯|下载|文章|百科)$/u', $typeName)) {
+
+                  $typeName = str_replace(['%', '_'], ['\%', '\_'], $typeName);
+
+                  $categoryParts[] = "t.typename LIKE '" . addslashes('%' . $typeName . '%') . "'";
+
+              }
+
+              if (!empty($categoryParts)) {
+
+                  $where .= ' AND (' . implode(' OR ', array_values(array_unique($categoryParts))) . ')';
+
+              }
+
+          }
+
+          if ($sortMode === 'random') {
+
+              $orderSql = 'RAND()';
+
+          } elseif ($sortMode === 'hot') {
+
+              $orderSql = 'IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC';
+
+          } else {
+
+              $orderSql = 'a.add_time DESC, a.aid DESC';
+
+          }
+
+          $sql = 'SELECT a.*, t.typename AS type_name
+              FROM ' . $prefix . 'archives a
+              LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+              WHERE ' . $where . '
+              ORDER BY ' . $orderSql . '
+              LIMIT ' . $limit;
+          $items = (array)\think\Db::query($sql);
+          foreach ($items as $index => $item) {
+              $items[$index] = wn_article_fill_route_fields($item);
+          }
+          return $items;
+      }
+  }
+
+  if (!function_exists('wn_article_tool_related_terms')) {
+      function wn_article_tool_related_terms($field)
+      {
+          $field = is_array($field) ? $field : [];
+          $contentSummary = !empty($field['content']) ? wn_article_first_paragraph_text($field['content']) : '';
+          $sourceParts = [
+              !empty($field['title']) ? $field['title'] : '',
+              !empty($field['seo_keywords']) ? $field['seo_keywords'] : '',
+              !empty($field['tags']) ? $field['tags'] : '',
+              !empty($field['typename']) ? $field['typename'] : '',
+              !empty($field['seo_description']) ? $field['seo_description'] : '',
+              $contentSummary,
+          ];
+          $source = preg_replace('/[，、,;；|\/\r\n\t]+/u', ' ', implode(' ', $sourceParts));
+          $pieces = preg_split('/\s+/u', trim((string)$source));
+          $terms = [];
+          $seen = [];
+          foreach ((array)$pieces as $piece) {
+              $piece = trim(preg_replace('/[^\x{4e00}-\x{9fa5}A-Za-z0-9\-_]+/u', '', (string)$piece));
+              $length = function_exists('mb_strlen') ? mb_strlen($piece, 'UTF-8') : strlen($piece);
+              if ($piece === '' || $length < 2 || $length > 18) {
+                  continue;
+              }
+              if (preg_match('/^(AI|AIGC|教程|资讯|指南|实战|案例|官方|免费|入门|周报|选型)$/iu', $piece)) {
+                  continue;
+              }
+              $key = function_exists('mb_strtolower') ? mb_strtolower($piece, 'UTF-8') : strtolower($piece);
+              if (isset($seen[$key])) {
+                  continue;
+              }
+              $seen[$key] = true;
+              $terms[] = $piece;
+              if (count($terms) >= 8) {
+                  break;
+              }
+          }
+          return $terms;
+      }
+  }
+
+  if (!function_exists('wn_article_query_related_articles')) {
+      function wn_article_query_related_articles($field, $limit = 6, $excludeAids = [])
+      {
+          $limit = max(1, intval($limit));
+          $field = is_array($field) ? $field : [];
+          $terms = wn_article_tool_related_terms($field);
+          if (empty($terms)) {
+              return [];
+          }
+          $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+          $prefix = config('database.prefix');
+          $where = 'a.channel = 1 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+          if (!empty($excludeAids)) {
+              $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+          }
+
+          $typeId = !empty($field['typeid']) ? intval($field['typeid']) : 0;
+          $parentTypeId = !empty($field['parent_id']) ? intval($field['parent_id']) : 0;
+          $baseTypeId = $parentTypeId > 0 ? $parentTypeId : $typeId;
+          $likeParts = [];
+          $scoreParts = [];
+
+          foreach ($terms as $term) {
+              $term = str_replace(['%', '_'], ['\%', '\_'], (string)$term);
+              $like = addslashes('%' . $term . '%');
+              $likeParts[] = "(a.title LIKE '{$like}' OR a.seo_keywords LIKE '{$like}' OR a.seo_description LIKE '{$like}' OR t.typename LIKE '{$like}')";
+              $scoreParts[] = "(CASE WHEN a.title LIKE '{$like}' THEN 12 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN a.seo_keywords LIKE '{$like}' THEN 8 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN a.seo_description LIKE '{$like}' THEN 4 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN t.typename LIKE '{$like}' THEN 3 ELSE 0 END)";
+          }
+          if (empty($likeParts)) {
+              return [];
+          }
+
+          if ($typeId > 0) {
+              $scoreParts[] = '(CASE WHEN a.typeid = ' . $typeId . ' THEN 14 ELSE 0 END)';
+          }
+          if ($baseTypeId > 0) {
+              $scoreParts[] = '(CASE WHEN IFNULL(t.parent_id, 0) = ' . $baseTypeId . ' THEN 7 ELSE 0 END)';
+          }
+
+          $scoreSql = implode(' + ', $scoreParts);
+          $sql = 'SELECT a.*, t.typename AS type_name, (' . $scoreSql . ') AS related_score
+              FROM ' . $prefix . 'archives a
+              LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+              WHERE ' . $where . ' AND (' . implode(' OR ', $likeParts) . ')
+              ORDER BY related_score DESC, IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC
+              LIMIT ' . $limit;
+          $items = (array)\think\Db::query($sql);
+          foreach ($items as $index => $item) {
+              $items[$index] = wn_article_fill_route_fields($item);
+          }
+          return $items;
+      }
+  }
+
+  if (!function_exists('wn_article_query_related_tools')) {
+      function wn_article_query_related_tools($terms, $limit = 12, $excludeAids = [])
+      {
+          $limit = max(1, intval($limit));
+          $terms = array_values(array_filter((array)$terms));
+          if (empty($terms)) {
+              return [];
+          }
+          $excludeAids = array_values(array_filter(array_map('intval', (array)$excludeAids)));
+          $prefix = config('database.prefix');
+          $where = 'a.channel = 2 AND a.status = 1 AND a.is_del = 0 AND a.arcrank > -1';
+          if (!empty($excludeAids)) {
+              $where .= ' AND a.aid NOT IN (' . implode(',', $excludeAids) . ')';
+          }
+
+          $likeParts = [];
+          $scoreParts = [];
+          foreach ($terms as $term) {
+              $term = str_replace(['%', '_'], ['\%', '\_'], (string)$term);
+              $like = addslashes('%' . $term . '%');
+              $likeParts[] = "(a.title LIKE '{$like}' OR a.seo_keywords LIKE '{$like}' OR a.seo_description LIKE '{$like}' OR pc.content LIKE '{$like}' OR t.typename LIKE '{$like}')";
+              $scoreParts[] = "(CASE WHEN a.title LIKE '{$like}' THEN 10 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN a.seo_keywords LIKE '{$like}' THEN 8 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN a.seo_description LIKE '{$like}' THEN 4 ELSE 0 END)";
+              $scoreParts[] = "(CASE WHEN t.typename LIKE '{$like}' THEN 3 ELSE 0 END)";
+          }
+          if (empty($likeParts)) {
+              return [];
+          }
+
+          $scoreSql = implode(' + ', $scoreParts);
+          $sql = 'SELECT a.*, t.typename AS type_name, (' . $scoreSql . ') AS related_score
+              FROM ' . $prefix . 'archives a
+              LEFT JOIN ' . $prefix . 'product_content pc ON pc.aid = a.aid
+              LEFT JOIN ' . $prefix . 'arctype t ON t.id = a.typeid
+              WHERE ' . $where . ' AND (' . implode(' OR ', $likeParts) . ')
+              ORDER BY related_score DESC, IFNULL(a.click,0) DESC, IFNULL(a.update_time,0) DESC, a.aid DESC
+              LIMIT ' . $limit;
+          $items = (array)\think\Db::query($sql);
+          foreach ($items as $index => $item) {
+              $items[$index] = wn_article_fill_route_fields($item);
+          }
+          return $items;
+      }
+  }
+
+  if (!function_exists('wn_article_query_hot_articles')) {
+      function wn_article_query_hot_articles($limit = 6, $excludeAids = [], $filters = [])
+      {
+          return wn_article_query_articles($limit, $excludeAids, 'hot', $filters);
+      }
+  }
+
+  if (!function_exists('wn_article_render_sidebar_article_item')) {
+      function wn_article_render_sidebar_article_item($item)
+      {
+          $title = wn_article_trim_text(!empty($item['title']) ? $item['title'] : '最新文章', 42);
+          $detailUrl = wn_article_arcurl($item);
+          $thumbUrl = wn_article_logo_url($item);
+          $imageAlt = wn_article_image_alt($item, $title);
+          $timeValue = !empty($item['add_time']) ? intval($item['add_time']) : (!empty($item['update_time']) ? intval($item['update_time']) : 0);
+          $timeText = $timeValue > 0 ? date('Y-m-d', $timeValue) : '';
+          return '<a class="aiph-side-article-card" href="' . wn_article_escape($detailUrl) . '" aria-label="' . wn_article_escape($title) . '" title="' . wn_article_escape($title) . '">'
+              . '<span class="aiph-side-article-card__thumb"><img src="' . wn_article_escape($thumbUrl) . '" alt="' . wn_article_escape($imageAlt) . '" width="58" height="44" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'/template/pc/skin/wogaosuni/image/open-source-logo.svg\';" /></span>'
+              . '<span class="aiph-side-article-card__body"' . ($timeText !== '' ? ' data-published="' . wn_article_escape($timeText) . '"' : '') . '><strong>' . wn_article_escape($title) . '</strong></span>'
+              . '</a>';
+      }
+  }
+
+  $wnArticleRelatedToolTerms = wn_article_tool_related_terms(!empty($eyou['field']) ? $eyou['field'] : []);
+  $wnArticleRelatedToolItems = wn_article_query_related_tools($wnArticleRelatedToolTerms, 8, []);
+  if (empty($wnArticleRelatedToolItems)) {
+      $wnArticleRelatedToolItems = wn_article_query_tools(8, [], 'random');
+  }
+  $wnArticleHotToolExcludeAids = array_map(function ($item) {
+      return !empty($item['aid']) ? intval($item['aid']) : 0;
+  }, (array)$wnArticleRelatedToolItems);
+  $wnArticleHotToolItems = wn_article_query_tools(8, $wnArticleHotToolExcludeAids, 'hot');
+  $wnArticleLatestToolExcludeAids = array_map(function ($item) {
+      return !empty($item['aid']) ? intval($item['aid']) : 0;
+  }, array_merge((array)$wnArticleRelatedToolItems, (array)$wnArticleHotToolItems));
+  $wnArticleLatestToolItems = wn_article_query_tools(8, $wnArticleLatestToolExcludeAids, 'latest');
+  $wnArticleRelatedArticleItems = wn_article_query_related_articles(!empty($eyou['field']) ? $eyou['field'] : [], 6, [$wnArticleCurrentAid]);
+  if (empty($wnArticleRelatedArticleItems)) {
+      $wnArticleRelatedArticleItems = wn_article_query_articles(6, [$wnArticleCurrentAid], 'random');
+  }
+  $wnArticleRelatedExcludeAids = [$wnArticleCurrentAid];
+  foreach ((array)$wnArticleRelatedArticleItems as $item) {
+      if (!empty($item['aid'])) {
+          $wnArticleRelatedExcludeAids[] = intval($item['aid']);
+      }
+  }
+  $wnArticleRelatedExcludeAids = array_values(array_unique(array_filter(array_map('intval', $wnArticleRelatedExcludeAids))));
+  $wnArticleHotArticleItems = wn_article_query_hot_articles(6, $wnArticleRelatedExcludeAids);
+  $wnArticleLatestExcludeAids = $wnArticleRelatedExcludeAids;
+  foreach ((array)$wnArticleHotArticleItems as $item) {
+      if (!empty($item['aid'])) {
+          $wnArticleLatestExcludeAids[] = intval($item['aid']);
+      }
+  }
+  $wnArticleLatestExcludeAids = array_values(array_unique(array_filter(array_map('intval', $wnArticleLatestExcludeAids))));
+  $wnArticleLatestArticleItems = wn_article_query_articles(6, $wnArticleLatestExcludeAids);
+
+  $wnProductDirectUrl = function_exists('wn_normalize_direct_url') ? wn_normalize_direct_url(!empty($eyou['field']['jumplinks']) ? $eyou['field']['jumplinks'] : '') : '';
+  $wnProductSummarySource = !empty($eyou['field']['seo_description']) ? $eyou['field']['seo_description'] : (!empty($eyou['field']['content']) ? $eyou['field']['content'] : '');
+  $wnProductSummaryText = wn_article_trim_text($wnProductSummarySource, 150);
+  if ($wnProductSummaryText === '') {
+      $wnProductSummaryText = wn_article_trim_text((!empty($eyou['field']['title']) ? $eyou['field']['title'] : '该工具') . ' 的官网入口、功能定位和使用说明。', 150);
+  }
+  $wnProductSeoDescription = !empty($eyou['field']['seo_description']) ? trim((string)$eyou['field']['seo_description']) : '';
+  if ($wnProductSeoDescription === '') {
+      $wnProductSeoDescription = $wnProductSummaryText;
+  }
+  $wnProductLogoUrl = wn_article_logo_url(!empty($eyou['field']) ? $eyou['field'] : []);
+  $wnProductLogoAlt = wn_article_image_alt(!empty($eyou['field']) ? $eyou['field'] : [], !empty($eyou['field']['title']) ? $eyou['field']['title'] : 'AI 工具');
+  $wnProductParentTypeName = '';
+  $wnProductParentTypeUrl = '';
+  if (
+      $wnArticleHeadParentTypeId > 0
+      && $wnArticleHeadHubName !== ''
+      && $wnArticleHeadHubUrl !== ''
+      && (
+          $wnArticleHeadHubName !== $wnArticleHeadCurrentTypeName
+          || $wnArticleHeadHubUrl !== $wnArticleHeadCurrentTypeUrl
+      )
+  ) {
+      $wnProductParentTypeName = $wnArticleHeadHubName;
+      $wnProductParentTypeUrl = $wnArticleHeadHubUrl;
+  }
+  $wnProductCurrentTypeName = $wnArticleHeadCurrentTypeName !== '' ? $wnArticleHeadCurrentTypeName : (!empty($eyou['field']['typename']) ? trim((string)$eyou['field']['typename']) : '未分类');
+  $wnProductCurrentTypeUrl = $wnArticleHeadCurrentTypeUrl !== '' ? $wnArticleHeadCurrentTypeUrl : '#';
+  $wnProductBodyContent = !empty($eyou['field']['content']) ? trim((string)$eyou['field']['content']) : '';
+  if ($wnProductBodyContent === '') {
+      $wnProductBodyContent = '<p>' . wn_article_escape($wnProductSummaryText) . '</p>';
+  }
+  $wnArticleHeroSummarySource = wn_article_first_paragraph_text(!empty($eyou['field']['content']) ? $eyou['field']['content'] : '');
+  if ($wnArticleHeroSummarySource === '') {
+      $wnArticleHeroSummarySource = !empty($eyou['field']['seo_description']) ? trim((string)$eyou['field']['seo_description']) : '';
+  }
+  $wnArticleHeroSummary = wn_article_trim_text($wnArticleHeroSummarySource, 116);
+  $wnArticleContentPlain = !empty($eyou['field']['content']) ? preg_replace('/\s+/u', '', strip_tags(htmlspecialchars_decode((string)$eyou['field']['content'], ENT_QUOTES))) : '';
+  $wnArticleContentLength = function_exists('mb_strlen') ? mb_strlen($wnArticleContentPlain, 'UTF-8') : strlen($wnArticleContentPlain);
+  if (!function_exists('wn_article_is_specific_tag_name')) {
+      function wn_article_is_specific_tag_name($tagName)
+      {
+          $tagName = trim(preg_replace('/\s+/u', ' ', (string)$tagName));
+          if ($tagName === '') {
+              return false;
+          }
+          $length = function_exists('mb_strlen') ? mb_strlen($tagName, 'UTF-8') : strlen($tagName);
+          if ($length < 2) {
+              return false;
+          }
+          if (preg_match('/^(A|AI|AIGC|AI工具|AI教程|AI资讯|教程|资讯|工具|指南|案例|实战|入门|周报|选型|百科)$/iu', $tagName)) {
+              return false;
+          }
+          if (preg_match('/^[A-Za-z0-9\-_]+$/', $tagName) && $length < 3) {
+              return false;
+          }
+          return true;
+      }
+  }
+  if (!function_exists('wn_article_build_hot_tags')) {
+      function wn_article_build_hot_tags($limit = 56)
+      {
+          $limit = max(1, intval($limit));
+          $rows = function_exists('GetTagIndexRanking') ? (array)GetTagIndexRanking($limit, 'id, tag') : [];
+          $items = [];
+          $seen = [];
+          $groupSize = max(1, intval(ceil($limit / 9)));
+          $fontSizeMap = [1 => 11.4, 2 => 11.9, 3 => 12.6, 4 => 13.4, 5 => 14.2, 6 => 15.1, 7 => 16.2, 8 => 17.4, 9 => 18.8];
+          $fontWeightMap = [1 => 600, 2 => 620, 3 => 640, 4 => 660, 5 => 690, 6 => 720, 7 => 740, 8 => 760, 9 => 790];
+          $lightnessMap = [1 => 58, 2 => 55, 3 => 52, 4 => 49, 5 => 46, 6 => 43, 7 => 40, 8 => 37, 9 => 34];
+          foreach ($rows as $row) {
+              $tagId = !empty($row['id']) ? intval($row['id']) : 0;
+              $tagName = isset($row['tag']) ? trim(preg_replace('/\s+/u', ' ', (string)$row['tag'])) : '';
+              if ($tagId <= 0 || $tagName === '') {
+                  continue;
+              }
+              $tagKey = function_exists('mb_strtolower') ? mb_strtolower($tagName, 'UTF-8') : strtolower($tagName);
+              if (isset($seen[$tagKey])) {
+                  continue;
+              }
+              if (!wn_article_is_specific_tag_name($tagName)) {
+                  continue;
+              }
+              $seen[$tagKey] = true;
+              $tagUrl = '#';
+              if (function_exists('get_tagurl')) {
+                  $tagUrl = get_tagurl($tagId);
+              } elseif (function_exists('tagurl')) {
+                  $tagUrl = tagurl('home/Tags/lists', ['tagid' => $tagId]);
+              }
+              $itemIndex = count($items);
+              $tagLength = function_exists('mb_strlen') ? mb_strlen($tagName, 'UTF-8') : strlen($tagName);
+              $weight = max(1, 9 - intval(floor($itemIndex / $groupSize)));
+              $fontSize = $fontSizeMap[$weight];
+              if ($tagLength >= 10) {
+                  $fontSize -= 1.8;
+              } elseif ($tagLength >= 8) {
+                  $fontSize -= 1.2;
+              } elseif ($tagLength >= 6) {
+                  $fontSize -= 0.6;
+              }
+              $fontSize = max(10.8, $fontSize);
+              $fontWeight = $fontWeightMap[$weight];
+              $lightness = $lightnessMap[$weight] + (($itemIndex % 3) - 1) * 1.6;
+              $lightness = max(30, min(62, $lightness));
+              $hoverLightness = min(94, $lightness + 46);
+              $saturation = 72 + ((($itemIndex + $tagLength) % 5) * 3);
+              $hue = fmod(208 + ($itemIndex * 137.508), 360.0);
+              if ($hue < 0) {
+                  $hue += 360.0;
+              }
+              $items[] = [
+                  'id' => $tagId,
+                  'tag' => $tagName,
+                  'url' => $tagUrl,
+                  'rank_index' => $itemIndex,
+                  'cloud_weight' => $weight,
+                  'font_size' => round($fontSize, 1),
+                  'font_weight' => $fontWeight,
+                  'lightness' => intval(round($lightness)),
+                  'hover_lightness' => intval(round($hoverLightness)),
+                  'saturation' => $saturation,
+                  'hue' => intval(round($hue)),
+              ];
+              if (count($items) >= $limit) {
+                  break;
+              }
+          }
+          return $items;
+      }
+  }
+  if (!function_exists('wn_article_pick_random_hot_tags')) {
+      function wn_article_pick_random_hot_tags($limit = 8, $pool = 32)
+      {
+          $limit = max(1, intval($limit));
+          $pool = max($limit, intval($pool));
+          $tags = array_values((array)wn_article_build_hot_tags($pool));
+          if (empty($tags)) {
+              return [];
+          }
+          shuffle($tags);
+          return array_slice($tags, 0, $limit);
+      }
+  }
+  if (!function_exists('wn_article_build_related_tags')) {
+      function wn_article_build_related_tags($field, $limit = 8)
+      {
+          $limit = max(1, intval($limit));
+          $field = is_array($field) ? $field : [];
+          $items = [];
+          $seen = [];
+          $terms = wn_article_tool_related_terms($field);
+          $prefix = config('database.prefix');
+
+          foreach ((array)$terms as $term) {
+              $tagName = trim(preg_replace('/\s+/u', ' ', (string)$term));
+              if ($tagName === '') {
+                  continue;
+              }
+              $tagKey = function_exists('mb_strtolower') ? mb_strtolower($tagName, 'UTF-8') : strtolower($tagName);
+              if (isset($seen[$tagKey])) {
+                  continue;
+              }
+              $rows = (array)\think\Db::query(
+                  'SELECT id, tag FROM ' . $prefix . 'tagindex WHERE tag = \'' . addslashes($tagName) . '\' ORDER BY weekcc DESC, monthcc DESC, id DESC LIMIT 1'
+              );
+              if (empty($rows[0]['id'])) {
+                  continue;
+              }
+              if (!wn_article_is_specific_tag_name($rows[0]['tag'])) {
+                  continue;
+              }
+              $tagId = intval($rows[0]['id']);
+              $tagUrl = function_exists('get_tagurl') ? get_tagurl($tagId) : (function_exists('tagurl') ? tagurl('home/Tags/lists', ['tagid' => $tagId]) : '#');
+              $seen[$tagKey] = true;
+              $items[] = [
+                  'id' => $tagId,
+                  'tag' => $rows[0]['tag'],
+                  'url' => $tagUrl,
+              ];
+               if (count($items) >= $limit) {
+                   break;
+               }
+           }
+          return array_slice($items, 0, $limit);
+      }
+  }
+  if (!function_exists('wn_article_render_hot_tag_cloud')) {
+      function wn_article_render_hot_tag_cloud($tags, $title = '热门标签')
+      {
+          if (empty($tags) || !is_array($tags)) {
+              return '';
+          }
+          $html = '<section class="aiph-side-widget aiph-side-widget--article-tools aiph-side-widget--tag-cloud aiph-side-widget--tag-chip-list" aria-label="' . wn_article_escape($title) . '">';
+          $html .= '<div class="aiph-side-widget__head"><div class="aiph-side-widget__title">' . wn_article_escape($title) . '</div></div>';
+          $html .= '<nav class="aiph-hot-tag-list" role="navigation" aria-label="' . wn_article_escape($title) . '">';
+          foreach ($tags as $tagIndex => $tagItem) {
+              $tagLabel = !empty($tagItem['tag']) ? $tagItem['tag'] : '热门标签';
+              $tagUrl = !empty($tagItem['url']) ? $tagItem['url'] : '#';
+              $html .= '<a class="aiph-hot-tag-list__item aiph-hot-tag-list__item--' . (($tagIndex % 5) + 1) . '" rel="tag" href="' . wn_article_escape($tagUrl) . '"><strong>' . wn_article_escape($tagLabel) . '</strong></a>';
+          }
+          $html .= '</nav></section>';
+          return $html;
+      }
+  }
+  $wnArticleHotTags = wn_article_pick_random_hot_tags(8);
+  {/eyou:php}
+  {eyou:include file="detail_related_download_helper.htm" /}
+  <article class="aiph-single aiph-single--article article-reader-theme article-reader-theme--paper">
+    <div class="aiph-body">
+      <aside class="aiph-left-rail aiph-left-rail--article wn-news-aside wn-news-aside--single" aria-label="文章推荐与目录">
+        {eyou:php}
+        echo wn_article_render_related_content_switcher([
+            [
+                'key' => 'article',
+                'label' => '相关文章',
+                'kind' => 'article',
+                'items' => $wnArticleRelatedArticleItems,
+            ],
+            [
+                'key' => 'download',
+                'label' => '相关下载',
+                'kind' => 'download',
+                'items' => $wnArticleRelatedDownloadItems,
+            ],
+        ], '网址相关推荐', 'aiph-tool-mixed-side');
+        {/eyou:php}
+
+        <div class="aiph-sidebar-follow-stack" data-aiph-sidebar-follow-stack>
+          {eyou:php}
+          if (!empty($wnArticleRelatedToolItems) || !empty($wnArticleHotToolItems) || !empty($wnArticleLatestToolItems)) {
+              $wnToolFirstTab = !empty($wnArticleRelatedToolItems) ? 'related' : (!empty($wnArticleHotToolItems) ? 'hot' : 'latest');
+              echo '<section class="aiph-side-widget aiph-side-widget--tools aiph-side-widget--article-tools aiph-side-widget--tool-switcher" aria-label="工具推荐">';
+              echo '<div class="aiph-side-widget__head">';
+              echo '<div class="aiph-side-widget__tabs aiph-side-widget__tabs--slim" role="tablist" aria-label="工具推荐切换">';
+              if (!empty($wnArticleRelatedToolItems)) {
+                  echo '<button class="aiph-side-widget__tab' . ($wnToolFirstTab === 'related' ? ' is-active' : '') . '" type="button" role="tab" aria-selected="' . ($wnToolFirstTab === 'related' ? 'true' : 'false') . '" data-aiph-tool-tab="related">相关工具</button>';
+              }
+              if (!empty($wnArticleHotToolItems)) {
+                  echo '<button class="aiph-side-widget__tab' . ($wnToolFirstTab === 'hot' ? ' is-active' : '') . '" type="button" role="tab" aria-selected="' . ($wnToolFirstTab === 'hot' ? 'true' : 'false') . '" data-aiph-tool-tab="hot">热门工具</button>';
+              }
+              if (!empty($wnArticleLatestToolItems)) {
+                  echo '<button class="aiph-side-widget__tab' . ($wnToolFirstTab === 'latest' ? ' is-active' : '') . '" type="button" role="tab" aria-selected="' . ($wnToolFirstTab === 'latest' ? 'true' : 'false') . '" data-aiph-tool-tab="latest">最新收录</button>';
+              }
+              echo '</div>';
+              echo '</div>';
+              echo '<div class="aiph-side-widget__panels">';
+              if (!empty($wnArticleRelatedToolItems)) {
+                  echo '<div class="aiph-side-widget__panel' . ($wnToolFirstTab === 'related' ? ' is-active' : '') . '" role="tabpanel"' . ($wnToolFirstTab === 'related' ? '' : ' hidden') . ' data-aiph-tool-panel="related"><div class="aiph-side-tool-grid">';
+                  foreach ((array)$wnArticleRelatedToolItems as $item) {
+                      echo wn_article_render_sidebar_tool_card($item);
+                  }
+                  echo '</div></div>';
+              }
+              if (!empty($wnArticleHotToolItems)) {
+                  echo '<div class="aiph-side-widget__panel' . ($wnToolFirstTab === 'hot' ? ' is-active' : '') . '" role="tabpanel"' . ($wnToolFirstTab === 'hot' ? '' : ' hidden') . ' data-aiph-tool-panel="hot"><div class="aiph-side-tool-grid">';
+                  foreach ((array)$wnArticleHotToolItems as $item) {
+                      echo wn_article_render_sidebar_tool_card($item);
+                  }
+                  echo '</div></div>';
+              }
+              if (!empty($wnArticleLatestToolItems)) {
+                  echo '<div class="aiph-side-widget__panel' . ($wnToolFirstTab === 'latest' ? ' is-active' : '') . '" role="tabpanel"' . ($wnToolFirstTab === 'latest' ? '' : ' hidden') . ' data-aiph-tool-panel="latest"><div class="aiph-side-tool-grid">';
+                  foreach ((array)$wnArticleLatestToolItems as $item) {
+                      echo wn_article_render_sidebar_tool_card($item);
+                  }
+                  echo '</div></div>';
+              }
+              echo '</div></section>';
+          }
+          {/eyou:php}
+          {eyou:include file="ad_picture_left_sidebar.htm" /}
+        </div>
+      </aside>
+
+      <main class="aiph-main">
+        <nav class="wf-detail-breadcrumb wf-detail-breadcrumb--article" aria-label="面包屑">
+          <span class="wf-detail-breadcrumb__inner">
+            {eyou:position typeid='$eyou.field.typeid' symbol='<span class=wf-detail-breadcrumb__sep aria-hidden=true>&gt;</span>' style='wf-detail-breadcrumb__link' /}
+            <span class="wf-detail-breadcrumb__sep" aria-hidden="true">&gt;</span>
+            <em class="wf-detail-breadcrumb__current" aria-current="page">{$eyou.field.title}</em>
+          </span>
+        </nav>
+        <section class="wf-entry-action-card wf-entry-action-card--tool" aria-label="网址直达">
+          <header class="wf-entry-action-card__header wf-entry-action-card__header--tool">
+            <div class="wf-entry-action-card__tool-shell">
+              <div class="wf-entry-action-card__tool-main">
+                <div class="wf-entry-action-card__tool-identity">
+                  <span class="wf-entry-action-card__tool-logo">
+                    <img src="{$wnProductLogoUrl}" alt="{$wnProductLogoAlt}" width="60" height="60" loading="eager" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+                  </span>
+                  <div class="wf-entry-action-card__tool-copy">
+                    <div class="wf-entry-action-card__tool-head">
+                      <div class="aiph-article-headline">
+                        <h1>{$eyou.field.title}</h1>
+                      </div>
+                      <div class="wf-entry-action-card__tool-actions">
+                        {eyou:notempty name="$wnProductDirectUrl"}
+                        <a class="wf-entry-action-card__button wf-entry-action-card__button--primary wf-entry-action-card__button--tool-direct" href="{$wnProductDirectUrl}" target="_blank" rel="nofollow noopener noreferrer" data-tool-direct-link><span class="wf-entry-action-card__button-icon" aria-hidden="true"></span><span>访问官网</span></a>
+                        {eyou:else /}
+                        <span class="wf-entry-action-card__button wf-entry-action-card__button--primary wf-entry-action-card__button--tool-direct is-disabled" aria-disabled="true"><span class="wf-entry-action-card__button-icon" aria-hidden="true"></span><span>暂无官网</span></span>
+                        {/eyou:notempty}
+                      </div>
+                    </div>
+                    <div class="wf-article-lede"><p>{$wnProductSeoDescription}</p></div>
+                  </div>
+                </div>
+                <div class="wf-entry-action-card__subfacts wf-entry-action-card__subfacts--tool" aria-label="分类与标签">
+                  <span class="wf-entry-action-card__subfact wf-entry-action-card__subfact--taxonomy wf-entry-action-card__subfact--tool-taxonomy">
+                    <span class="wf-entry-action-card__subfact-label">分类：</span>
+                    {eyou:notempty name="$wnProductParentTypeName"}
+                    <a class="wf-entry-action-card__taxonomy-link wf-entry-action-card__taxonomy-link--category" href="{$wnProductParentTypeUrl}"><span class="wf-entry-action-card__folder-symbol" aria-hidden="true"></span><span>{$wnProductParentTypeName}</span></a><span class="wf-entry-action-card__taxonomy-sep" aria-hidden="true">/</span><a class="wf-entry-action-card__taxonomy-link wf-entry-action-card__taxonomy-link--category" href="{$wnProductCurrentTypeUrl}">{$wnProductCurrentTypeName}</a>
+                    {eyou:else /}
+                    <a class="wf-entry-action-card__taxonomy-link wf-entry-action-card__taxonomy-link--category" href="{$wnProductCurrentTypeUrl}"><span class="wf-entry-action-card__folder-symbol" aria-hidden="true"></span><span>{$wnProductCurrentTypeName}</span></a>
+                    {/eyou:notempty}
+                  </span>
+                  {eyou:notempty name='$eyou.field.tags'}
+                  <span class="wf-entry-action-card__subfact wf-entry-action-card__subfact--taxonomy wf-entry-action-card__subfact--tool-tags">
+                    <span class="wf-entry-action-card__topic-tags" aria-label="网址标签">
+                      {eyou:tags getall='0'}
+                      <a class="wf-entry-action-card__topic-tag" href="{$field.link}" {$field.target} rel="tag noopener noreferrer">#{$field.tag}</a>
+                      {/eyou:tags}
+                    </span>
+                  </span>
+                  {/eyou:notempty}
+                </div>
+              </div>
+            </div>
+          </header>
+        </section>
+
+        {eyou:include file="ad_picture_tool_detail.htm" /}
+
+        <section class="wf-article-main-card article-reader-card">
+          <section class="aiph-content-card aiph-content-card--article-body" id="article-content">
+            <div class="single-entry__content aiph-richtext">{$wnProductBodyContent}</div>
+          </section>
+
+          <div class="wf-article-content-divider" aria-hidden="true">
+            <span>正文结束</span>
+          </div>
+        </section>
+
+        <nav class="wf-article-prenext" aria-label="上一篇和下一篇">
+          {eyou:prenext get='pre' titlelen='42'}
+          <div class="wf-article-prenext__row wf-article-prenext__row--prev">
+            <span class="wf-article-prenext__label">上一篇：</span>
+            <a class="wf-article-prenext__link" href="{$field.arcurl}">{$field.title}</a>
+          </div>
+          {/eyou:prenext}
+          {eyou:prenext get='next' titlelen='42'}
+          <div class="wf-article-prenext__row wf-article-prenext__row--next">
+            <span class="wf-article-prenext__label">下一篇：</span>
+            <a class="wf-article-prenext__link" href="{$field.arcurl}">{$field.title}</a>
+          </div>
+          {/eyou:prenext}
+          {eyou:php}
+          $wnProductPrenextListUrl = !empty($wnArticleHeadCurrentTypeUrl) ? $wnArticleHeadCurrentTypeUrl : $wnArticleHeadHubUrl;
+          $wnProductPrenextGuidesUrl = wn_article_head_abs_url('/ai-guides-news/', $wnArticleHeadBaseHost);
+          echo '<div class="wf-article-prenext__fallback" data-article-prenext-fallback>';
+          echo '<span class="wf-article-prenext__fallback-label">继续浏览</span>';
+          echo '<a class="wf-article-prenext__fallback-link" href="' . htmlspecialchars($wnProductPrenextListUrl, ENT_QUOTES, 'UTF-8') . '">返回工具列表</a>';
+          echo '<a class="wf-article-prenext__fallback-link wf-article-prenext__fallback-link--guides" href="' . htmlspecialchars($wnProductPrenextGuidesUrl, ENT_QUOTES, 'UTF-8') . '">查看 AI 教程</a>';
+          echo '</div>';
+          {/eyou:php}
+        </nav>
+
+        <section class="wf-detail-feedback" aria-labelledby="wfDetailFeedbackTitle">
+          <div class="wf-detail-feedback__avatar" aria-hidden="true">AI</div>
+          <div class="wf-detail-feedback__body">
+            <div class="wf-detail-feedback__title" id="wfDetailFeedbackTitle">信息需要更新？</div>
+            <p>如果官网、价格、功能或访问状态发生变化，可以把线索发给站长，我们会优先核对常用工具。</p>
+          </div>
+          <div class="wf-detail-feedback__actions">
+            <a class="wf-detail-feedback__link wf-detail-feedback__link--primary" href="mailto:{eyou:global name='web_attr_15' /}">反馈信息</a>
+            <a class="wf-detail-feedback__link" href="/submit-tool/">推荐工具</a>
+          </div>
+        </section>
+
+        {eyou:php}
+        $wnProductHandoffItems = !empty($wnArticleRelatedToolItems) ? $wnArticleRelatedToolItems : (!empty($wnArticleHotToolItems) ? $wnArticleHotToolItems : $wnArticleLatestToolItems);
+        if (!empty($wnProductHandoffItems)) {
+            echo '<section class="wf-tool-handoff" aria-labelledby="wfToolHandoffTitle">';
+            echo '<div class="wf-tool-handoff__head">';
+            echo '<div><h2 id="wfToolHandoffTitle">继续探索 AI 工具</h2><p>从同类、热门或新收录工具里快速找下一站。</p></div>';
+            echo '<a class="wf-tool-handoff__more" href="' . htmlspecialchars($wnProductPrenextListUrl, ENT_QUOTES, 'UTF-8') . '">返回工具列表</a>';
+            echo '</div>';
+            echo '<div class="wf-tool-handoff__grid">';
+            $wnProductHandoffCount = 0;
+            foreach ((array)$wnProductHandoffItems as $item) {
+                if ($wnProductHandoffCount >= 6) {
+                    break;
+                }
+                echo wn_article_render_sidebar_tool_card($item);
+                $wnProductHandoffCount++;
+            }
+            echo '</div></section>';
+        }
+        {/eyou:php}
+
+        {eyou:include file="ad_picture_detail_footer.htm" /}
+
+      </main>
+
+      <aside class="aiph-sidebar wn-news-aside wn-news-aside--single aiph-sidebar--article-outline" aria-label="页面目录">
+        <section id="wnDetailOutlineCard" class="aiph-outline-card aiph-outline-card--sap aiph-outline-card--reader" data-aiph-outline data-aiph-outline-reader>
+          <div class="aiph-outline-card__head">
+            <div class="aiph-outline-card__title">目录</div>
+          </div>
+          <div class="aiph-outline-card__progress" aria-hidden="true"><span data-aiph-outline-progress></span></div>
+          <nav class="aiph-outline-card__nav" aria-label="页面目录">
+            <span class="aiph-outline-card__empty">目录加载中</span>
+          </nav>
+        </section>
+        <div class="aiph-outline-follow-stack aiph-sidebar-follow-stack" data-aiph-outline-follow-stack data-aiph-sidebar-follow-stack>
+          {eyou:include file="ad_picture_sidebar.htm" /}
+          {eyou:php}
+          echo wn_article_render_hot_tag_cloud($wnArticleHotTags);
+          {/eyou:php}
+        </div>
+      </aside>
+    </div>
+  </article>
+</main>
+
+{eyou:include file="footer.htm" /}
+<script>
+  (function () {
+    var articleRoot = document.querySelector(".aiph-single--article");
+    var richtext = document.querySelector(".wf-article-main-card.article-reader-card .aiph-richtext");
+    var metaTagsRow = document.querySelector(".wf-article-meta-tags");
+    var articlePrenext = document.querySelector(".wf-article-prenext");
+    var mixedTabButtons = Array.prototype.slice.call(document.querySelectorAll("[data-aiph-mixed-tab]"));
+    var articleTabButtons = Array.prototype.slice.call(document.querySelectorAll("[data-aiph-article-tab]"));
+    var toolTabButtons = Array.prototype.slice.call(document.querySelectorAll("[data-aiph-tool-tab]"));
+    var articleImageFallbackAlt = (document.querySelector('meta[name="keywords"]') || {}).content || document.title || "AI导航站";
+    var normalizeMetaLabel = function (value) {
+      return String(value || "")
+        .replace(/\s+/g, " ")
+        .replace(/^[\/#\s]+/, "")
+        .replace(/^\s+|\s+$/g, "")
+        .toLowerCase();
+    };
+
+    if (metaTagsRow) {
+      var seenMetaTags = Object.create(null);
+      Array.prototype.slice.call(metaTagsRow.querySelectorAll(".wf-article-meta-tag")).forEach(function (item) {
+        var label = normalizeMetaLabel(item.textContent || "");
+        if (!label) {
+          item.remove();
+          return;
+        }
+        if (seenMetaTags[label]) {
+          item.remove();
+          return;
+        }
+        seenMetaTags[label] = true;
+      });
+
+      if (!metaTagsRow.querySelector(".wf-article-meta-tag")) {
+        metaTagsRow.remove();
+      }
+    }
+
+    if (articlePrenext) {
+      var prenextRows = Array.prototype.slice.call(articlePrenext.querySelectorAll(".wf-article-prenext__row"));
+      var prenextFallback = articlePrenext.querySelector("[data-article-prenext-fallback]");
+      if (prenextRows.length > 0) {
+        articlePrenext.classList.remove("is-empty");
+        if (prenextFallback) {
+          prenextFallback.hidden = true;
+        }
+      } else {
+        articlePrenext.classList.add("is-empty");
+        if (prenextFallback) {
+          prenextFallback.hidden = false;
+        }
+      }
+    }
+
+    if (richtext) {
+      Array.prototype.slice.call(richtext.querySelectorAll("img")).forEach(function (img, imageIndex) {
+        if (!img.getAttribute("alt") || !img.getAttribute("alt").replace(/\s+/g, "")) {
+          img.setAttribute("alt", articleImageFallbackAlt || document.title || "AI导航站");
+        }
+        var currentLoading = String(img.getAttribute("loading") || "").toLowerCase();
+        var rect = img.getBoundingClientRect();
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        var isInitialViewportImage = imageIndex === 0 && rect.bottom > 0 && rect.top < viewportHeight + 240;
+        if (isInitialViewportImage) {
+          img.setAttribute("loading", "eager");
+          if (String(img.getAttribute("loading") || "").toLowerCase() !== "lazy" && !String(img.getAttribute("fetchpriority") || "").toLowerCase()) {
+            img.setAttribute("fetchpriority", "high");
+          }
+        } else {
+          if (currentLoading !== "lazy") {
+            img.setAttribute("loading", "lazy");
+          }
+          if (String(img.getAttribute("fetchpriority") || "").toLowerCase() === "high") {
+            img.removeAttribute("fetchpriority");
+          }
+        }
+        if (!img.getAttribute("decoding")) {
+          img.setAttribute("decoding", "async");
+        }
+      });
+    }
+
+    function hardenBlankLinks(root) {
+      if (!root) {
+        return;
+      }
+      Array.prototype.slice.call(root.querySelectorAll('a[target="_blank"]')).forEach(function (link) {
+        var rel = String(link.getAttribute("rel") || "").toLowerCase().split(/\s+/).filter(Boolean);
+        if (rel.indexOf("noopener") === -1) {
+          rel.push("noopener");
+        }
+        if (rel.indexOf("noreferrer") === -1) {
+          rel.push("noreferrer");
+        }
+        link.setAttribute("rel", rel.join(" "));
+      });
+    }
+    hardenBlankLinks(articleRoot || document);
+
+    function bindArticleSideTabs(buttons, buttonAttr, panelAttr, idPrefix) {
+      if (!buttons.length) {
+        return;
+      }
+      var panels = Array.prototype.slice.call(document.querySelectorAll("[" + panelAttr + "]"));
+      var firstActive = buttons.filter(function (button) {
+        return button.classList.contains("is-active") || button.getAttribute("aria-selected") === "true";
+      })[0] || buttons[0];
+
+      function syncPanel(name, focusActive) {
+        buttons.forEach(function (button, index) {
+          var buttonName = button.getAttribute(buttonAttr) || "";
+          var isActive = buttonName === name;
+          var tabId = button.id || (idPrefix + "-tab-" + buttonName + "-" + index);
+          var panel = panels.filter(function (item) {
+            return (item.getAttribute(panelAttr) || "") === buttonName;
+          })[0];
+          var panelId = panel ? (panel.id || (idPrefix + "-panel-" + buttonName + "-" + index)) : "";
+
+          button.id = tabId;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-selected", isActive ? "true" : "false");
+          button.setAttribute("tabindex", isActive ? "0" : "-1");
+          if (panelId) {
+            button.setAttribute("aria-controls", panelId);
+          }
+          if (panel) {
+            panel.id = panelId;
+            panel.setAttribute("aria-labelledby", tabId);
+            panel.classList.toggle("is-active", isActive);
+            if (isActive) {
+              panel.removeAttribute("hidden");
+            } else {
+              panel.setAttribute("hidden", "hidden");
+            }
+          }
+          if (isActive && focusActive) {
+            button.focus();
+          }
+        });
+      }
+
+      function moveFocus(currentButton, direction) {
+        var currentIndex = buttons.indexOf(currentButton);
+        if (currentIndex < 0) {
+          return;
+        }
+        var nextIndex = currentIndex + direction;
+        if (nextIndex < 0) {
+          nextIndex = buttons.length - 1;
+        } else if (nextIndex >= buttons.length) {
+          nextIndex = 0;
+        }
+        syncPanel(buttons[nextIndex].getAttribute(buttonAttr) || "", true);
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          syncPanel(button.getAttribute(buttonAttr) || "", false);
+        });
+        button.addEventListener("keydown", function (event) {
+          if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+            event.preventDefault();
+            moveFocus(button, -1);
+          } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+            event.preventDefault();
+            moveFocus(button, 1);
+          } else if (event.key === "Home") {
+            event.preventDefault();
+            syncPanel(buttons[0].getAttribute(buttonAttr) || "", true);
+          } else if (event.key === "End") {
+            event.preventDefault();
+            syncPanel(buttons[buttons.length - 1].getAttribute(buttonAttr) || "", true);
+          }
+        });
+      });
+
+      syncPanel(firstActive.getAttribute(buttonAttr) || "", false);
+    }
+
+    bindArticleSideTabs(mixedTabButtons, "data-aiph-mixed-tab", "data-aiph-mixed-panel", "aiph-mixed-side");
+    bindArticleSideTabs(articleTabButtons, "data-aiph-article-tab", "data-aiph-article-panel", "aiph-article-side");
+    bindArticleSideTabs(toolTabButtons, "data-aiph-tool-tab", "data-aiph-tool-panel", "aiph-tool-side");
+
+    if (richtext) {
+      var blockChildren = Array.prototype.slice.call(richtext.children || []);
+
+      function getTrimmedText(node) {
+        return node ? String(node.textContent || "").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "") : "";
+      }
+
+      function hasBlockedDescendant(node) {
+        return !!(node && node.querySelector("img,video,iframe,pre,table,ul,ol,blockquote,h1,h2,h3,h4,h5,h6"));
+      }
+
+      function isStandaloneMediaBlock(node) {
+        if (!node || !node.tagName) {
+          return false;
+        }
+        if (/^(FIGURE)$/.test(node.tagName)) {
+          return !!node.querySelector("img,video,iframe");
+        }
+        if (!/^(P|DIV)$/.test(node.tagName)) {
+          return false;
+        }
+        var children = Array.prototype.slice.call(node.childNodes || []).filter(function (child) {
+          return child.nodeType !== 3 || getTrimmedText(child);
+        });
+        if (children.length !== 1 || children[0].nodeType !== 1) {
+          return false;
+        }
+        return /^(IMG|VIDEO|IFRAME)$/.test(children[0].tagName);
+      }
+
+      function isCaptionBlock(node) {
+        if (!node || !node.tagName || hasBlockedDescendant(node)) {
+          return false;
+        }
+        if (/^(FIGCAPTION)$/.test(node.tagName) || node.classList.contains("wp-caption-text") || node.classList.contains("caption") || node.classList.contains("img-caption") || node.classList.contains("image-caption")) {
+          return true;
+        }
+        if (!/^(P|DIV|SMALL)$/.test(node.tagName)) {
+          return false;
+        }
+        var text = getTrimmedText(node);
+        if (!text || text.length > 80) {
+          return false;
+        }
+        return !node.querySelector("a,button,input,textarea,select");
+      }
+
+      Array.prototype.slice.call(richtext.querySelectorAll("blockquote")).forEach(function (quoteNode) {
+        if (!quoteNode) {
+          return;
+        }
+        var normalizedQuoteHtml = String(quoteNode.innerHTML || "")
+          .replace(/<br\s*\/?>/gi, "")
+          .replace(/&nbsp;/gi, "")
+          .replace(/\s+/g, "");
+        if (!getTrimmedText(quoteNode) && !normalizedQuoteHtml) {
+          quoteNode.remove();
+        }
+      });
+
+      Array.prototype.slice.call(richtext.querySelectorAll("figure")).forEach(function (figure) {
+        figure.classList.add("wf-article-media-block");
+        var media = figure.querySelector("img,video,iframe");
+        var figcaption = figure.querySelector("figcaption");
+        if (media) {
+          media.classList.add("wf-article-inline-media");
+        }
+        if (figcaption) {
+          figcaption.classList.add("wf-article-figure-caption");
+        }
+      });
+
+      blockChildren.forEach(function (node, index) {
+        if (!isStandaloneMediaBlock(node)) {
+          return;
+        }
+        node.classList.add("wf-article-media-block");
+        if (node.firstElementChild && /^(IMG|VIDEO|IFRAME)$/.test(node.firstElementChild.tagName)) {
+          node.firstElementChild.classList.add("wf-article-inline-media");
+        }
+        if (isCaptionBlock(blockChildren[index + 1])) {
+          blockChildren[index + 1].classList.add("wf-article-figure-caption");
+        }
+      });
+
+      Array.prototype.slice.call(richtext.querySelectorAll("a[href]")).forEach(function (link) {
+        var imageNode = link.querySelector("img");
+        if (!imageNode) {
+          return;
+        }
+        var href = String(link.getAttribute("href") || "");
+        if (!href || /^javascript:/i.test(href)) {
+          return;
+        }
+        var sameFigureCaption = "";
+        var figure = link.closest ? link.closest("figure") : null;
+        if (figure) {
+          var figureCaption = figure.querySelector("figcaption, .wf-article-figure-caption");
+          sameFigureCaption = getTrimmedText(figureCaption);
+        }
+        var fallbackCaption = sameFigureCaption || getTrimmedText(imageNode.getAttribute("alt")) || getTrimmedText(link.getAttribute("title"));
+        link.classList.add("wf-article-lightbox-link");
+        link.setAttribute("data-pswp-gallery", "article-reader-gallery");
+        link.setAttribute("data-caption", sameFigureCaption || fallbackCaption || "");
+        link.setAttribute("data-thumb", imageNode.getAttribute("src") || href);
+        link.setAttribute("data-type", "image");
+        link.setAttribute("aria-label", fallbackCaption || "查看大图");
+      });
+
+      Array.prototype.slice.call(richtext.querySelectorAll("img")).forEach(function (imageNode) {
+        var linkedParent = imageNode.closest ? imageNode.closest("a[data-pswp-gallery], a[href]") : null;
+        if (linkedParent) {
+          return;
+        }
+        var src = String(imageNode.getAttribute("data-src") || imageNode.getAttribute("src") || "").trim();
+        if (!src || /^data:/i.test(src)) {
+          return;
+        }
+        var figure = imageNode.closest ? imageNode.closest("figure") : null;
+        var siblingCaption = "";
+        if (figure) {
+          var figureCaption = figure.querySelector("figcaption, .wf-article-figure-caption");
+          siblingCaption = getTrimmedText(figureCaption);
+        } else {
+          var possibleCaption = imageNode.parentElement && isCaptionBlock(imageNode.parentElement.nextElementSibling) ? imageNode.parentElement.nextElementSibling : null;
+          siblingCaption = getTrimmedText(possibleCaption);
+        }
+        var fallbackCaption = siblingCaption || getTrimmedText(imageNode.getAttribute("alt")) || "查看大图";
+        var wrapper = document.createElement("a");
+        wrapper.href = src;
+        wrapper.className = "wf-article-lightbox-link";
+        wrapper.setAttribute("data-pswp-gallery", "article-reader-gallery");
+        wrapper.setAttribute("data-caption", siblingCaption || fallbackCaption);
+        wrapper.setAttribute("data-thumb", src);
+        wrapper.setAttribute("data-type", "image");
+        wrapper.setAttribute("aria-label", fallbackCaption);
+        if (imageNode.parentNode) {
+          imageNode.parentNode.insertBefore(wrapper, imageNode);
+          wrapper.appendChild(imageNode);
+        }
+      });
+
+      if (window.WfArticlePhotoSwipe) {
+        window.WfArticlePhotoSwipe.refresh(richtext);
+      }
+
+    }
+
+    Array.prototype.slice.call(document.querySelectorAll("[data-article-copy-link]")).forEach(function (button) {
+      button.addEventListener("click", function () {
+        var url = button.getAttribute("data-share-url") || window.location.href;
+        if (!/^https?:\/\//i.test(url)) {
+          try { url = new URL(url, window.location.origin).href; } catch (error) { url = window.location.href; }
+        }
+        var done = function () {
+          button.classList.add("is-active");
+          var text = button.querySelector(".wf-article-action__text");
+          if (text) {
+            var oldText = text.textContent;
+            text.textContent = "已复制";
+            window.setTimeout(function () {
+              text.textContent = oldText;
+              button.classList.remove("is-active");
+            }, 1400);
+          }
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done).catch(function () {
+            window.prompt("复制文章链接", url);
+          });
+        } else {
+          window.prompt("复制文章链接", url);
+        }
+      });
+    });
+
+    var articleLeftRailFloatTimers = [];
+
+    function syncArticleLeftRailFloat() {
+      if (!document.body.classList.contains("is-single-article-news")) {
+        return;
+      }
+
+      var withinWideDesktop = window.innerWidth >= 1280;
+      var forcedRailWidth = window.innerWidth >= 1451 ? 320 : (withinWideDesktop ? 312 : 0);
+      var articleBody = document.querySelector(".aiph-single--article > .aiph-body");
+      var leftRail = document.querySelector(".aiph-single--article .aiph-left-rail--article");
+
+      if (!articleBody || !leftRail) {
+        return;
+      }
+
+      if (withinWideDesktop) {
+        var topbarNode = document.querySelector(".topbar");
+        var topbarRect = topbarNode ? topbarNode.getBoundingClientRect() : null;
+        var stickyTop = Math.max(92, Math.round((topbarRect ? topbarRect.height : 64) + 28));
+        var currentLeft = parseFloat(leftRail.style.getPropertyValue("--aiph-left-reader-left"));
+        var currentWidth = parseFloat(leftRail.style.getPropertyValue("--aiph-left-reader-width"));
+        leftRail.classList.remove("is-article-left-floating");
+        leftRail.style.removeProperty("--aiph-left-reader-left");
+        leftRail.style.removeProperty("--aiph-left-reader-width");
+        leftRail.style.removeProperty("--aiph-left-reader-top");
+        /* Force the rail back into grid flow before measuring its fixed position. */
+        void leftRail.offsetWidth;
+        var leftRect = leftRail.getBoundingClientRect();
+        var bodyRect = articleBody.getBoundingClientRect();
+        var measuredLeft = Math.round(leftRect.left || 0);
+        var bodyLeft = Math.round(bodyRect.left || 0);
+        var leftValue = measuredLeft;
+        if (!leftValue || (bodyLeft && Math.abs(leftValue - bodyLeft) > 40)) {
+          leftValue = bodyLeft || Math.round(currentLeft || 0);
+        }
+        var widthValue = forcedRailWidth || Math.round(leftRect.width || currentWidth || 300);
+        if (widthValue > 0 && leftValue >= 0 && bodyRect.bottom > stickyTop + 160) {
+          leftRail.style.setProperty("--aiph-left-reader-left", leftValue + "px");
+          leftRail.style.setProperty("--aiph-left-reader-width", widthValue + "px");
+          leftRail.style.setProperty("--aiph-left-reader-top", stickyTop + "px");
+          leftRail.classList.add("is-article-left-floating");
+        }
+      } else {
+        leftRail.classList.remove("is-article-left-floating");
+        leftRail.style.removeProperty("--aiph-left-reader-left");
+        leftRail.style.removeProperty("--aiph-left-reader-width");
+        leftRail.style.removeProperty("--aiph-left-reader-top");
+      }
+    }
+
+    function scheduleArticleLeftRailFloat() {
+      syncArticleLeftRailFloat();
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(syncArticleLeftRailFloat);
+      }
+      articleLeftRailFloatTimers.forEach(window.clearTimeout);
+      articleLeftRailFloatTimers = [
+        window.setTimeout(syncArticleLeftRailFloat, 140),
+        window.setTimeout(syncArticleLeftRailFloat, 360)
+      ];
+    }
+
+    scheduleArticleLeftRailFloat();
+    window.addEventListener("load", scheduleArticleLeftRailFloat);
+    window.addEventListener("resize", scheduleArticleLeftRailFloat);
+    window.addEventListener("scroll", syncArticleLeftRailFloat, { passive: true });
+    window.addEventListener("aiph:article-layout-change", scheduleArticleLeftRailFloat);
+  })();
+</script>
+</body>
+</html>

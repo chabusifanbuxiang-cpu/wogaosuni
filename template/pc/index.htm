@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{eyou:php}
+$wnHomeBaseHost = '';
+if (!empty($eyou['global']['web_basehost'])) {
+    $wnHomeBaseHost = (string)$eyou['global']['web_basehost'];
+} elseif (function_exists('tpCache')) {
+    $wnHomeBaseHost = (string)tpCache('web.web_basehost');
+}
+$wnHomeBaseHost = rtrim($wnHomeBaseHost, '/');
+$wnHomeCanonicalUrl = $wnHomeBaseHost !== '' ? $wnHomeBaseHost . '/' : '/';
+$wnHomeRequestUri = isset($_SERVER['REQUEST_URI']) ? trim((string)$_SERVER['REQUEST_URI']) : '';
+$wnHomeQueryString = (string)parse_url($wnHomeRequestUri, PHP_URL_QUERY);
+$wnHomeRobots = trim($wnHomeQueryString) === '' ? 'index,follow' : 'noindex,follow';
+$wnHomeSiteName = !empty($eyou['global']['web_name']) ? (string)$eyou['global']['web_name'] : (function_exists('tpCache') ? (string)tpCache('web.web_name') : 'AI导航站');
+$wnHomeDescription = !empty($eyou['global']['web_description']) ? (string)$eyou['global']['web_description'] : (function_exists('tpCache') ? (string)tpCache('web.web_description') : '');
+if (!function_exists('wn_home_category_text_ad_html')) {
+    function wn_home_category_text_ad_html($typeId)
+    {
+        $typeId = intval($typeId);
+        $pidMap = [
+            256 => 19,
+            257 => 20,
+            258 => 21,
+            259 => 22,
+            262 => 23,
+            260 => 24,
+            267 => 25,
+            266 => 26,
+            269 => 27,
+            270 => 28,
+        ];
+        if (empty($pidMap[$typeId])) {
+            return '';
+        }
+
+        static $adCache = [];
+        $pid = intval($pidMap[$typeId]);
+        if (!array_key_exists($pid, $adCache)) {
+            $lang = 'cn';
+            if (function_exists('get_current_lang')) {
+                $currentLang = get_current_lang();
+                if (is_string($currentLang) && $currentLang !== '') {
+                    $lang = $currentLang;
+                }
+            }
+
+            try {
+                $ad = \think\Db::name('ad')
+                    ->where('pid', $pid)
+                    ->where('status', 1)
+                    ->where('is_del', 0)
+                    ->where('lang', $lang)
+                    ->order('sort_order asc,id asc')
+                    ->find();
+                if (empty($ad) && $lang !== 'cn') {
+                    $ad = \think\Db::name('ad')
+                        ->where('pid', $pid)
+                        ->where('status', 1)
+                        ->where('is_del', 0)
+                        ->where('lang', 'cn')
+                        ->order('sort_order asc,id asc')
+                        ->find();
+                }
+            } catch (\Throwable $error) {
+                $ad = [];
+            }
+            $adCache[$pid] = $ad;
+        }
+
+        $ad = $adCache[$pid];
+        if (empty($ad)) {
+            return '';
+        }
+
+        $title = trim(strip_tags((string)($ad['title'] ?? '')));
+        $href = trim((string)($ad['links'] ?? ''));
+        $badHrefs = ['#', 'javascript:;', 'javascript:void(0)', 'javascript:void(0);'];
+        if ($title === '' || $href === '' || in_array(strtolower($href), $badHrefs, true)) {
+            return '';
+        }
+
+        $escape = function ($value) {
+            return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+        };
+        $targetValue = (string)($ad['target'] ?? '1');
+        $target = ($targetValue === '1' || stripos($targetValue, 'blank') !== false) ? ' target="_blank"' : '';
+
+        return '<div class="home-category-text-ad" data-home-category-text-ad="' . intval($typeId) . '"><a href="' . $escape($href) . '"' . $target . ' rel="nofollow sponsored noopener noreferrer" aria-label="' . $escape($title) . '">' . $escape($title) . '</a></div>';
+    }
+}
+if (!function_exists('wn_home_category_mobile_text_ad_html')) {
+    function wn_home_category_mobile_text_ad_html($typeId)
+    {
+        $html = wn_home_category_text_ad_html($typeId);
+        if ($html === '') {
+            return '';
+        }
+        return str_replace('class="home-category-text-ad"', 'class="home-category-text-ad home-category-text-ad--mobile"', $html);
+    }
+}
+{/eyou:php}
+<title>{eyou:global name='web_title' /}_{eyou:global name='web_name' /}</title>
+<meta name="keywords" content="{eyou:global name='web_keywords' /}" />
+<meta name="description" content="{eyou:global name='web_description' /}" />
+<meta name="robots" content="{eyou:php}echo htmlspecialchars($wnHomeRobots, ENT_QUOTES, 'UTF-8');{/eyou:php}" />
+<link rel="canonical" href="{eyou:php}echo htmlspecialchars($wnHomeCanonicalUrl, ENT_QUOTES, 'UTF-8');{/eyou:php}" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{eyou:global name='web_name' /}" />
+<meta property="og:title" content="{eyou:global name='web_title' /}_{eyou:global name='web_name' /}" />
+<meta property="og:description" content="{eyou:global name='web_description' /}" />
+<meta property="og:url" content="{eyou:php}echo htmlspecialchars($wnHomeCanonicalUrl, ENT_QUOTES, 'UTF-8');{/eyou:php}" />
+<meta property="og:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{eyou:global name='web_title' /}_{eyou:global name='web_name' /}" />
+<meta name="twitter:description" content="{eyou:global name='web_description' /}" />
+<meta name="twitter:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="global_head_styles.htm" /}
+{eyou:include file="css_media_loader.htm" /}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-head-bundle-desktop-slim.min.css?v=20260629desktop2", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-head-bundle-desktop-slim.min.css?v=20260629desktop2" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-head-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-head-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-core-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-core-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-home-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-home-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-core-bundle-desktop-slim.min.css?v=20260629desktop2", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-core-bundle-desktop-slim.min.css?v=20260629desktop2" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-core-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-core-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css", "screen and (max-width: 1320px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css" rel="stylesheet" media="screen and (max-width: 1320px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-home-mobile-content.min.css", "screen and (max-width: 760px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-home-mobile-content.min.css" rel="stylesheet" media="screen and (max-width: 760px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-mobile-shortcuts-refresh.min.css?v=20260712min1", "all");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-mobile-shortcuts-refresh.min.css?v=20260712min1" rel="stylesheet" media="all" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/home-category-text-ads.min.css?v=20260712min1", "all");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/home-category-text-ads.min.css?v=20260712min1" rel="stylesheet" media="all" type="text/css" /></noscript>
+<style id="wnHomeUserMobileFix">
+@media (max-width: 760px) {
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 100px !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__tabs.section-filter--subtabs-joly {
+    justify-self: start !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    width: 202px !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__group-actions {
+    justify-self: end !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: 100px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    position: static !important;
+    white-space: nowrap !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user .home-recommend__panels,
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user .home-recommend__panel,
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user .directory-showcase__panels {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user #homeRecommendCustomGrid,
+  html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user #homeRecommendRecentGrid {
+    margin-top: 0 !important;
+    gap: 7px !important;
+  }
+
+  html body.nav-theme.nav-theme-v2.is-home .directory-browser--home [data-home-section-deferred="1"] > .tool-grid:empty {
+    min-height: 246px !important;
+  }
+}
+</style>
+<style id="wnHomeDeferredSectionLock">
+html body.nav-theme.nav-theme-v2.is-home .directory-browser--home [data-home-section-deferred="1"] > .tool-grid:empty {
+  min-height: 246px !important;
+}
+
+@media (min-width: 961px) {
+  html body.nav-theme.nav-theme-v2.is-home .directory-browser--home [data-home-section-deferred="1"] > .tool-grid:empty {
+    min-height: 302px !important;
+  }
+}
+</style>
+<style id="wnHomeCardIntroLine">
+html body.nav-theme.nav-theme-v2.is-home .home-scope .tool-grid--browser > article.nav-card.nav-card--chip-visual .nav-card__desc,
+html body.nav-theme.nav-theme-v2.is-home .directory-browser--home .tool-grid--browser > article.nav-card.nav-card--chip-visual .nav-card__desc,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__tool-grid > article.nav-card.nav-card--chip-visual .nav-card__desc {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  color: #667085 !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: initial !important;
+}
+</style>
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1" defer></script>
+{eyou:php}
+if ($wnHomeRobots === 'index,follow') {
+    $wnHomeSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => $wnHomeSiteName,
+        'url' => $wnHomeCanonicalUrl,
+        'description' => $wnHomeDescription,
+        'potentialAction' => [
+            '@type' => 'SearchAction',
+            'target' => $wnHomeBaseHost . '/search.html?keywords={search_term_string}',
+            'query-input' => 'required name=search_term_string',
+        ],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => $wnHomeSiteName,
+            'url' => $wnHomeCanonicalUrl,
+        ],
+    ];
+    echo '<script type="application/ld+json">' . json_encode($wnHomeSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>';
+}
+{/eyou:php}
+</head>
+<body class="nav-theme nav-theme-v2 index is-home is-sidebar-collapsed is-card-theme-toolify" data-current-channel="" data-current-typeid="" data-current-topid="">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+{eyou:include file="nav_sort_helper.htm" /}
+
+<main class="site-main">
+  <section class="site-hero search-board" id="hero">
+    <div class="search-board__content">
+      {eyou:include file="search_panel.htm" /}
+
+    </div>
+  </section>
+
+  <section class="home-mobile-guide" aria-label="手机端快速分类入口">
+    <div class="home-mobile-guide__head">
+      <div>
+        <span>快速进入</span>
+        <strong>按场景浏览 AI 工具</strong>
+      </div>
+      <a href="#categories">全部分类</a>
+    </div>
+    <div class="home-mobile-guide__rail">
+      <a class="home-mobile-guide__chip home-mobile-guide__chip--primary" href="#homeRecommend">
+        <span aria-hidden="true">荐</span>
+        <strong>精选工具</strong>
+      </a>
+      {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=0 AND id NOT IN (263,264,265,271,370,371,372,373) AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="mobileType"}
+      <a class="home-mobile-guide__chip nav-category-link" href="#directory-{$mobileType.typeid}" data-typeid="{$mobileType.typeid}">
+        <span class="nav-category-icon" aria-hidden="true" data-typeid="{$mobileType.typeid}"></span>
+        <strong>{$mobileType.typename}</strong>
+      </a>
+      {/eyou:sql}
+    </div>
+  </section>
+
+  {eyou:include file="ad_picture_home.htm" /}
+
+  <section class="home-recommend home-scope" id="homeRecommend">
+    <script type="application/json" id="homeRecommendPinnedData">{$wn_home_recommend->pinned_json}</script>
+    <script type="application/json" id="homeRecommendLatestData">{$wn_home_recommend->latest_json}</script>
+    <script type="application/json" id="homeHotFallbackData">{$wn_home_recommend->hot_json}</script>
+    <div class="directory-showcase directory-showcase--home home-recommend__group home-recommend__group--user" data-home-recommend-group="user">
+      <div class="directory-showcase__head">
+        <div class="directory-showcase__title">
+          <span class="directory-showcase__icon wn-home-recommend-icon wn-home-recommend-icon--user" aria-hidden="true"></span>
+          <div class="directory-showcase__copy">
+            <h2>自定义栏目</h2>
+          </div>
+        </div>
+      </div>
+      <div class="directory-showcase__filterbar">
+        <div class="section-filter section-filter--subtabs section-filter--subtabs-joly home-recommend__tabs" role="tablist" aria-label="用户自定义推荐切换">
+          <span class="section-filter__hover-joly" aria-hidden="true"></span>
+          <span class="section-filter__indicator section-filter__indicator-joly" aria-hidden="true"></span>
+          <button class="home-recommend__tab is-active" type="button" data-home-recommend-tab="custom" data-home-recommend-group-target="user" aria-pressed="true"><span>常用网址</span></button>
+          <button class="home-recommend__tab" type="button" data-home-recommend-tab="recent" data-home-recommend-group-target="user" aria-pressed="false"><span>最近使用</span></button>
+        </div>
+        <div class="directory-showcase__actions home-recommend__group-actions">
+          <button class="section-more section-more--inline section-more--inline-joly home-recommend__action-btn" type="button" id="openQuickFavorites">编辑</button>
+          <button class="custom-shortcut-add" type="button" id="quickFavoritesAdd" aria-label="添加自定义网址">
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="quick-favorites__popover custom-shortcut-popover" id="quickFavoritesAddPanel" hidden>
+            <form class="quick-favorites__form custom-shortcut-form" id="quickFavoritesAddForm">
+              <div class="quick-favorites__form-head">
+                <strong>添加自定义网址</strong>
+                <div class="quick-favorites__form-head-actions">
+                  <button class="custom-shortcut-clear-all" type="button" id="quickFavoritesAddClearAll">一键清空</button>
+                  <button type="button" id="quickFavoritesAddClose" aria-label="关闭">×</button>
+                </div>
+              </div>
+              <div class="custom-shortcut-entry-mode" id="customShortcutEntryMode" role="tablist" aria-label="添加方式">
+                <button class="is-active" type="button" data-custom-shortcut-mode="picker" aria-pressed="true">站内挑选</button>
+                <button type="button" data-custom-shortcut-mode="manual" aria-pressed="false">手动输入</button>
+              </div>
+              <div class="custom-shortcut-manual" id="customShortcutManual">
+                <label>
+                  <span>名称（可选）</span>
+                  <input type="text" id="quickFavoritesAddTitle" maxlength="24" autocomplete="off" placeholder="留空会自动生成" />
+                </label>
+                <label>
+                  <span>网址（必填）</span>
+                  <input type="text" id="quickFavoritesAddUrl" autocomplete="off" inputmode="url" placeholder="example.com" />
+                </label>
+              </div>
+              <div class="custom-shortcut-picker" id="customShortcutPicker">
+                <div class="custom-shortcut-picker__head">
+                  <strong>选择站内卡片</strong>
+                  <button class="custom-shortcut-picker__toggle" type="button" id="customShortcutPickerToggle" aria-expanded="true">收起站内卡片</button>
+                </div>
+                <div class="custom-shortcut-picker__body" id="customShortcutPickerBody">
+                  <div class="custom-shortcut-picker__tools">
+                    <input type="search" id="customShortcutPickerSearch" autocomplete="off" placeholder="搜索工具名、分类或网址" aria-label="搜索站内卡片" />
+                    <select id="customShortcutCategoryFilter" aria-label="筛选本站分类">
+                      <option value="">全部分类</option>
+                    </select>
+                  </div>
+                  <div class="custom-shortcut-picker__list" id="customShortcutPickerList"></div>
+                </div>
+              </div>
+              <div class="custom-shortcut-form__foot">
+                <span class="custom-shortcut-form__tip">支持手动输入，也可以直接选择站内卡片</span>
+                <button class="quick-favorites__submit" type="submit">添加到自定义</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+          <div class="directory-showcase__panels home-recommend__panels">
+            <div class="directory-showcase__panel home-recommend__panel is-active" data-home-recommend-panel="custom" data-home-recommend-panel-group="user">
+              <div class="custom-shortcut-grid" id="homeRecommendCustomGrid"></div>
+              <div class="home-recommend__empty" id="homeRecommendCustomEmpty" hidden>
+                <strong>还没有自定义常用工具</strong>
+                <p>点击下方加号添加你常用的网址卡片。</p>
+              </div>
+              <div class="custom-shortcut-inline-host" id="quickFavoritesAddPanelHost" hidden></div>
+            </div>
+        <div class="directory-showcase__panel home-recommend__panel" data-home-recommend-panel="recent" data-home-recommend-panel-group="user" aria-hidden="true" inert>
+          <div class="tool-grid tool-grid--browser tool-grid--cols-5 home-recommend__tool-grid" id="homeRecommendRecentGrid"></div>
+          <div class="home-recommend__empty" id="homeRecommendRecentEmpty" hidden>
+            <strong>最近使用还没有数据</strong>
+            <p>点击下方目录卡片或推荐卡片后，会按你的本地浏览行为记录最近使用。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="directory-showcase directory-showcase--home home-recommend__group home-recommend__group--aigc" data-home-recommend-group="aigc">
+      <div class="directory-showcase__head">
+        <div class="directory-showcase__title">
+          <span class="directory-showcase__icon wn-home-recommend-icon wn-home-recommend-icon--aigc" aria-hidden="true"></span>
+          <div class="directory-showcase__copy">
+            <h2>工具推荐</h2>
+          </div>
+        </div>
+      </div>
+      <div class="directory-showcase__filterbar">
+        <div class="section-filter section-filter--subtabs section-filter--subtabs-joly home-recommend__tabs" role="tablist" aria-label="AIGC工具推荐切换">
+          <span class="section-filter__hover-joly" aria-hidden="true"></span>
+          <span class="section-filter__indicator section-filter__indicator-joly" aria-hidden="true"></span>
+          <button class="home-recommend__tab is-active" type="button" data-home-recommend-tab="pinned" data-home-recommend-group-target="aigc" aria-pressed="true"><span>精选工具</span></button>
+          <button class="home-recommend__tab" type="button" data-home-recommend-tab="monthly-hot" data-home-recommend-group-target="aigc" aria-pressed="false"><span>热门工具</span></button>
+          <button class="home-recommend__tab" type="button" data-home-recommend-tab="latest" data-home-recommend-group-target="aigc" aria-pressed="false"><span>最新收录</span></button>
+        </div>
+      </div>
+      <div class="directory-showcase__panels home-recommend__panels">
+        <div class="directory-showcase__panel home-recommend__panel is-active" data-home-recommend-panel="pinned" data-home-recommend-panel-group="aigc">
+          <div class="tool-grid tool-grid--browser tool-grid--cols-5 home-recommend__tool-grid">
+            {eyou:php}
+            $wnHomePinnedAidList = '';
+            $wnHomePinnedTypeIds = [];
+            $wnHomePinnedTopIds = \think\Db::name('arctype')
+                ->where('parent_id', 0)
+                ->whereNotIn('id', [263,264,265,271,370,371,372,373])
+                ->where('status', 1)
+                ->where('is_hidden', 0)
+                ->where('is_del', 0)
+                ->column('id');
+            foreach ((array)$wnHomePinnedTopIds as $wnHomePinnedTopId) {
+                $wnHomePinnedTypeIds = array_merge($wnHomePinnedTypeIds, wn_nav_collect_type_ids($wnHomePinnedTopId, 2));
+            }
+            $wnHomePinnedTypeIds = array_values(array_unique(array_map('intval', $wnHomePinnedTypeIds)));
+            $wnHomePinnedAids = wn_nav_priority_aids($wnHomePinnedTypeIds, 18, 0, 'home', 2, array(), 'domestic');
+            if (!empty($wnHomePinnedAids)) {
+                $wnHomePinnedAidList = implode(',', array_map('intval', $wnHomePinnedAids));
+            }
+            {/eyou:php}
+            {eyou:artlist idlist='$wnHomePinnedAidList' titlelen='25' infolen='60' loop='18' addfields='site_region'}
+            {eyou:include file="nav_card.htm" /}
+            {/eyou:artlist}
+          </div>
+        </div>
+        <div class="directory-showcase__panel home-recommend__panel" data-home-recommend-panel="monthly-hot" data-home-recommend-panel-group="aigc" aria-hidden="true" inert>
+          <div class="tool-grid tool-grid--browser tool-grid--cols-5 home-recommend__tool-grid">
+            {eyou:php}
+            $wnHomeHotAidList = '';
+            $wnHomeLatestPreviewAids = wn_nav_priority_aids($wnHomePinnedTypeIds, 18, 0, 'latest', 2, array(), 'domestic');
+            $wnHomeHotExcludeAids = array_values(array_unique(array_merge((array)$wnHomePinnedAids, (array)$wnHomeLatestPreviewAids)));
+            $wnHomeHotAids = wn_nav_hot_aids($wnHomePinnedTypeIds, 18, 0, 2, $wnHomeHotExcludeAids, 'domestic');
+            if (count($wnHomeHotAids) < 18) {
+                $wnHomeHotFillAids = wn_nav_hot_aids($wnHomePinnedTypeIds, 18 - count($wnHomeHotAids), 0, 2, array_merge($wnHomeHotExcludeAids, (array)$wnHomeHotAids), 'domestic');
+                if (!empty($wnHomeHotFillAids)) {
+                    $wnHomeHotAids = array_merge((array)$wnHomeHotAids, (array)$wnHomeHotFillAids);
+                }
+            }
+            if (!empty($wnHomeHotAids)) {
+                $wnHomeHotAidList = implode(',', array_map('intval', $wnHomeHotAids));
+            }
+            {/eyou:php}
+            {eyou:artlist idlist='$wnHomeHotAidList' titlelen='25' infolen='60' loop='18' addfields='site_region'}
+            {eyou:include file="nav_card.htm" /}
+            {/eyou:artlist}
+          </div>
+        </div>
+        <div class="directory-showcase__panel home-recommend__panel" data-home-recommend-panel="latest" data-home-recommend-panel-group="aigc" aria-hidden="true" inert>
+          <div class="tool-grid tool-grid--browser tool-grid--cols-5 home-recommend__tool-grid">
+            {eyou:php}
+            $wnHomeLatestAidList = '';
+            $wnHomeLatestAids = wn_nav_priority_aids($wnHomePinnedTypeIds, 18, 0, 'latest', 2, array(), 'domestic');
+            if (!empty($wnHomeLatestAids)) {
+                $wnHomeLatestAidList = implode(',', array_map('intval', $wnHomeLatestAids));
+            }
+            {/eyou:php}
+            {eyou:artlist idlist='$wnHomeLatestAidList' titlelen='25' infolen='60' loop='18' addfields='site_region'}
+            {eyou:include file="nav_card.htm" /}
+            {/eyou:artlist}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="directory-browser directory-browser--home" id="categories">
+    <div class="directory-browser__main">
+      <div class="directory-browser__panels">
+        {eyou:sql sql="SELECT id AS typeid, typename, current_channel FROM __PREFIX__arctype WHERE parent_id=0 AND id NOT IN (263,264,265,271,370,371,372,373) AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="type" key="homeSectionIndex"}
+        <section class="directory-browser__panel is-active" id="directory-{$type.typeid}">
+          <div class="directory-showcase directory-showcase--section" data-subpanel-shell="home-section-{$type.typeid}">
+            <div class="directory-showcase__head">
+              <div class="directory-showcase__title">
+                <span class="directory-showcase__icon nav-category-icon" aria-hidden="true" data-typeid="{$type.typeid}"></span>
+                <div class="directory-showcase__copy">
+                  <h2>{$type.typename}</h2>
+                </div>
+              </div>
+            </div>
+            {eyou:php}
+            $wnHomeSectionChildren = \think\Db::name('arctype')
+                ->field('id AS typeid, typename')
+                ->where('parent_id', intval($type['typeid']))
+                ->where('is_hidden', 0)
+                ->where('status', 1)
+                ->where('is_del', 0)
+                ->order('sort_order asc,id asc')
+                ->select();
+            {/eyou:php}
+            <div class="directory-showcase__filterbar">
+              <div class="section-filter section-filter--subtabs section-filter--subtabs-joly" id="home-filter-{$type.typeid}">
+                <span class="section-filter__hover-joly" aria-hidden="true"></span>
+                <span class="section-filter__indicator section-filter__indicator-joly" aria-hidden="true"></span>
+                <a class="is-active" href="{:wn_type_url_by_id($type['typeid'])}" data-subpanel-trigger="home-section-{$type.typeid}-all" data-subpanel-url="{:wn_type_url_by_id($type['typeid'])}"><span>全部</span></a>
+                {volist name="$wnHomeSectionChildren" id="type2"}
+                <a href="{:wn_type_url_by_id($type2['typeid'])}" data-subpanel-trigger="home-section-{$type.typeid}-{$type2.typeid}" data-subpanel-url="{:wn_type_url_by_id($type2['typeid'])}"><span>{$type2.typename}</span></a>
+                {/volist}
+              </div>
+              {eyou:php}echo wn_home_category_text_ad_html($type['typeid']);{/eyou:php}
+              <div class="directory-showcase__actions">
+                <button class="directory-showcase__mobile-toggle" type="button" hidden aria-expanded="false" aria-label="展开分类" aria-controls="home-filter-{$type.typeid}" data-home-mobile-filter-toggle>
+                  <span class="directory-showcase__mobile-toggle-icon" aria-hidden="true"></span>
+                </button>
+                <a class="section-more section-more--inline section-more--inline-joly" href="{:wn_type_url_by_id($type['typeid'])}" data-section-more>更多</a>
+              </div>
+            </div>
+            {eyou:php}
+            $wnHomePanelChannel = !empty($type['current_channel']) ? intval($type['current_channel']) : (intval($type['typeid']) === 373 ? 4 : 2);
+            $wnHomePanelRegion = $wnHomePanelChannel === 2 ? 'domestic' : '';
+            $wnHomeInlineSectionCount = 2;
+            $wnHomePanelShouldInline = intval($homeSectionIndex) <= $wnHomeInlineSectionCount;
+            $wnHomePanelLoaded = $wnHomePanelShouldInline ? '1' : '0';
+            $wnHomePanelDeferred = $wnHomePanelShouldInline ? '0' : '1';
+            {/eyou:php}
+            <div class="directory-showcase__panels">
+              <div class="directory-showcase__panel is-active" data-subpanel="home-section-{$type.typeid}-all" data-subpanel-loaded="{$wnHomePanelLoaded}" data-subpanel-type="{eyou:eq name='$type.typeid' value='373'}download{eyou:else /}nav{/eyou:eq}" data-subpanel-limit="24" data-subpanel-url="{:wn_type_url_by_id($type['typeid'])}" data-subpanel-tid="{$type.typeid}" data-subpanel-channel="{$wnHomePanelChannel}" data-subpanel-region="{$wnHomePanelRegion}" data-home-section-priority="{$homeSectionIndex}" data-home-section-deferred="{$wnHomePanelDeferred}">
+                <div class="directory-showcase__loading" hidden>正在加载 {$type.typename}...</div>
+                <div class="tool-grid tool-grid--browser tool-grid--cols-5 {eyou:eq name='$type.typeid' value='373'}wn-download-grid wn-download-grid--home{/eyou:eq}">
+                  {if condition="$wnHomePanelShouldInline"}
+                  {eyou:php}
+                  $wnHomePanelAidList = '';
+                  $wnHomePanelTypeIds = wn_nav_collect_type_ids($type['typeid'], $wnHomePanelChannel);
+                  $wnHomePanelLimit = 24;
+                  $wnHomePanelAids = wn_nav_priority_aids($wnHomePanelTypeIds, $wnHomePanelLimit, 0, 'home', $wnHomePanelChannel, array(), $wnHomePanelRegion);
+                  if (count($wnHomePanelAids) < $wnHomePanelLimit) {
+                      $wnHomePanelFillAids = wn_nav_priority_aids($wnHomePanelTypeIds, $wnHomePanelLimit - count($wnHomePanelAids), 0, 'home', $wnHomePanelChannel, $wnHomePanelAids, $wnHomePanelRegion);
+                      if (!empty($wnHomePanelFillAids)) {
+                          $wnHomePanelAids = array_values(array_unique(array_merge($wnHomePanelAids, $wnHomePanelFillAids)));
+                      }
+                  }
+                  if (count($wnHomePanelAids) < $wnHomePanelLimit) {
+                      $wnHomePanelChannelTypeIds = [];
+                      $wnHomePanelTopIds = \think\Db::name('arctype')
+                          ->where('parent_id', 0)
+                          ->whereNotIn('id', $wnHomePanelChannel === 4 ? [263,264,265,271,370,371,372] : [263,264,265,271,370,371,372,373])
+                          ->where('status', 1)
+                          ->where('is_hidden', 0)
+                          ->where('is_del', 0)
+                          ->column('id');
+                      foreach ((array)$wnHomePanelTopIds as $wnHomePanelTopId) {
+                          $wnHomePanelChannelTypeIds = array_merge($wnHomePanelChannelTypeIds, wn_nav_collect_type_ids($wnHomePanelTopId, $wnHomePanelChannel));
+                      }
+                      $wnHomePanelChannelTypeIds = array_values(array_unique(array_map('intval', $wnHomePanelChannelTypeIds)));
+                      $wnHomePanelFillAids = wn_nav_priority_aids($wnHomePanelChannelTypeIds, $wnHomePanelLimit - count($wnHomePanelAids), 0, 'home', $wnHomePanelChannel, $wnHomePanelAids, $wnHomePanelRegion);
+                      if (!empty($wnHomePanelFillAids)) {
+                          $wnHomePanelAids = array_values(array_unique(array_merge($wnHomePanelAids, $wnHomePanelFillAids)));
+                      }
+                  }
+                  if (!empty($wnHomePanelAids)) {
+                      $wnHomePanelAidList = implode(',', array_map('intval', $wnHomePanelAids));
+                  }
+                  {/eyou:php}
+                  {eyou:artlist idlist='$wnHomePanelAidList' titlelen='25' infolen='60' loop='24' addfields='site_region'}
+                  {eyou:eq name='$type.typeid' value='373'}
+                  {eyou:include file="download_card.htm" /}
+                  {eyou:else /}
+                  {eyou:include file="nav_card.htm" /}
+                  {/eyou:eq}
+                  {/eyou:artlist}
+                  {/if}
+                </div>
+              </div>
+              {volist name="$wnHomeSectionChildren" id="type2"}
+              <div class="directory-showcase__panel" data-subpanel="home-section-{$type.typeid}-{$type2.typeid}" data-subpanel-loaded="0" data-subpanel-type="{eyou:eq name='$type.typeid' value='373'}download{eyou:else /}nav{/eyou:eq}" data-subpanel-limit="24" data-subpanel-url="{:wn_type_url_by_id($type2['typeid'])}" data-subpanel-tid="{$type2.typeid}" data-subpanel-channel="{eyou:eq name='$type.current_channel' value='4'}4{eyou:else /}2{/eyou:eq}" data-subpanel-region="{eyou:eq name='$type.current_channel' value='4'}{eyou:else /}domestic{/eyou:eq}" aria-hidden="true" inert>
+                <div class="directory-showcase__loading" hidden>正在加载 {$type2.typename}...</div>
+                <div class="tool-grid tool-grid--browser tool-grid--cols-5 {eyou:eq name='$type.typeid' value='373'}wn-download-grid wn-download-grid--home{/eyou:eq}"></div>
+              </div>
+              {/volist}
+            </div>
+            {eyou:php}echo wn_home_category_mobile_text_ad_html($type['typeid']);{/eyou:php}
+          </div>
+        </section>
+        {/eyou:sql}
+      </div>
+    </div>
+  </section>
+
+  {eyou:include file="footer.htm" /}
+</main>
+</body>
+</html>

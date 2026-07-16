@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<link href="{eyou:global name='web_ico' /}" rel="shortcut icon" type="image/x-icon" />
+{eyou:static file="skin/style/pintuer.css" /}
+{eyou:static file="skin/style/header.css" /}
+{eyou:static file="skin/style/style.css" /}
+{eyou:static file="skin/style/iconfont.css" /}
+{eyou:static file="skin/style/wogaosuni.css" /}
+</head>
+<body class="wn-list-page wn-list-page--submit">
+<div class="wn-shell">
+{eyou:include file="header.htm" /}
+
+<main class="wn-main">
+    <section class="wn-page wn-hero">
+        <div class="wn-section">
+            <div class="wn-pagehead">
+                <h1 class="wn-pagehead__title">{$eyou.field.typename}</h1>
+                <div class="wn-pagehead__sub">只填网站名和官网域名，其他内容后台补。</div>
+            </div>
+
+            <section class="wn-detail-card wn-submit-card">
+                <div class="wn-detail-content">
+                    {eyou:guestbookform type='default'}
+                    <form method="post" action="{$field.action}" class="wn-guestbook-form wn-submit-form">
+                        <div class="wn-submit-form__intro">
+                            <strong>只填网站名和官网域名。</strong>
+                        </div>
+                        <label class="wn-submit-form__field">
+                            <span>网站名称</span>
+                            <input type="text" name="{$field.attr_1}" maxlength="20" required autocomplete="off" spellcheck="false" placeholder="例如：ChatGPT、Kimi、即梦AI">
+                        </label>
+                        <label class="wn-submit-form__field">
+                            <span>官网域名</span>
+                            <input type="text" name="{$field.attr_2}" maxlength="40" required autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="例如：example.com">
+                        </label>
+                        <input type="hidden" name="{$field.attr_3}" value="站长将根据官网人工补充简介与分类">
+                        {$field.hidden}
+                        <div class="wn-submit-form__footer">
+                            <button type="submit">提交名称与域名</button>
+                            <details class="wn-submit-more">
+                                <summary>收录规则</summary>
+                                <div class="wn-submit-more__body">
+                                    <p>网站名建议 10 个字内，域名建议 30 个字符内。</p>
+                                    <p>只收官网和有真实功能的网站，不收假冒官网、跳转广告、灰产和违法站点。</p>
+                                </div>
+                            </details>
+                        </div>
+                    </form>
+                    {/eyou:guestbookform}
+                </div>
+            </section>
+        </div>
+    </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+</div>
+
+{eyou:static file="skin/js/pintuer.js" /}
+{eyou:static file="skin/js/common.js" /}
+</body>
+</html>

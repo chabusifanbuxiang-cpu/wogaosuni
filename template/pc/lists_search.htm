@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{eyou:php}
+if (!function_exists('wn_search_meta_escape')) {
+    function wn_search_meta_escape($value)
+    {
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    }
+}
+if (!function_exists('wn_search_current_url')) {
+    function wn_search_current_url($fallback = '/search.html')
+    {
+        $requestUri = isset($_SERVER['REQUEST_URI']) ? trim((string)$_SERVER['REQUEST_URI']) : '';
+        if ($requestUri === '') {
+            $requestUri = (string)$fallback;
+        }
+        if ($requestUri === '' || $requestUri[0] !== '/') {
+            $requestUri = '/' . ltrim($requestUri, '/');
+        }
+        return $requestUri;
+    }
+}
+$wnSearchCurrentUrl = wn_search_current_url('/search.html');
+{/eyou:php}
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="noindex,follow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{eyou:global name='web_name' /}" />
+<meta property="og:title" content="{$eyou.field.seo_title}" />
+<meta property="og:description" content="{$eyou.field.seo_description}" />
+<meta property="og:url" content="{eyou:global name='web_basehost' /}/search.html" />
+<meta property="og:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{$eyou.field.seo_title}" />
+<meta name="twitter:description" content="{$eyou.field.seo_description}" />
+<meta name="twitter:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="global_head_styles.htm" /}
+{eyou:include file="css_media_loader.htm" /}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-head-bundle-slim.min.css", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-head-bundle-slim.min.css" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-head-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-head-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-core-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-core-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-core-bundle-desktop-slim.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-core-bundle-desktop-slim.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-core-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-core-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css", "screen and (max-width: 1320px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css" rel="stylesheet" media="screen and (max-width: 1320px)" type="text/css" /></noscript>
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+</head>
+<body class="nav-theme nav-theme-v2 search is-search-results is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+{eyou:include file="direct_url_helper.htm" /}
+
+<main class="site-main">
+  <section class="search-hub-page">
+    <header class="search-hub-head">
+      <div class="search-hub-head__title">
+        <span class="search-hub-head__eyebrow">站内搜索</span>
+        <h1>{$eyou.field.keywords} 搜索结果</h1>
+      </div>
+      {eyou:searchform type='default'}
+      <form class="search-hub-form" method="get" action="{$field.action}">
+        <div class="search-hub-form__shell">
+          <input type="text" name="keywords" value="{$eyou.field.keywords}" placeholder="搜索工具、文章、下载资源" autocomplete="off" />
+          {$field.hidden}
+          <button type="submit">搜索</button>
+        </div>
+      </form>
+      {/eyou:searchform}
+      <nav class="search-hub-tabs" aria-label="搜索内容类型">
+        {eyou:volist name="$eyou.field.search_tabs" id="tab"}
+        <a class="search-hub-tabs__item{eyou:eq name='$tab.is_active' value='1'} is-active{/eyou:eq}" href="{$tab.url}" rel="{$tab.rel}">
+          <span>{$tab.label}</span>
+        </a>
+        {/eyou:volist}
+      </nav>
+      <div class="search-hub-toolbar">
+        <div class="search-hub-toolbar__summary">
+          <span>{$eyou.field.search_result_count_text}</span>
+          <em>关键词过短时，建议输入更具体的工具、品牌或使用场景。</em>
+        </div>
+        <div class="search-hub-toolbar__group search-hub-toolbar__group--sort" aria-label="排序方式">
+          <span class="search-hub-toolbar__label">排序</span>
+          <div class="search-hub-toolbar__links">
+            {eyou:volist name="$eyou.field.search_sort_links" id="sortItem"}
+            <a class="{eyou:eq name='$sortItem.is_active' value='1'}is-active{/eyou:eq}" href="{$sortItem.url}" rel="{$sortItem.rel}">{$sortItem.label}</a>
+            {/eyou:volist}
+          </div>
+        </div>
+        <div class="search-hub-toolbar__group search-hub-toolbar__group--filter" aria-label="结果筛选">
+          <div class="search-hub-filter" data-search-filter>
+            <button
+              class="search-hub-filter__trigger{eyou:eq name='$eyou.field.search_time_has_filter' value='1'} is-filtered{/eyou:eq}"
+              type="button"
+              data-dropdown-trigger="searchTimeFilterPanel"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              <span class="search-hub-filter__trigger-text">筛选</span>
+              <em>{$eyou.field.search_time_active_label}</em>
+              <i aria-hidden="true"></i>
+            </button>
+            <div class="search-hub-filter__panel" id="searchTimeFilterPanel" role="menu" aria-label="时间筛选">
+              <div class="search-hub-filter__section">
+                <strong>时间范围</strong>
+                <div class="search-hub-filter__options">
+                  {eyou:volist name="$eyou.field.search_time_links" id="timeItem"}
+                  <a class="search-hub-filter__option{eyou:eq name='$timeItem.is_active' value='1'} is-active{/eyou:eq}" href="{$timeItem.url}" rel="{$timeItem.rel}" role="menuitem">{$timeItem.label}</a>
+                  {/eyou:volist}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="search-hub-layout">
+      <section class="search-hub-results" aria-labelledby="searchResultsTitle">
+        {eyou:include file="ad_picture_list.htm" /}
+        <div class="search-hub-results__head">
+          <strong id="searchResultsTitle">搜索结果</strong>
+          <span>共 {$eyou.field.search_total} 条</span>
+        </div>
+
+        {eyou:notempty name="$eyou.field.search_results"}
+        <div class="search-result-rows">
+          {eyou:volist name="$eyou.field.search_results" id="field"}
+          <article class="search-result-row {$field.kind_class}" data-search-row-href="{$field.arcurl}" tabindex="0">
+            <a class="search-result-row__cover-link" href="{$field.arcurl}" aria-label="查看{$field.title}详情"></a>
+            <div class="search-result-row__media">
+              <a href="{$field.arcurl}" aria-label="查看{$field.title}详情">
+                <img src="{$field.litpic}" alt="{$field.title}" width="60" height="60" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{$field.thumb_fallback}';" />
+              </a>
+            </div>
+            <div class="search-result-row__main">
+              <div class="search-result-row__meta">
+                <span class="search-result-row__badge">{$field.content_label}</span>
+                {eyou:notempty name="$field.typeurl"}
+                <a class="search-result-row__category" href="{$field.typeurl}">{$field.highlight_typename|htmlspecialchars_decode}</a>
+                {eyou:else /}
+                <span class="search-result-row__category">{$field.highlight_typename|htmlspecialchars_decode}</span>
+                {/eyou:notempty}
+                {eyou:notempty name="$field.date_text"}
+                <time datetime="{$field.date_text}">{$field.date_text}</time>
+                {/eyou:notempty}
+                {eyou:gt name="$field.click" value="0"}
+                <span>{$field.click} 热门度</span>
+                {/eyou:gt}
+              </div>
+              <h2 class="search-result-row__title">
+                <a href="{$field.arcurl}">{$field.highlight_title|htmlspecialchars_decode}</a>
+              </h2>
+              <p class="search-result-row__summary">{$field.highlight_summary|htmlspecialchars_decode}</p>
+              <div class="search-result-row__footer">
+                <a class="search-result-row__detail" href="{$field.arcurl}">{$field.detail_label}</a>
+              </div>
+            </div>
+            <div class="search-result-row__action">
+              <a class="search-result-row__primary" href="{$field.action_url}" target="{$field.action_target}" rel="{$field.action_rel}">{$field.action_label}</a>
+            </div>
+          </article>
+          {/eyou:volist}
+        </div>
+        {eyou:else /}
+        <div class="search-hub-empty">
+          <strong>{$eyou.field.search_empty_title}</strong>
+          <p>{$eyou.field.search_empty_text}</p>
+        </div>
+        {/eyou:notempty}
+
+        {eyou:notempty name="$eyou.field.search_results_pagination_html"}
+        <div class="pagebar wf-pagebar search-hub-pagebar" data-wf-pagebar>
+          {$eyou.field.search_results_pagination_html|htmlspecialchars_decode}
+          <form class="wf-page-jump" data-wf-page-jump>
+            <input type="number" min="1" inputmode="numeric" aria-label="跳转页码" />
+            <button type="submit">跳转</button>
+          </form>
+        </div>
+        {/eyou:notempty}
+      </section>
+
+      <aside class="search-hub-side">
+        <section class="search-side-card search-side-card--taxonomy" aria-labelledby="searchCategoryTitle">
+          <div class="search-side-card__head">
+            <strong id="searchCategoryTitle">相关分类</strong>
+            <p>和当前关键词最接近的栏目入口。</p>
+          </div>
+          <div class="search-side-card__chipgrid" aria-label="相关分类">
+            {eyou:volist name="$eyou.field.search_related_categories" id="cat"}
+            <a class="search-side-chip search-side-chip--category" href="{$cat.url}">
+              <span>{$cat.label}</span>
+              <em>{eyou:notempty name="$cat.count"}{$cat.count}{/eyou:notempty}</em>
+            </a>
+            {/eyou:volist}
+          </div>
+        </section>
+
+        <section class="search-side-card search-side-card--terms" aria-labelledby="searchLikeTitle">
+          <div class="search-side-card__head">
+            <strong id="searchLikeTitle">相关搜索</strong>
+            <p>继续扩展同类工具、品牌和主题词。</p>
+          </div>
+          <div class="search-side-card__chipgrid" aria-label="相关搜索">
+            {eyou:volist name="$eyou.field.search_related_terms" id="term"}
+            <a class="search-side-chip" href="{$term.url}" rel="{$term.rel}">
+              <span>{$term.label}</span>
+              {eyou:notempty name="$term.meta"}<em>{$term.meta}</em>{/eyou:notempty}
+            </a>
+            {/eyou:volist}
+          </div>
+        </section>
+
+        <section class="search-side-card search-side-card--terms" aria-labelledby="searchLongtailTitle">
+          <div class="search-side-card__head">
+            <strong id="searchLongtailTitle">细分需求</strong>
+            <p>按使用场景继续往下细找。</p>
+          </div>
+          <div class="search-side-card__chipgrid" aria-label="细分需求">
+            {eyou:volist name="$eyou.field.search_longtail_terms" id="term"}
+            <a class="search-side-chip" href="{$term.url}" rel="{$term.rel}">{$term.label}</a>
+            {/eyou:volist}
+          </div>
+        </section>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script>
+  (function () {
+    function isPlainLeftClick(event) {
+      return !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+    }
+
+    document.addEventListener("click", function (event) {
+      if (!isPlainLeftClick(event) || !event.target || !event.target.closest) {
+        return;
+      }
+
+      var coverLink = event.target.closest(".search-result-row__cover-link");
+      if (coverLink && coverLink.href) {
+        event.preventDefault();
+        window.location.href = coverLink.href;
+        return;
+      }
+
+      if (event.target.closest("a, button, input, select, textarea, label, [role='button']")) {
+        return;
+      }
+
+      var row = event.target.closest(".search-result-row[data-search-row-href]");
+      if (row) {
+        var href = row.getAttribute("data-search-row-href");
+        if (href) {
+          window.location.href = href;
+        }
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" || !event.target || !event.target.matches || !event.target.matches(".search-result-row[data-search-row-href]")) {
+        return;
+      }
+
+      var href = event.target.getAttribute("data-search-row-href");
+      if (href) {
+        event.preventDefault();
+        window.location.href = href;
+      }
+    });
+  })();
+</script>
+
+{eyou:include file="footer.htm" /}
+</body>
+</html>

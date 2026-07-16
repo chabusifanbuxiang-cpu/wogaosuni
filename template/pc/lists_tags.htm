@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{$eyou.field.seo_title}</title>
+<meta name="keywords" content="{$eyou.field.seo_keywords}" />
+<meta name="description" content="{$eyou.field.seo_description}" />
+<meta name="robots" content="{$eyou.field.robots}" />
+<link rel="canonical" href="{$eyou.field.canonical_url}" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{eyou:global name='web_name' /}" />
+<meta property="og:title" content="{$eyou.field.seo_title}" />
+<meta property="og:description" content="{$eyou.field.seo_description}" />
+<meta property="og:url" content="{$eyou.field.canonical_url}" />
+<meta property="og:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{$eyou.field.seo_title}" />
+<meta name="twitter:description" content="{$eyou.field.seo_description}" />
+<meta name="twitter:image" content="{eyou:global name='web_basehost' /}/template/pc/skin/wogaosuni/image/open-source-logo.svg" />
+<link href="/template/pc/skin/wogaosuni/image/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+{eyou:include file="global_head_styles.htm" /}
+{eyou:include file="css_media_loader.htm" /}
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-head-bundle-slim.min.css", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-head-bundle-slim.min.css" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-head-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-head-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-core-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-core-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-discovery-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/mobile-pagination-module.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-core-bundle-desktop-slim.min.css?v=20260629desktop1", "screen and (min-width: 961px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-core-bundle-desktop-slim.min.css?v=20260629desktop1" rel="stylesheet" media="screen and (min-width: 961px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/search-core-bundle-mobile-slim.min.css?v=20260629mobile1", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/search-core-bundle-mobile-slim.min.css?v=20260629mobile1" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<link href="/template/pc/skin/wogaosuni/style/tag-search-results.min.css?v=20260629tagcss1" rel="stylesheet" media="screen" type="text/css" />
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css", "screen and (max-width: 960px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-topbar.min.css" rel="stylesheet" media="screen and (max-width: 960px)" type="text/css" /></noscript>
+<script>wgnLoadMediaCss("/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css", "screen and (max-width: 1320px)");</script>
+<noscript><link href="/template/pc/skin/wogaosuni/style/header-mobile-search-sheet.min.css" rel="stylesheet" media="screen and (max-width: 1320px)" type="text/css" /></noscript>
+{eyou:static file="skin/js/jquery.min.js" defer="1" /}
+<script defer src="/template/pc/skin/wogaosuni/script/custom.min.js?v=20260712min1"></script>
+{eyou:include file="seo_schema_helper.htm" /}
+{eyou:php}
+if (!empty($eyou['field']['robots']) && (string)$eyou['field']['robots'] === 'index,follow') {
+    $wnTagSchemaBaseHost = wn_schema_base_host();
+    $wnTagSchemaUrl = wn_schema_abs_url(!empty($eyou['field']['canonical_url']) ? $eyou['field']['canonical_url'] : '', $wnTagSchemaBaseHost);
+    $wnTagSchemaName = !empty($eyou['field']['tag']) ? wn_schema_plain_text($eyou['field']['tag']) : (!empty($eyou['field']['seo_title']) ? wn_schema_plain_text($eyou['field']['seo_title']) : 'AI标签专题');
+    $wnTagSchemaDescription = !empty($eyou['field']['seo_description']) ? wn_schema_plain_text($eyou['field']['seo_description'], 160) : '';
+    $wnTagSchemaIndexUrl = !empty($eyou['field']['tag_index_url']) ? wn_schema_abs_url($eyou['field']['tag_index_url'], $wnTagSchemaBaseHost) : wn_schema_abs_url('/tags', $wnTagSchemaBaseHost);
+    $wnTagSchemaBreadcrumb = wn_schema_breadcrumb_list([
+        ['name' => '首页', 'url' => wn_schema_home_url($wnTagSchemaBaseHost)],
+        ['name' => 'AI标签索引', 'url' => $wnTagSchemaIndexUrl],
+        ['name' => $wnTagSchemaName, 'url' => $wnTagSchemaUrl],
+    ], $wnTagSchemaBaseHost);
+    if (!empty($wnTagSchemaBreadcrumb)) {
+        $wnTagSchemaBreadcrumb['@id'] = $wnTagSchemaUrl . '#breadcrumb';
+    }
+    $wnTagSchemaToolAids = [];
+    foreach ((array)(!empty($eyou['field']['tag_tool_results']) ? $eyou['field']['tag_tool_results'] : []) as $wnTagSchemaToolItem) {
+        if (!empty($wnTagSchemaToolItem['aid'])) {
+            $wnTagSchemaToolAids[] = intval($wnTagSchemaToolItem['aid']);
+        }
+    }
+    $wnTagSchemaArticleAids = [];
+    foreach ((array)(!empty($eyou['field']['tag_article_results']) ? $eyou['field']['tag_article_results'] : []) as $wnTagSchemaArticleItem) {
+        if (!empty($wnTagSchemaArticleItem['aid'])) {
+            $wnTagSchemaArticleAids[] = intval($wnTagSchemaArticleItem['aid']);
+        }
+    }
+    $wnTagSchemaToolList = wn_schema_item_list_from_aids($wnTagSchemaToolAids, 'SoftwareApplication', $wnTagSchemaBaseHost, 1, 12);
+    if (!empty($wnTagSchemaToolList)) {
+        $wnTagSchemaToolList['@id'] = $wnTagSchemaUrl . '#tools';
+        $wnTagSchemaToolList['name'] = $wnTagSchemaName . '相关工具';
+        $wnTagSchemaToolList['url'] = $wnTagSchemaUrl . '#tagTools';
+    }
+    $wnTagSchemaArticleList = wn_schema_item_list_from_aids($wnTagSchemaArticleAids, 'Article', $wnTagSchemaBaseHost, 1, 6);
+    if (!empty($wnTagSchemaArticleList)) {
+        $wnTagSchemaArticleList['@id'] = $wnTagSchemaUrl . '#articles';
+        $wnTagSchemaArticleList['name'] = $wnTagSchemaName . '相关文章';
+        $wnTagSchemaArticleList['url'] = $wnTagSchemaUrl . '#tagArticles';
+    }
+    wn_schema_output([
+        [
+            '@type' => 'CollectionPage',
+            '@id' => $wnTagSchemaUrl . '#collection',
+            'name' => $wnTagSchemaName,
+            'description' => $wnTagSchemaDescription,
+            'url' => $wnTagSchemaUrl,
+            'isPartOf' => [
+                '@type' => 'WebSite',
+                'name' => wn_schema_site_name(),
+                'url' => $wnTagSchemaBaseHost,
+            ],
+        ],
+        $wnTagSchemaBreadcrumb,
+        $wnTagSchemaToolList,
+        $wnTagSchemaArticleList,
+    ]);
+}
+{/eyou:php}
+</head>
+<body class="nav-theme nav-theme-v2 tags-page is-tags-list is-search-results is-tag-search-results is-sidebar-collapsed is-card-theme-toolify">
+<script>
+  (function () {
+    try {
+var stored = window.localStorage.getItem("wogaosuni_wn_nav_sidebar_collapsed_v1");
+      var collapsed = stored === null ? true : stored === "1";
+      document.body.classList.add("is-sidebar-booting");
+      document.body.classList.toggle("is-sidebar-collapsed", collapsed && window.innerWidth > 960);
+    } catch (error) {
+      document.body.classList.add("is-sidebar-booting", "is-sidebar-collapsed");
+    }
+  })();
+</script>
+{eyou:include file="header.htm" /}
+{eyou:include file="direct_url_helper.htm" /}
+
+<main class="site-main">
+  <section class="search-hub-page tag-search-page">
+    <header class="search-hub-head tag-search-head">
+      <div class="search-hub-head__title tag-search-head__title">
+        <span class="search-hub-head__eyebrow">
+          {eyou:eq name='$eyou.field.content_mode' value='tool'}工具标签{eyou:else /}{eyou:eq name='$eyou.field.content_mode' value='article'}文章标签{eyou:else /}标签专题{/eyou:eq}{/eyou:eq}
+        </span>
+        <h1>{$eyou.field.tag}</h1>
+      </div>
+      <nav class="search-hub-tabs tag-search-tabs" aria-label="标签内容类型">
+        <a class="search-hub-tabs__item{eyou:neq name='$eyou.field.tag_tool_total' value='0'} is-active{/eyou:neq}" href="#tagTools" data-tag-tab="tools">
+          <span>{$eyou.field.tool_section_title}</span>
+          <em>{$eyou.field.tag_tool_total}</em>
+        </a>
+        <a class="search-hub-tabs__item{eyou:eq name='$eyou.field.tag_tool_total' value='0'} is-active{/eyou:eq}" href="#tagArticles" data-tag-tab="articles">
+          <span>{$eyou.field.article_section_title}</span>
+          <em>{$eyou.field.tag_article_total}</em>
+        </a>
+      </nav>
+      <div class="search-hub-toolbar tag-search-toolbar">
+        <div class="search-hub-toolbar__summary">
+          <span>{$eyou.field.tag} 相关内容共 {$eyou.field.total} 条，工具 {$eyou.field.tag_tool_total} 个，文章 {$eyou.field.tag_article_total} 篇。</span>
+          <em>标签内容会持续更新，以下为当前收录结果。</em>
+        </div>
+        <div class="search-hub-toolbar__group search-hub-toolbar__group--sort" aria-label="结果概览">
+          <span class="search-hub-toolbar__label">专题</span>
+          <div class="search-hub-toolbar__links">
+            <a class="is-active" href="{$eyou.field.canonical_url}">标签结果</a>
+            <a href="{$eyou.field.tag_index_url}">标签索引</a>
+            <a href="/search.html?keywords={$eyou.field.tag}&method=1" rel="nofollow">全站搜索</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="search-hub-layout tag-search-layout">
+      <section class="search-hub-results tag-search-results" aria-labelledby="tagResultsTitle">
+        <div class="search-hub-results__head">
+          <strong id="tagResultsTitle">标签结果</strong>
+          <span>标签专题页</span>
+        </div>
+
+        <section class="tag-search-section{eyou:eq name='$eyou.field.tag_tool_total' value='0'} is-hidden{/eyou:eq}" id="tagTools" aria-labelledby="tagToolsTitle" data-tag-panel="tools">
+          <div class="search-hub-results__head search-hub-results__head--sub">
+            <strong id="tagToolsTitle">{$eyou.field.tool_section_title}</strong>
+            <span>共 {$eyou.field.tag_tool_total} 个</span>
+          </div>
+          {eyou:notempty name="$eyou.field.tag_tool_results"}
+          <div class="search-result-rows tag-result-rows tag-result-rows--tools">
+            {eyou:volist name="$eyou.field.tag_tool_results" id="field"}
+            <article class="search-result-row search-result-row--tag search-result-row--tool" data-search-row-href="{$field.arcurl}" tabindex="0">
+              <a class="search-result-row__cover-link" href="{$field.arcurl}" aria-label="查看{$field.title}详情"></a>
+              <div class="search-result-row__media">
+                <a href="{$field.arcurl}" aria-label="查看{$field.title}详情">
+                  <img src="{$field.litpic}" alt="{$field.title}" width="60" height="60" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/open-source-logo.svg';" />
+                </a>
+              </div>
+              <div class="search-result-row__main">
+                <div class="search-result-row__meta">
+                  <span class="search-result-row__badge">工具</span>
+                  <a class="search-result-row__category" href="{$field.typeurl}">{$field.typename}</a>
+                  {eyou:notempty name="$field.date_text"}
+                  <time datetime="{$field.date_text}">{$field.date_text}</time>
+                  {/eyou:notempty}
+                  {eyou:gt name="$field.click" value="0"}
+                  <span>{$field.click} 热门度</span>
+                  {/eyou:gt}
+                </div>
+                <h2 class="search-result-row__title">
+                  <a href="{$field.arcurl}">{$field.title}</a>
+                </h2>
+                <p class="search-result-row__summary">{$field.summary}</p>
+                <div class="search-result-row__footer">
+                  <span class="search-result-row__path">
+                    <em>标签</em>
+                    <span>{$eyou.field.tag} / {$field.typename}</span>
+                  </span>
+                  <a class="search-result-row__detail" href="{$field.arcurl}">详情</a>
+                </div>
+              </div>
+              <div class="search-result-row__action">
+                <a class="search-result-row__primary" href="{eyou:notempty name='$field.direct_url'}{$field.direct_url}{eyou:else /}{$field.arcurl}{/eyou:notempty}" target="{eyou:notempty name='$field.direct_url'}_blank{eyou:else /}_self{/eyou:notempty}" rel="{eyou:notempty name='$field.direct_url'}nofollow noopener{/eyou:notempty}">{$field.action_label}</a>
+              </div>
+            </article>
+            {/eyou:volist}
+          </div>
+          {eyou:else /}
+          <div class="search-hub-empty">
+            <strong>{$eyou.field.tool_empty_text}</strong>
+            <p>可以先从右侧相关标签或标签索引继续找工具入口。</p>
+          </div>
+          {/eyou:notempty}
+
+          {eyou:notempty name="$eyou.field.tag_tool_pagination_html"}
+          <div class="pagebar wf-pagebar search-hub-pagebar tag-search-pagebar" data-wf-pagebar data-wf-total-pages="{$eyou.field.tag_tool_pages_total}">
+            {$eyou.field.tag_tool_pagination_html|htmlspecialchars_decode}
+            <form class="wf-page-jump" data-wf-page-jump data-wf-page-param="tool_page">
+              <input type="number" min="1" max="{$eyou.field.tag_tool_pages_total}" inputmode="numeric" aria-label="跳转页码" />
+              <button type="submit">跳转</button>
+            </form>
+          </div>
+          {/eyou:notempty}
+        </section>
+
+        <section class="tag-search-section{eyou:neq name='$eyou.field.tag_tool_total' value='0'} is-hidden{/eyou:neq}" id="tagArticles" aria-labelledby="tagArticlesTitle" data-tag-panel="articles">
+          <div class="search-hub-results__head search-hub-results__head--sub">
+            <strong id="tagArticlesTitle">{$eyou.field.article_section_title}</strong>
+            <span>共 {$eyou.field.tag_article_total} 篇</span>
+          </div>
+          {eyou:notempty name="$eyou.field.tag_article_results"}
+          <div class="search-result-rows tag-result-rows tag-result-rows--articles">
+            {eyou:volist name="$eyou.field.tag_article_results" id="field"}
+            <article class="search-result-row search-result-row--tag search-result-row--article" data-search-row-href="{$field.arcurl}" tabindex="0">
+              <a class="search-result-row__cover-link" href="{$field.arcurl}" aria-label="阅读{$field.title}详情"></a>
+              <div class="search-result-row__media">
+                <a href="{$field.arcurl}" aria-label="阅读{$field.title}详情">
+                  <img src="{$field.litpic}" alt="{$field.title}" width="112" height="74" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/template/pc/skin/wogaosuni/image/article-thumb-fallback.webp';" />
+                </a>
+              </div>
+              <div class="search-result-row__main">
+                <div class="search-result-row__meta">
+                  <span class="search-result-row__badge">文章</span>
+                  <a class="search-result-row__category" href="{$field.typeurl}">{$field.typename}</a>
+                  {eyou:notempty name="$field.date_text"}
+                  <time datetime="{$field.date_text}">{$field.date_text}</time>
+                  {/eyou:notempty}
+                  {eyou:gt name="$field.click" value="0"}
+                  <span>{$field.click} 热门度</span>
+                  {/eyou:gt}
+                </div>
+                <h2 class="search-result-row__title">
+                  <a href="{$field.arcurl}">{$field.title}</a>
+                </h2>
+                <p class="search-result-row__summary">{$field.summary}</p>
+                <div class="search-result-row__footer">
+                  <span class="search-result-row__path">
+                    <em>标签</em>
+                    <span>{$eyou.field.tag} / {$field.typename}</span>
+                  </span>
+                  <a class="search-result-row__detail" href="{$field.arcurl}">阅读</a>
+                </div>
+              </div>
+              <div class="search-result-row__action">
+                <a class="search-result-row__primary" href="{$field.arcurl}">阅读</a>
+              </div>
+            </article>
+            {/eyou:volist}
+          </div>
+          {eyou:else /}
+          <div class="search-hub-empty">
+            <strong>{$eyou.field.article_empty_text}</strong>
+            <p>可以先从右侧相关标签或标签索引继续找相关文章。</p>
+          </div>
+          {/eyou:notempty}
+
+          {eyou:notempty name="$eyou.field.tag_article_pagination_html"}
+          <div class="pagebar wf-pagebar search-hub-pagebar tag-search-pagebar" data-wf-pagebar data-wf-total-pages="{$eyou.field.tag_article_pages_total}">
+            {$eyou.field.tag_article_pagination_html|htmlspecialchars_decode}
+            <form class="wf-page-jump" data-wf-page-jump data-wf-page-param="article_page">
+              <input type="number" min="1" max="{$eyou.field.tag_article_pages_total}" inputmode="numeric" aria-label="跳转页码" />
+              <button type="submit">跳转</button>
+            </form>
+          </div>
+          {/eyou:notempty}
+        </section>
+      </section>
+
+      <aside class="search-hub-side tag-search-side">
+        <section class="search-side-card search-side-card--taxonomy tag-search-side__search-card" aria-labelledby="tagSideSearchTitle">
+          <div class="search-side-card__head">
+            <strong id="tagSideSearchTitle">站内搜索</strong>
+          </div>
+          {eyou:searchform type='default'}
+          <form class="tag-search-side__search-form" method="get" action="{$field.action}">
+            <input type="text" name="keywords" placeholder="搜索工具、文章或标签" autocomplete="off" />
+            {$field.hidden}
+            <button type="submit">搜索</button>
+          </form>
+          {/eyou:searchform}
+        </section>
+
+        {eyou:notempty name="$eyou.field.related_topics"}
+        <section class="search-side-card search-side-card--taxonomy" aria-labelledby="tagSideRelatedTitle">
+          <div class="search-side-card__head">
+            <strong id="tagSideRelatedTitle">相关标签</strong>
+          </div>
+          <div class="search-side-card__list">
+            {eyou:volist name="$eyou.field.related_topics" id="topic"}
+            <a class="search-side-link search-side-link--category" href="{$topic.link}">
+              <span>{$topic.tag}</span>
+              <em>{$topic.meta_text}</em>
+            </a>
+            {/eyou:volist}
+          </div>
+        </section>
+        {/eyou:notempty}
+
+        {eyou:if condition="!empty($eyou.field.related_topics) || !empty($eyou.field.fallback_topics)"}
+        <section class="search-side-card search-side-card--terms" aria-labelledby="tagSideLongtailTitle">
+          <div class="search-side-card__head">
+            <strong id="tagSideLongtailTitle">细分标签</strong>
+          </div>
+          <div class="search-side-card__chips">
+            {eyou:volist name="$eyou.field.fallback_topics" id="topic"}
+            <a class="search-side-chip" href="{$topic.link}">{$topic.tag}</a>
+            {/eyou:volist}
+          </div>
+        </section>
+        {/eyou:if}
+      </aside>
+    </div>
+  </section>
+</main>
+
+{eyou:include file="footer.htm" /}
+<script>
+  (function () {
+    var tabs = document.querySelectorAll("[data-tag-tab]");
+    var panels = document.querySelectorAll("[data-tag-panel]");
+    if (!tabs.length || !panels.length) {
+      return;
+    }
+
+    function activateTagPanel(name) {
+      for (var i = 0; i < tabs.length; i++) {
+        var active = tabs[i].getAttribute("data-tag-tab") === name;
+        tabs[i].classList.toggle("is-active", active);
+      }
+      for (var j = 0; j < panels.length; j++) {
+        var visible = panels[j].getAttribute("data-tag-panel") === name;
+        panels[j].classList.toggle("is-hidden", !visible);
+      }
+    }
+
+    for (var k = 0; k < tabs.length; k++) {
+      tabs[k].addEventListener("click", function (event) {
+        event.preventDefault();
+        var target = this.getAttribute("data-tag-tab");
+        if (!target) {
+          return;
+        }
+        activateTagPanel(target);
+        var panel = document.querySelector('[data-tag-panel="' + target + '"]');
+        if (panel && window.innerWidth <= 960) {
+          panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+  })();
+</script>
+<script>
+  (function () {
+    function isPlainLeftClick(event) {
+      return !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
+    }
+
+    document.addEventListener("click", function (event) {
+      if (!isPlainLeftClick(event) || !event.target || !event.target.closest) {
+        return;
+      }
+
+      var coverLink = event.target.closest(".search-result-row__cover-link");
+      if (coverLink && coverLink.href) {
+        event.preventDefault();
+        window.location.href = coverLink.href;
+        return;
+      }
+
+      if (event.target.closest("a, button, input, select, textarea, label, [role='button']")) {
+        return;
+      }
+
+      var row = event.target.closest(".search-result-row[data-search-row-href]");
+      if (row) {
+        var href = row.getAttribute("data-search-row-href");
+        if (href) {
+          window.location.href = href;
+        }
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" || !event.target || !event.target.matches || !event.target.matches(".search-result-row[data-search-row-href]")) {
+        return;
+      }
+
+      var href = event.target.getAttribute("data-search-row-href");
+      if (href) {
+        event.preventDefault();
+        window.location.href = href;
+      }
+    });
+  })();
+</script>
+</body>
+</html>

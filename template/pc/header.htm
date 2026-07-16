@@ -1,0 +1,436 @@
+{eyou:global name='ey_common_hidden' /}
+
+{eyou:php}
+if (!function_exists('wn_type_url_by_id')) {
+    function wn_type_url_by_id($typeId, $fallback = '#')
+    {
+        $typeId = intval($typeId);
+        if ($typeId <= 0) {
+            return (string)$fallback;
+        }
+
+        static $typeCache = [];
+        if (!array_key_exists($typeId, $typeCache)) {
+            $typeCache[$typeId] = (array)\think\Db::name('arctype')
+                ->field('id, parent_id, typename, current_channel, dirname, dirpath, diy_dirpath, rulelist, ruleview, typearcrank, is_part, typelink')
+                ->where('id', $typeId)
+                ->find();
+        }
+
+        $type = $typeCache[$typeId];
+        if (empty($type)) {
+            return (string)$fallback;
+        }
+
+        if (!empty($type['is_part']) && !empty($type['typelink'])) {
+            return (string)$type['typelink'];
+        }
+
+        if (function_exists('get_typeurl')) {
+            $url = get_typeurl($type, false);
+            if (!empty($url)) {
+                return $url;
+            }
+        }
+
+        return '/index.php?m=home&c=Lists&a=index&tid=' . $typeId;
+    }
+}
+
+if (!function_exists('wn_type_sort_url')) {
+    function wn_type_sort_url($baseUrl, $sort = '')
+    {
+        $baseUrl = trim((string)$baseUrl);
+        if ($baseUrl === '') {
+            return '#';
+        }
+
+        $sort = trim((string)$sort);
+        if ($sort === '' || $sort === 'new' || $sort === 'recommend') {
+            return $baseUrl;
+        }
+
+        return $baseUrl . (strpos($baseUrl, '?') !== false ? '&' : '?') . 'sort=' . rawurlencode($sort);
+    }
+}
+
+if (!function_exists('wn_type_filter_url')) {
+    function wn_type_filter_url($baseUrl, $params = array())
+    {
+        $baseUrl = trim((string)$baseUrl);
+        if ($baseUrl === '') {
+            return '#';
+        }
+
+        $query = array();
+        $parts = parse_url($baseUrl);
+        if (!empty($parts['query'])) {
+            parse_str($parts['query'], $query);
+        }
+
+        foreach ((array)$params as $key => $value) {
+            $key = (string)$key;
+            if ($key === 'sort' && $value === 'recommend') {
+                unset($query[$key]);
+                continue;
+            }
+            if ($value === '' || $value === null) {
+                unset($query[$key]);
+                continue;
+            }
+            $query[$key] = $value;
+        }
+
+        $path = $baseUrl;
+        if (false !== strpos($baseUrl, '?')) {
+            $path = substr($baseUrl, 0, strpos($baseUrl, '?'));
+        }
+
+        return $path . (empty($query) ? '' : '?' . http_build_query($query));
+    }
+}
+
+if (!function_exists('wn_query_nofollow_attr')) {
+    function wn_query_nofollow_attr($url)
+    {
+        return strpos((string)$url, '?') !== false ? ' rel="nofollow"' : '';
+    }
+}
+{/eyou:php}
+<script>
+(function (window, document) {
+  var hrefs = [
+    "/template/pc/skin/wogaosuni/style/site-background-system.min.css",
+    window.matchMedia && window.matchMedia("(min-width: 961px)").matches
+      ? "/template/pc/skin/wogaosuni/style/topbar-header-redesign.min.css?v=20260630livefix1"
+      : ""
+  ];
+
+  function hasLink(href) {
+    var links = document.getElementsByTagName("link");
+    for (var i = 0; i < links.length; i += 1) {
+      if (links[i].getAttribute("data-runtime-style") === href || links[i].href.indexOf(href) !== -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  var anchor = document.head.querySelector('style,link[rel="stylesheet"],link[as="style"]');
+
+  for (var j = 0; j < hrefs.length; j += 1) {
+    var href = hrefs[j];
+    if (!href) {
+      continue;
+    }
+    if (hasLink(href)) {
+      continue;
+    }
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = href;
+    link.setAttribute("data-runtime-style", href);
+    if (anchor && anchor.parentNode === document.head) {
+      document.head.insertBefore(link, anchor);
+    } else {
+      document.head.appendChild(link);
+    }
+  }
+})(window, document);
+</script>
+
+<header class="wn-nav-shell" id="siteTopbar">
+  <div class="wn-nav-shell__inner">
+    <div class="wn-nav-shell__brandline">
+      <a class="wn-nav-brand" href="/" aria-label="返回首页：AI导航站 example.com">
+        <img class="wn-nav-brand__logo" src="/template/pc/skin/wogaosuni/image/open-source-logo.svg" alt="AI导航站" width="42" height="42" loading="eager" decoding="async" />
+        <span class="wn-nav-brand__copy">
+          <strong class="wn-nav-brand__name">AI导航站</strong>
+          <small class="wn-nav-brand__url">example.com</small>
+        </span>
+      </a>
+      <button class="wn-nav-mobile-search" type="button" data-mobile-search-open aria-controls="mobileSearchSheet" aria-expanded="false" aria-label="打开搜索">
+        <span class="wn-nav-mobile-search__icon" aria-hidden="true"></span>
+        <span class="wn-visually-hidden">打开搜索</span>
+      </button>
+      <button class="wn-nav-toggle" type="button" id="sidebarCollapseToggle" aria-label="收起或展开分类导航" aria-controls="siteSidebar" aria-pressed="false" data-state="collapsed">
+        <span class="wn-nav-toggle__box" aria-hidden="true">
+          <span class="wn-nav-toggle__line"></span>
+          <span class="wn-nav-toggle__line"></span>
+          <span class="wn-nav-toggle__line"></span>
+        </span>
+        <span class="wn-visually-hidden">分类导航</span>
+      </button>
+    </div>
+
+    <nav class="wn-nav-links" aria-label="主导航">
+      <a class="wn-nav-link" href="/">首页</a>
+
+      <div class="wn-nav-menu" data-topbar-category-menu>
+        <a class="wn-nav-menu__trigger" href="/#categories" data-topbar-category-trigger aria-expanded="false">
+          <span>分类</span>
+          <span class="wn-nav-menu__caret" aria-hidden="true"></span>
+        </a>
+        <div class="wn-nav-menu__panel wn-nav-menu__panel--categories" data-topbar-category-panel>
+          <div class="wn-nav-menu__head">
+            <div>
+              <strong>全部分类</strong>
+              <span>快速浏览常用 AI 工具栏目</span>
+            </div>
+            <a href="/#categories">查看总览</a>
+          </div>
+          <div class="wn-nav-menu__grid wn-nav-menu__grid--categories">
+            {eyou:sql sql="SELECT id AS typeid, typename, current_channel FROM __PREFIX__arctype WHERE parent_id=0 AND id NOT IN (263,264,265,271,370,371,372,373) AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="field"}
+            <section class="wn-nav-menu__group">
+              <a class="wn-nav-menu__parent nav-category-link" href="{:wn_type_url_by_id($field['typeid'])}" aria-label="{$field.typename}" data-typeid="{$field.typeid}">
+                <span class="wn-nav-menu__icon nav-category-icon" aria-hidden="true"></span>
+                <strong>{$field.typename}</strong>
+              </a>
+              {eyou:php}
+              $wnTopbarChildCategories = \think\Db::name('arctype')
+                  ->field('id AS typeid, typename')
+                  ->where('parent_id', intval($field['typeid']))
+                  ->where('is_hidden', 0)
+                  ->where('status', 1)
+                  ->where('is_del', 0)
+                  ->order('sort_order asc,id asc')
+                  ->select();
+              {/eyou:php}
+              <div class="wn-nav-menu__children">
+                {volist name="$wnTopbarChildCategories" id="field2"}
+                <a href="{:wn_type_url_by_id($field2['typeid'])}" aria-label="{$field2.typename}">{$field2.typename}</a>
+                {/volist}
+              </div>
+            </section>
+            {/eyou:sql}
+          </div>
+        </div>
+      </div>
+
+      <div class="wn-nav-menu" data-topbar-category-menu>
+        <a class="wn-nav-menu__trigger" href="{:wn_type_url_by_id(271)}" data-topbar-category-trigger aria-expanded="false">
+          <span>百科</span>
+          <span class="wn-nav-menu__caret" aria-hidden="true"></span>
+        </a>
+        <div class="wn-nav-menu__panel wn-nav-menu__panel--compact" data-topbar-category-panel>
+          <div class="wn-nav-menu__grid wn-nav-menu__grid--compact">
+            {eyou:php}
+            $wnTutorialTopbarChildren = \think\Db::name('arctype')
+                ->field('id AS typeid, typename')
+                ->where('parent_id', 271)
+                ->where('is_hidden', 0)
+                ->where('status', 1)
+                ->where('is_del', 0)
+                ->order('sort_order asc,id asc')
+                ->limit(20)
+                ->select();
+            {/eyou:php}
+            {volist name="$wnTutorialTopbarChildren" id="tutorialChild"}
+            <section class="wn-nav-menu__group">
+              <a class="wn-nav-menu__parent nav-category-link" href="{:wn_type_url_by_id($tutorialChild['typeid'])}" aria-label="{$tutorialChild.typename}" data-typeid="{$tutorialChild.typeid}">
+                <span class="wn-nav-menu__icon nav-category-icon" aria-hidden="true"></span>
+                <strong>{$tutorialChild.typename}</strong>
+              </a>
+            </section>
+            {/volist}
+          </div>
+        </div>
+      </div>
+
+      <div class="wn-nav-menu" data-topbar-category-menu>
+        <a class="wn-nav-menu__trigger" href="{:wn_type_url_by_id(373)}" data-topbar-category-trigger aria-expanded="false">
+          <span>下载</span>
+          <span class="wn-nav-menu__caret" aria-hidden="true"></span>
+        </a>
+        <div class="wn-nav-menu__panel wn-nav-menu__panel--compact" data-topbar-category-panel>
+          <div class="wn-nav-menu__grid wn-nav-menu__grid--compact">
+            {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=373 AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="download"}
+            <section class="wn-nav-menu__group">
+              <a class="wn-nav-menu__parent nav-category-link" href="{:wn_type_url_by_id($download['typeid'])}" aria-label="{$download.typename}" data-typeid="{$download.typeid}">
+                <span class="wn-nav-menu__icon nav-category-icon" aria-hidden="true"></span>
+                <strong>{$download.typename}</strong>
+              </a>
+            </section>
+            {/eyou:sql}
+          </div>
+        </div>
+      </div>
+
+      <a class="wn-nav-link" href="{:wn_type_url_by_id(372)}">排行</a>
+    </nav>
+
+    <div class="wn-nav-tools" aria-label="顶部工具">
+      <form class="wn-nav-search" method="get" action="/search.html" role="search" aria-label="站内搜索" data-topbar-search-form>
+        <span class="wn-nav-search__icon" aria-hidden="true"></span>
+        <input type="search" name="keywords" placeholder="搜索工具、分类、教程" autocomplete="on" inputmode="search" enterkeyhint="search" aria-label="搜索站内 AI 工具、分类和教程" data-topbar-search-input />
+        <input type="hidden" name="method" value="1" />
+        <button type="submit" aria-label="搜索站内 AI 工具">
+          <span class="wn-nav-search__submit">搜索</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<div class="wn-search-sheet" id="mobileSearchSheet" data-mobile-search-sheet role="dialog" aria-modal="true" aria-labelledby="mobileSearchTitle" hidden>
+  <button type="button" class="wn-search-sheet__backdrop" data-mobile-search-close aria-label="关闭搜索层"></button>
+  <section class="wn-search-sheet__panel" role="document">
+    <div class="wn-search-sheet__head">
+      <div>
+        <strong id="mobileSearchTitle">搜索 AI 工具</strong>
+        <span>输入关键词，直达工具、分类和教程</span>
+      </div>
+      <button type="button" class="wn-search-sheet__cancel" data-mobile-search-close>取消</button>
+    </div>
+
+    <form class="wn-search-sheet__form" method="get" action="/search.html" role="search" aria-label="移动端站内搜索" data-mobile-search-form>
+      <span class="wn-search-sheet__icon" aria-hidden="true"></span>
+      <input type="search" name="keywords" placeholder="搜索工具、分类、教程" autocomplete="on" inputmode="search" enterkeyhint="search" aria-label="搜索站内 AI 工具、分类和教程" data-mobile-search-input />
+      <input type="hidden" name="method" value="1" />
+      <button type="submit">搜索</button>
+    </form>
+
+    <div class="wn-search-sheet__suggestions">
+      <div class="wn-search-sheet__section" data-mobile-search-history hidden>
+        <div class="wn-search-sheet__section-head">
+          <strong>最近搜索</strong>
+          <button type="button" data-mobile-search-clear>清空</button>
+        </div>
+        <div class="wn-search-sheet__chips" data-mobile-search-history-list></div>
+      </div>
+
+      <div class="wn-search-sheet__section">
+        <div class="wn-search-sheet__section-head">
+          <strong>热门搜索</strong>
+        </div>
+        <div class="wn-search-sheet__chips">
+          <button type="button" data-mobile-search-value="ChatGPT">ChatGPT</button>
+          <button type="button" data-mobile-search-value="AI写作">AI写作</button>
+          <button type="button" data-mobile-search-value="图片生成">图片生成</button>
+          <button type="button" data-mobile-search-value="PPT">PPT</button>
+          <button type="button" data-mobile-search-value="视频生成">视频生成</button>
+          <button type="button" data-mobile-search-value="通义千问">通义千问</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<aside class="wn-sidebar-shell" id="siteSidebar" aria-label="分类导航">
+  <div class="wn-sidebar-shell__head">
+    <div class="wn-sidebar-shell__eyebrow">分类导航</div>
+    <button class="wn-sidebar-shell__close" type="button" id="sidebarClose" aria-label="关闭分类导航">
+      <span class="wn-sidebar-shell__close-icon" aria-hidden="true"></span>
+      <em>关闭</em>
+    </button>
+  </div>
+
+  <nav class="wn-sidebar-shell__nav" aria-label="分类导航列表">
+    <ul class="wn-sidebar-list">
+      {eyou:sql sql="SELECT id AS typeid, typename, current_channel FROM __PREFIX__arctype WHERE parent_id=0 AND id NOT IN (263,264,265,271,370,371,372,373) AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="field"}
+      <li class="wn-sidebar-item has-children" data-sidebar-item data-sidebar-typeid="{$field.typeid}" data-sidebar-channel="{$field.current_channel}">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id($field['typeid'])}" data-title="{$field.typename}" aria-label="{$field.typename}" data-typeid="{$field.typeid}" data-sidebar-role="parent" data-sidebar-typeid="{$field.typeid}" data-sidebar-parentid="0" data-sidebar-channel="{$field.current_channel}">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">{$field.typename}</span>
+          </a>
+          <button type="button" class="wn-sidebar-item__toggle" aria-label="展开或收起{$field.typename}">
+            <span class="wn-sidebar-item__toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        {eyou:php}
+        $wnSidebarChildCategories = \think\Db::name('arctype')
+            ->field('id AS typeid, typename')
+            ->where('parent_id', intval($field['typeid']))
+            ->where('is_hidden', 0)
+            ->where('status', 1)
+            ->where('is_del', 0)
+            ->order('sort_order asc,id asc')
+            ->select();
+        {/eyou:php}
+        <div class="wn-sidebar-item__children" data-title="{$field.typename}">
+          <a href="{:wn_type_url_by_id($field['typeid'])}" aria-label="全部{$field.typename}" data-sidebar-role="all" data-sidebar-typeid="{$field.typeid}" data-sidebar-parentid="{$field.typeid}" data-sidebar-channel="{$field.current_channel}">全部</a>
+          {volist name="$wnSidebarChildCategories" id="field2"}
+          <a href="{:wn_type_url_by_id($field2['typeid'])}" aria-label="{$field2.typename}" data-sidebar-role="child" data-sidebar-typeid="{$field2.typeid}" data-sidebar-parentid="{$field.typeid}" data-sidebar-channel="{$field.current_channel}">{$field2.typename}</a>
+          {/volist}
+        </div>
+      </li>
+      {/eyou:sql}
+
+      <li class="wn-sidebar-item has-children" data-sidebar-item data-sidebar-typeid="271" data-sidebar-channel="1">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id(271)}" data-title="AI百科" aria-label="AI百科" data-typeid="271" data-sidebar-role="parent" data-sidebar-typeid="271" data-sidebar-parentid="0" data-sidebar-channel="1">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">AI百科</span>
+          </a>
+          <button type="button" class="wn-sidebar-item__toggle" aria-label="展开或收起AI百科">
+            <span class="wn-sidebar-item__toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="wn-sidebar-item__children" data-title="AI百科">
+          <a href="{:wn_type_url_by_id(271)}" aria-label="全部AI百科" data-sidebar-role="all" data-sidebar-typeid="271" data-sidebar-parentid="271" data-sidebar-channel="1">全部</a>
+          {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=271 AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="tutorial"}
+          <a href="{:wn_type_url_by_id($tutorial['typeid'])}" aria-label="{$tutorial.typename}" data-sidebar-role="child" data-sidebar-typeid="{$tutorial.typeid}" data-sidebar-parentid="271" data-sidebar-channel="1">{$tutorial.typename}</a>
+          {/eyou:sql}
+        </div>
+      </li>
+
+      <li class="wn-sidebar-item has-children" data-sidebar-item data-sidebar-typeid="373" data-sidebar-channel="0">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id(373)}" data-title="AI下载" aria-label="AI下载" data-typeid="373" data-sidebar-role="parent" data-sidebar-typeid="373" data-sidebar-parentid="0" data-sidebar-channel="0">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">AI下载</span>
+          </a>
+          <button type="button" class="wn-sidebar-item__toggle" aria-label="展开或收起AI下载">
+            <span class="wn-sidebar-item__toggle-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="wn-sidebar-item__children" data-title="AI下载">
+          <a href="{:wn_type_url_by_id(373)}" aria-label="全部AI下载" data-sidebar-role="all" data-sidebar-typeid="373" data-sidebar-parentid="373" data-sidebar-channel="0">全部</a>
+          {eyou:sql sql="SELECT id AS typeid, typename FROM __PREFIX__arctype WHERE parent_id=373 AND is_hidden=0 AND status=1 AND is_del=0 ORDER BY sort_order ASC,id ASC" cachetime="60" id="downloadSidebar"}
+          <a href="{:wn_type_url_by_id($downloadSidebar['typeid'])}" aria-label="{$downloadSidebar.typename}" data-sidebar-role="child" data-sidebar-typeid="{$downloadSidebar.typeid}" data-sidebar-parentid="373" data-sidebar-channel="0">{$downloadSidebar.typename}</a>
+          {/eyou:sql}
+        </div>
+      </li>
+
+      <li class="wn-sidebar-item wn-sidebar-item--utility" data-sidebar-item data-sidebar-typeid="372">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id(372)}" data-title="排行" aria-label="排行" data-typeid="372" data-sidebar-role="utility" data-sidebar-typeid="372">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">排行</span>
+          </a>
+        </div>
+        <div class="wn-sidebar-item__children wn-sidebar-item__children--utility" data-title="排行" aria-hidden="true">
+          <span class="wn-sidebar-item__utility-tip">排行</span>
+        </div>
+      </li>
+
+      <li class="wn-sidebar-item wn-sidebar-item--utility" data-sidebar-item data-sidebar-typeid="370">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id(370)}" rel="nofollow" data-title="合作" aria-label="合作" data-typeid="370" data-sidebar-role="utility" data-sidebar-typeid="370">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">合作</span>
+          </a>
+        </div>
+        <div class="wn-sidebar-item__children wn-sidebar-item__children--utility" data-title="合作" aria-hidden="true">
+          <span class="wn-sidebar-item__utility-tip">合作</span>
+        </div>
+      </li>
+
+      <li class="wn-sidebar-item wn-sidebar-item--utility" data-sidebar-item data-sidebar-typeid="371">
+        <div class="wn-sidebar-item__row">
+          <a class="wn-sidebar-item__link nav-category-link" href="{:wn_type_url_by_id(371)}" rel="nofollow" data-title="提交" aria-label="提交" data-typeid="371" data-sidebar-role="utility" data-sidebar-typeid="371">
+            <span class="wn-sidebar-item__icon nav-category-icon" aria-hidden="true"></span>
+            <span class="wn-sidebar-item__label">提交</span>
+          </a>
+        </div>
+        <div class="wn-sidebar-item__children wn-sidebar-item__children--utility" data-title="提交" aria-hidden="true">
+          <span class="wn-sidebar-item__utility-tip">提交</span>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+<div class="wn-sidebar-overlay" id="siteSidebarOverlay"></div>

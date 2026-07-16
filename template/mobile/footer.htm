@@ -1,0 +1,72 @@
+<footer class="site-footer">
+  <div class="footer-shell">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="footer-brand__mark" href="{eyou:global name='web_basehost' /}" aria-label="返回首页">
+          <img src="/template/pc/skin/wogaosuni/image/open-source-logo.svg" alt="AI导航站" loading="lazy" />
+        </a>
+        <div class="footer-brand__copy">
+          <strong>AI导航站 <span>example.com</span></strong>
+          <div class="footer-brand__tags" aria-label="站点定位">
+            <span>AI工具导航</span>
+            <span>AI百科</span>
+          </div>
+        </div>
+        <p class="footer-brand__desc">{eyou:global name='web_description' /}</p>
+      </div>
+      <div class="footer-center">
+        <div class="footer-linksline">
+          <div class="footer-linksline__friends">
+            <span class="footer-linksline__label">友情链接：</span>
+            <div class="footer-linksline__links">
+              {eyou:links titlelen='45' type='text'}
+              <a href="{$field.url}" {$field.target}>{$field.title}</a>
+              {/eyou:links}
+            </div>
+          </div>
+          <div class="footer-linksline__meta">
+            <span>Copyright © AI导航站 example.com 版权所有</span>
+            <span>{eyou:global name='web_recordnum' /} {eyou:global name='web_garecordnum' /}</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-contact">
+        <div class="footer-contact__head">
+          <strong>联系与交流群</strong>
+          <span>获取合作、收录与交流入口</span>
+        </div>
+        <div class="footer-contact__item footer-contact__item--qq">
+          <a class="footer-contact__media" href="{eyou:global name='web_attr_23' /}" target="_blank" rel="nofollow noopener" aria-label="加入QQ群">
+            <img src="/template/pc/skin/wogaosuni/image/icon-qq.webp" alt="QQ群入口" loading="lazy" />
+          </a>
+          <span>QQ群号 {eyou:global name='web_attr_22' /}</span>
+        </div>
+        <div class="footer-contact__item footer-contact__item--wechat">
+          <div class="footer-contact__media">
+            <img src="{eyou:global name='web_attr_17' /}" alt="微信咨询" loading="lazy" />
+          </div>
+          <span>{eyou:global name='web_attr_18' /}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="site-float" id="siteFloat">
+  <div class="site-float__dock" aria-label="快捷操作">
+    <button class="site-float__action site-float__action--top" type="button" id="backToTop" aria-label="返回顶部" title="返回顶部">
+      <span class="site-float__action-icon" aria-hidden="true">↑</span>
+    </button>
+    <a class="site-float__action site-float__action--qq" href="{eyou:global name='web_attr_23' /}" target="_blank" rel="nofollow noopener" aria-label="加入 QQ 群" title="QQ群">
+      <span class="site-float__action-icon" aria-hidden="true"><img src="/template/pc/skin/wogaosuni/image/icon-qq.webp" alt="" loading="lazy" /></span>
+      <span class="site-float__qr-popover" aria-hidden="true">
+        <img src="{eyou:global name='web_attr_21' /}" alt="QQ群二维码" loading="lazy" />
+      </span>
+    </a>
+    <a class="site-float__action site-float__action--submit" href="/index.php?m=home&c=Lists&a=index&tid=371" aria-label="提交工具" title="提交工具">
+      <span class="site-float__action-icon" aria-hidden="true">＋</span>
+    </a>
+  </div>
+</div>
+
+{eyou:weapp type='default' /}

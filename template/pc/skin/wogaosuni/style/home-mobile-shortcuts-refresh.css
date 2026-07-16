@@ -1,0 +1,1281 @@
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid {
+display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    grid-auto-rows: 60px !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid.is-empty {
+display: block !important;
+    grid-template-columns: none !important;
+    grid-auto-rows: auto !important;
+    height: auto !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card {
+width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    margin: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__link {
+display: grid !important;
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    justify-items: start !important;
+    gap: 12px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+    padding: 0 14px !important;
+    border: 1px solid rgba(226, 232, 240, 0.86) !important;
+    border-radius: 16px !important;
+    background: radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.94) 0, rgba(255, 255, 255, 0) 38%), linear-gradient(135deg, #fbfcfe 0%, #f6f8fb 56%, #f2f6fb 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 8px 22px rgba(148, 163, 184, 0.08) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link:hover,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__link:hover {
+border-color: rgba(147, 197, 253, 0.9) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f3f7fc 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 12px 28px rgba(37, 99, 235, 0.1) !important;
+    transform: translateY(-1px) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__logo {
+display: grid !important;
+    place-items: center !important;
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.94), 0 4px 12px rgba(148, 163, 184, 0.12) !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo img,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__monogram,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__logo img,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__monogram {
+width: 32px !important;
+    max-width: 32px !important;
+    height: 32px !important;
+    max-height: 32px !important;
+    border-radius: 10px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__copy,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__copy {
+display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: left !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link strong,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__link strong {
+display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #213043 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 18px !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__copy em,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__copy em {
+display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #91a0b4 !important;
+    font-size: 12px !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: 16px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__remove {
+top: 4px !important;
+    right: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__group--user:has(#homeRecommendRecentGrid .custom-shortcut-card) .directory-showcase__head {
+display: flex !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__group--user:has(#homeRecommendRecentGrid .custom-shortcut-card) .directory-showcase__filterbar {
+display: flex !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__group--user:has(#homeRecommendRecentGrid .custom-shortcut-card) .home-recommend__group-actions {
+display: flex !important;
+}
+
+@media (max-width: 960px) {
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid {
+grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid.is-empty {
+grid-template-columns: none !important;
+}
+}
+
+@media (max-width: 360px) {
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid {
+gap: 8px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__link {
+grid-template-columns: 32px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 0 10px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__logo {
+width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo img,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__monogram,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__logo img,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid .custom-shortcut-card__monogram {
+width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    max-height: 28px !important;
+}
+}
+
+@media (max-width: 520px) {
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="recent"] #homeRecommendRecentGrid {
+grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid.is-empty {
+grid-template-columns: none !important;
+}
+}
+
+@media (max-width: 960px) {
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid {
+grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 48px !important;
+    gap: 8px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card {
+height: 48px !important;
+    min-height: 48px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link {
+grid-template-columns: 34px minmax(0, 1fr) !important;
+    gap: 9px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    padding: 7px !important;
+    border: 1px solid #edf2f8 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link:hover {
+border-color: rgba(37, 99, 235, 0.28) !important;
+    background: #f5f8ff !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo img,
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__monogram {
+width: 34px !important;
+    max-width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    max-height: 34px !important;
+    min-height: 34px !important;
+    border-radius: 8px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__logo {
+background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__copy {
+gap: 3px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__link strong {
+font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 16px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__copy em {
+color: #94a3b8 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-card__remove {
+top: 4px !important;
+    right: 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-mobile-add {
+appearance: none !important;
+    -webkit-appearance: none !important;
+    display: grid !important;
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: start !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    margin: 0 !important;
+    padding: 7px !important;
+    border: 1px dashed rgba(37, 99, 235, 0.28) !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: #2563eb !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-mobile-add:hover {
+border-color: rgba(37, 99, 235, 0.4) !important;
+    background: #f5f8ff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-mobile-add__icon {
+display: inline-grid !important;
+    place-items: center !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    border-radius: 8px !important;
+    background: #eff6ff !important;
+    color: #2563eb !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-mobile-add__copy {
+display: block !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: #213043 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 16px !important;
+    text-align: left !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .home-recommend__panel[data-home-recommend-panel="custom"] #homeRecommendCustomGrid .custom-shortcut-mobile-add:not(.custom-shortcut-mobile-add--with-copy) {
+grid-template-columns: 1fr !important;
+    justify-items: center !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) {
+display: contents !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) {
+display: block !important;
+    position: fixed !important;
+    left: 14px !important;
+    right: 14px !important;
+    top: auto !important;
+    bottom: max(14px, env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: calc(100vh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    padding: 0 !important;
+    border: 1px solid rgba(218, 226, 239, 0.96) !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.18) !important;
+    overflow: hidden !important;
+    transform: none !important;
+    z-index: 10020 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form {
+display: grid !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 0 !important;
+    height: auto !important;
+    max-height: calc(100vh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 58px !important;
+    padding: 14px 18px !important;
+    border-bottom: 1px solid #eef2f7 !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head strong {
+min-width: 0 !important;
+    overflow: hidden !important;
+    color: #111827 !important;
+    font-size: 17px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions {
+display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions > button {
+box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 11px !important;
+    border: 1px solid #e3eaf5 !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions > button[id="quickFavoritesAddClose"] {
+width: 34px !important;
+    max-width: 34px !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode {
+display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: calc(100% - 36px) !important;
+    margin: 14px 18px 0 !important;
+    padding: 4px !important;
+    border: 1px solid #e4ebf5 !important;
+    border-radius: 14px !important;
+    background: #f7faff !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode > button {
+display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode > button.is-active {
+background: #ffffff !important;
+    color: #2563eb !important;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]).is-manual-mode .custom-shortcut-manual {
+display: grid !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]):not(.is-manual-mode) .custom-shortcut-manual {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual {
+gap: 12px !important;
+    width: calc(100% - 36px) !important;
+    min-width: 0 !important;
+    margin: 14px 18px 0 !important;
+    padding: 14px !important;
+    border: 1px solid #e7edf6 !important;
+    border-radius: 16px !important;
+    background: #f8fafc !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label {
+display: grid !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label span {
+display: block !important;
+    color: #475569 !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label input {
+box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    padding: 0 14px !important;
+    border: 1px solid #d7e1ee !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 15px !important;
+    font-weight: 650 !important;
+    line-height: 44px !important;
+    outline: none !important;
+    box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label input:focus {
+border-color: #8bb5ff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13), inset 0 1px 0 rgba(15, 23, 42, 0.02) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]).is-manual-mode .custom-shortcut-picker {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]):not(.is-manual-mode) .custom-shortcut-picker {
+display: grid !important;
+    grid-template-rows: auto minmax(0, auto) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker {
+width: calc(100% - 36px) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 14px 18px 0 !important;
+    border: 1px solid #e7edf6 !important;
+    border-radius: 16px !important;
+    background: #f8fafc !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__head {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 46px !important;
+    padding: 11px 14px !important;
+    border-bottom: 1px solid #e6edf7 !important;
+    background: #ffffff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__head strong {
+min-width: 0 !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    line-height: 1.25 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__toggle {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__body[hidden] {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__body {
+display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools {
+display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 12px 10px !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools input,
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools select {
+box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    padding: 0 13px !important;
+    border: 1px solid #d7e1ee !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools input:focus,
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools select:focus {
+border-color: #8bb5ff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__list {
+display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    min-height: 118px !important;
+    max-height: clamp(168px, 34vh, 260px) !important;
+    padding: 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__item {
+height: 48px !important;
+    min-width: 0 !important;
+    padding: 7px !important;
+    border-radius: 7px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__foot {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 16px 0 0 !important;
+    padding: 14px 18px 18px !important;
+    border-top: 1px solid #eef2f7 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__tip {
+min-width: 0 !important;
+    color: #8a98aa !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    line-height: 1.45 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__submit {
+box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 130px !important;
+    height: 42px !important;
+    padding: 0 18px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 850 !important;
+}
+}
+
+@media (max-width: 420px) {
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head {
+gap: 10px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode,
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual,
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker {
+width: calc(100% - 28px) !important;
+    margin-left: 14px !important;
+    margin-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__foot {
+grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home #quickFavoritesAddPanelHost.custom-shortcut-inline-host.is-open:not([hidden]) #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__submit {
+width: 100% !important;
+    min-width: 0 !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) {
+display: block !important;
+    position: fixed !important;
+    left: 14px !important;
+    right: 14px !important;
+    top: auto !important;
+    bottom: max(14px, env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: calc(100vh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    padding: 0 !important;
+    border: 1px solid rgba(218, 226, 239, 0.96) !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.18) !important;
+    overflow: hidden !important;
+    transform: none !important;
+    z-index: 10020 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form {
+display: grid !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 0 !important;
+    height: auto !important;
+    max-height: calc(100vh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 58px !important;
+    padding: 14px 18px !important;
+    border-bottom: 1px solid #eef2f7 !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head strong {
+min-width: 0 !important;
+    overflow: hidden !important;
+    color: #111827 !important;
+    font-size: 17px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions {
+display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions > button {
+box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 11px !important;
+    border: 1px solid #e3eaf5 !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head-actions > button[id="quickFavoritesAddClose"] {
+width: 34px !important;
+    max-width: 34px !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode {
+display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+    width: calc(100% - 36px) !important;
+    margin: 14px 18px 0 !important;
+    padding: 4px !important;
+    border: 1px solid #e4ebf5 !important;
+    border-radius: 14px !important;
+    background: #f7faff !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode > button {
+display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode > button.is-active {
+background: #ffffff !important;
+    color: #2563eb !important;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]).is-manual-mode .custom-shortcut-manual {
+display: grid !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]):not(.is-manual-mode) .custom-shortcut-manual {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual {
+gap: 12px !important;
+    width: calc(100% - 36px) !important;
+    min-width: 0 !important;
+    margin: 14px 18px 0 !important;
+    padding: 14px !important;
+    border: 1px solid #e7edf6 !important;
+    border-radius: 16px !important;
+    background: #f8fafc !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label {
+display: grid !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label span {
+display: block !important;
+    color: #475569 !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label input {
+box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    padding: 0 14px !important;
+    border: 1px solid #d7e1ee !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 15px !important;
+    font-weight: 650 !important;
+    line-height: 44px !important;
+    outline: none !important;
+    box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual label input:focus {
+border-color: #8bb5ff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13), inset 0 1px 0 rgba(15, 23, 42, 0.02) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]).is-manual-mode .custom-shortcut-picker {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]):not(.is-manual-mode) .custom-shortcut-picker {
+display: grid !important;
+    grid-template-rows: auto minmax(0, auto) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker {
+width: calc(100% - 36px) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 14px 18px 0 !important;
+    border: 1px solid #e7edf6 !important;
+    border-radius: 16px !important;
+    background: #f8fafc !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__head {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 46px !important;
+    padding: 11px 14px !important;
+    border-bottom: 1px solid #e6edf7 !important;
+    background: #ffffff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__head strong {
+min-width: 0 !important;
+    overflow: hidden !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    line-height: 1.25 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__toggle {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__body[hidden] {
+display: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__body {
+display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools {
+display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 12px 10px !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools input,
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools select {
+box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    padding: 0 13px !important;
+    border: 1px solid #d7e1ee !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools input:focus,
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__tools select:focus {
+border-color: #8bb5ff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__list {
+display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    min-height: 118px !important;
+    max-height: clamp(168px, 34vh, 260px) !important;
+    padding: 10px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker__item {
+height: 48px !important;
+    min-width: 0 !important;
+    padding: 7px !important;
+    border-radius: 7px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__foot {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin: 16px 0 0 !important;
+    padding: 14px 18px 18px !important;
+    border-top: 1px solid #eef2f7 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__tip {
+min-width: 0 !important;
+    color: #8a98aa !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    line-height: 1.45 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__submit {
+box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 130px !important;
+    height: 42px !important;
+    padding: 0 18px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 850 !important;
+}
+}
+
+@media (max-width: 420px) {
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__form-head {
+gap: 10px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-entry-mode,
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-manual,
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-picker {
+width: calc(100% - 28px) !important;
+    margin-left: 14px !important;
+    margin-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .custom-shortcut-form__foot {
+grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home > #quickFavoritesAddPanel.custom-shortcut-popover:not([hidden]) .quick-favorites__submit {
+width: 100% !important;
+    min-width: 0 !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.is-home {
+overflow-x: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board {
+width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    padding: 10px 12px 9px !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board .search-board__content,
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board .search-board__shared,
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher {
+width: 100% !important;
+    max-width: 100% !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > .wn-picture-ad--home {
+width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > .wn-picture-ad--home .wn-picture-ad__link,
+html body.nav-theme.nav-theme-v2.is-home main.site-main > .wn-picture-ad--home .wn-picture-ad__img {
+border-radius: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher > .search-sponsor {
+border: 1px solid rgba(255, 255, 255, 0.46) !important;
+    background: rgba(37, 48, 64, 0.26) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    backdrop-filter: blur(16px) saturate(145%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(145%) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__head > div,
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__head strong {
+color: #fff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__join {
+border-color: rgba(255, 211, 102, 0.74) !important;
+    background: rgba(255, 213, 79, 0.16) !important;
+    color: #fff4c2 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__grid > a {
+border: 1px solid rgba(255, 255, 255, 0.17) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__grid > a strong {
+color: #fff !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home main.site-main > section#hero.site-hero.search-board.search-board #searchSwitcher.search-switcher .search-sponsor__grid > a small {
+color: rgba(255, 255, 255, 0.66) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .directory-showcase__filterbar {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend .home-recommend__group--user .directory-showcase__filterbar {
+margin: 0 0 4px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__tabs.section-filter--subtabs-joly {
+justify-self: start !important;
+    width: auto !important;
+    max-width: calc(100vw - 132px) !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions {
+justify-self: end !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions .home-recommend__action-btn {
+height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 2px !important;
+    color: #334155 !important;
+    font-size: 12px !important;
+    font-weight: 850 !important;
+    line-height: 32px !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions .custom-shortcut-add {
+width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions .custom-shortcut-add span {
+width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    border-radius: 9px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__panels,
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__panel,
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .directory-showcase__panels {
+margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user #homeRecommendCustomGrid,
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user #homeRecommendRecentGrid {
+margin-top: 0 !important;
+    gap: 7px !important;
+}
+}
+
+@media (max-width: 380px) {
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__tabs.section-filter--subtabs-joly {
+max-width: calc(100vw - 118px) !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions {
+gap: 6px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main .home-recommend__group--user .home-recommend__group-actions .home-recommend__action-btn::after {
+margin-left: 4px !important;
+}
+}
+
+@media (max-width: 760px) {
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .directory-showcase.home-recommend__group--user > .directory-showcase__filterbar,
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar {
+display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 100px !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .directory-showcase.home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__tabs.section-filter--subtabs-joly,
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__tabs.section-filter--subtabs-joly {
+justify-self: start !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    width: 202px !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .directory-showcase.home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__group-actions,
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user > .directory-showcase__filterbar > .home-recommend__group-actions {
+justify-self: end !important;
+    align-self: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: 100px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    position: static !important;
+    white-space: nowrap !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .directory-showcase.home-recommend__group--user .home-recommend__group-actions .home-recommend__action-btn,
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user .home-recommend__group-actions .home-recommend__action-btn {
+height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 2px !important;
+    font-size: 12px !important;
+    line-height: 32px !important;
+}
+
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .directory-showcase.home-recommend__group--user .home-recommend__group-actions .custom-shortcut-add,
+html body.nav-theme.nav-theme-v2.is-home .site-main #homeRecommend.home-recommend > .home-recommend__group--user .home-recommend__group-actions .custom-shortcut-add {
+width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+}
+}
