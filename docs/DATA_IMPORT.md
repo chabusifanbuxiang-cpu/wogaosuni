@@ -1,5 +1,8 @@
 # 公开网址数据与导入说明
 
+> [!WARNING]
+> 本数据包中的网址及相关描述均由 AI 整理，不保证准确性和安全性。正式导入前请自行进行多轮复核，不要因为数据能通过导入器检查就直接对外发布。发现错误、失效链接或安全风险时，请通过 [GitHub Issues](https://github.com/chabusifanbuxiang-cpu/wogaosuni/issues) 及时反馈。
+
 ## 数据范围
 
 当前整理好的公开内容实际存放在易优 CMS 产品频道（`channel=2`），不是普通文章频道。导出内容为：
