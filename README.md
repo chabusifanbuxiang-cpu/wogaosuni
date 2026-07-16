@@ -2,6 +2,10 @@
 
 这是一个面向全新易优 CMS 安装的导航站模板覆盖包，包含 PC/移动模板、公开网址工具数据、去元数据缩略图、脱敏导入器和 AI 安装说明。
 
+**在线演示：** [https://wogaosuni.cn/](https://wogaosuni.cn/) · **安装教程：** [docs/INSTALLATION.md](docs/INSTALLATION.md) · **AI 安装提示词：** [docs/AI_INSTALL_PROMPT.md](docs/AI_INSTALL_PROMPT.md)
+
+演示站用于查看当前模板在桌面端和移动端的实际效果。安装时必须把站点名称、域名、SEO 和联系方式改成自己的配置，不要照搬演示站的后台配置。
+
 > 发布状态提醒：许可证禁止用于开源项目的 Fancybox 6.1.14 已移除，详情图片改用 MIT 许可的 PhotoSwipe 5.4.4。但第三方字体、主题来源、网站 Logo/图片和较长内容描述的再分发权仍需发布者人工确认。授权未确认前，建议只推送到 GitHub 私有仓库，不要直接设为 Public，也不要把整个仓库笼统宣称为全部 MIT。详见 [LICENSE_SCOPE.md](LICENSE_SCOPE.md)。
 
 本包经过本地空库导入演练：69 个栏目、3,229 条网址工具、3,229 条详情内容、297 条多分类关系、16,527 条标签关系可以完整导入。数据包不包含数据库连接、管理员/用户数据、Session、支付/短信/邮件配置、API 密钥、日志或源站系统配置。

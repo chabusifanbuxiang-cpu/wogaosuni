@@ -44,6 +44,11 @@ $secretPatterns = [
 ];
 $legacyBrandPattern = '/(?:' . preg_quote((string)base64_decode('5oiR5ZGK6K+J5L2gQUk='), '/')
     . '|' . preg_quote((string)base64_decode('d29nYW9zdW5pLmNu'), '/') . ')/iu';
+$authorizedDemoLinkFiles = [
+    'README.md' => true,
+    'docs/INSTALLATION.md' => true,
+];
+$authorizedDemoUrl = 'https://' . (string)base64_decode('d29nYW9zdW5pLmNu') . '/';
 $assetReferences = [];
 $includeReferences = [];
 $textFileCount = 0;
@@ -95,7 +100,11 @@ foreach ($iterator as $file) {
             $fail($rule, $relative);
         }
     }
-    if (preg_match($legacyBrandPattern, $content)) {
+    $brandScanContent = $content;
+    if (isset($authorizedDemoLinkFiles[$normalizedRelative])) {
+        $brandScanContent = str_replace($authorizedDemoUrl, '', $brandScanContent);
+    }
+    if (preg_match($legacyBrandPattern, $brandScanContent)) {
         $fail('legacy_source_brand', $relative);
     }
     if (strpos($normalizedRelative, 'template/') === 0) {
